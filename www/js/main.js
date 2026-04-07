@@ -68,6 +68,7 @@ D.head.append(
 	[hide]{display:none!important}
 	html,body{margin:0;padding:0}
 	body{position:relative;display:block;width:100vw;min-height:100vh;overflow:hidden;overflow-y:auto;background:#000}
+	body[ns]{overflow-y:hidden!important}
 	body *{position:relative;overflow-wrap:break-word;white-space:pre-line;word-break:break-word;font-synthesis:weight style small-caps}
 	img{image-rendering:crisp-edges}
 	rbox,cbox{display:flex!important}
@@ -142,6 +143,7 @@ window.GD=async $=>{
 	const I=R.I=$.ga('I'),SC=JSON.parse(localStorage.getItem('SC')||'{}');;
 	R.C={N:$.ga('N'),C:$.o('img').ga('s'),S:$.o('score').innerText.trim()};
 	D.o('modal-t [SC]').innerText=I in SC?'♡':'⊕';
+	D.o('body').sa('ns');
 	D.o('modal').da('hide').o('modal-t>title').h('&nbsp;&nbsp;'+R.C.N);
 	`https://api.olelive.com/v1/pub/vod/detail/${I}/true`.r(o=>{
 		o=o.data;
@@ -191,6 +193,7 @@ window.CM=async()=>{
 	R.O&&(await R.O.destroy());
 	D.o('modal').sa({hide:'',_I:''}).o('modal-t>title').h('');
 	D.o('modal-c').h('');
+	D.o('body').da('ns');
 };
 
 window.CT=$=>{

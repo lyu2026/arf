@@ -17,8 +17,6 @@ Date.prototype.vv=function(){const r=Date.parse(this)/1e3;const sb=r=>{let n=[],
 String.prototype.r=function(f,x){
 	x=x.split('.').filter(_=>_.trim()!='')
 	const a=x.shift(),b=x.shift()
-	alert('r: '+f)
-	alert('r: '+x)
 	cordova.plugin.http.get(this,{_vv:(new Date).vv()},{'Content-Type':'text/plain'},_=>{
 		_=_.data
 		if(a=='j'||b=='j')_=JSON.parse(_)
@@ -37,15 +35,11 @@ _W(
 	'DB',()=>new Promise((S,C)=>{
 		let $=indexedDB.open('lyu01',8);
 		$.onerror=e=>C(e);
-		$.onsuccess=e=>{
-			alert('DB success: '+$);
-			S($.result);
-		}
+		$.onsuccess=e=>S($.result);
 		$.onupgradeneeded=e=>{
 			$=e.target.result;
 			$.objectStoreNames.contains('o')||$.createObjectStore('o',{keyPath:'id'});
-			alert('DB upgradeneeded: '+$);
-			S($);
+			location.reload()
 		};
 	}),
 	'DA',(id,o)=>new Promise((S,C)=>{
@@ -111,6 +105,11 @@ D.head.append(
 	modal[DK] modal-c>*:not(video){visibility:hidden!important}
 `));
 
+window.FC=()=>{
+	const x=!!(document.fullscreenElement||document.webkitFullscreenElement);
+	if(x)screen.orientation.lock('landscape').catch(e=>alert(e.message));
+	else screen.orientation.unlock();
+}
 window.SC=$=>{
 	const X=$.innerText=='⊕',O=JSON.parse(localStorage.getItem('SC')||'{}');
 	$.innerText=X?'♡':'⊕';
@@ -159,6 +158,9 @@ window.GD=async $=>{
 		const V=D.o('video');
 		R.O=new Hls({levelTargetDuration:8,maxBufferLength:50,maxBufferSize:1000*1000*2});
 		R.O.attachMedia(V);
+		V.onfullscreenchange=V.onwebkitfullscreenchange=window.FC;
+		V.onwebkitbeginfullscreen=()=>screen.orientation.lock('landscape');
+		V.onwebkitendfullscreen=()=>screen.orientation.unlock();
 		V.ondurationchange=()=>{
 			if(V.duration<250)return;
 			R.X=false;
@@ -177,6 +179,8 @@ window.GD=async $=>{
 		};
 		const U=localStorage.getItem(I+'_P')||'';
 		D.o(`p[VS]>span${U?`[u='${U}']`:''}`).click();
+		if(V.requestFullscreen)V.requestFullscreen();
+		else if(V.webkitEnterFullscreen)V.webkitEnterFullscreen();
 	},'j');
 };
 
@@ -192,6 +196,7 @@ window.CM=async()=>{
 };
 
 window.CT=$=>{
+	screen.orientation.unlock();
 	let $G=D.o('grid').sa('a'),K;
 	if($){
 		CM();
@@ -217,16 +222,14 @@ window.CT=$=>{
 			if(R.T.G=='?'){
 				const kw=prompt('搜索关键字:')
 				if(!kw||kw.trim()=='')return
+				const x=D.o('grid').da('a');
 				const U=`https://www.olehdtv.com/index.php/vod/search.html?wd=${encodeURIComponent(kw)}&submit=`;
 				U.r(o=>{
 					o=o.os('.searchlist_item .vodlist_thumb');
-					alert(o.length)
-					const x=D.o('grid').da('a');
 					o&&x.append(...o.map(_=>{
 						let n=_.ga('title').trim(),N=n.replace(/\s*[】]\s*/g,'').replace(/(\s*[【】:：·。～]\s*|\-+|—+)/g,'.').replace(/，/g,',').replace(/！/g,'!').replace(/\s\s/g,' ').replace(/\.{2,}/g,'.').trim().replace(/\s/g,'.').replace(/(\s*\.+$|\.?(剧场|真人)版)/g,'');
 						return NF.test(N)?null:D.n('grid-c',{I:_.ga('href').split('/').pop().split('.').shift(),N,onclick:'GD(this)'},`<img src='${II}' s='${_.ga('data-original')}'/><score></score><tip>${_.o('.pic_text').innerText.trim()}</tip><title>${N}</title>`);
 					}).filter(_=>_));
-					alert(x.length)
 				},'t.h');
 				return;
 			}
@@ -266,7 +269,6 @@ window.CT=$=>{
 
 
 DB().then(_=>{
-	alert('DB: '+_+'  '+R.D)
 	if(!(R.D=_))return;
 	DG('..').then(async o=>{
 		if(!o)await DA('..',{});
@@ -279,14 +281,12 @@ DB().then(_=>{
 				`<icc onclick='TM(this)' style='line-height:33px'>⊙</icc>`,
 				`<icc onclick='CM(this)'>╳</icc>`
 			].join('');
-			alert(Object.keys(R.TM).length);
 			D.body.h(`<tab T='G'>${Object.keys(R.TM).map(_=>`<div V='${_}' onclick='CT(this)'>${R.TM[_].N}</div>`).join('')}</tab><grid></grid><modal hide><mbox><modal-t><title></title>${ic}</modal-t><modal-c></modal-c></mbox></modal>`);
 			const __=JSON.parse(localStorage.getItem('T')||'{}'),T=__&&__.G?`[V='${__.G}']`:'';
-			alert('T: '+T);
 			D.o(`tab[T='G']>div${T}`).click();
 		},'j')
 	});
-}).catch(_=>alert('DB error: '+_.message));
+})
 
 const OX=new IntersectionObserver((s,o)=>{
 	let $=null;

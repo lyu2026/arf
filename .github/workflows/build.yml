@@ -32,7 +32,7 @@ jobs:
         run: npm install -g cordova
 
       - name: 安装插件
-        run: cordova plugin add cordova-plugin-advanced-http
+        run: cordova plugin add cordova-plugin-advanced-http;cordova plugin add cordova-plugin-screen-orientation
 
       - name: 安装依赖组件
         run: npm install

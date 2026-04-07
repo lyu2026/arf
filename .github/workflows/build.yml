@@ -64,7 +64,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          cordova platform add android@latest
+          cordova platform add android
           cordova build android --release -- \
             --keystore=release.keystore \
             --storePassword="$KEYSTORE_PASSWORD" \

@@ -157,7 +157,7 @@ window.CM=async()=>{
 
 window.CT=$=>{
 	screen.orientation.unlock();
-	let $G=D.o('grid').sa('a'),K;
+	let $G=D.o('grid'),K;
 	if($){
 		CM();
 		R.P=0;
@@ -193,7 +193,7 @@ window.CT=$=>{
 				},'h');
 				return;
 			}
-			$G.sa('a');
+			if(R.T.G!='?'&&R.T.G!='')$G.sa('a');
 			const X=R.TM[R.T.G];
 			const tt=`<div${''==R.T.T?' c':''} V='' onclick='CT(this)'>全部</div>`+X.T.map(_=>{
 				let x=_.split(':');return `<div${x[0]==R.T.T?' c':''} V='${x[0]}' onclick='CT(this)'>${x[1]}</div>`;

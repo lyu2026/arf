@@ -205,7 +205,9 @@ window.CT=$=>{
 				const kw=prompt('搜索关键字:')
 				if(!kw||kw.trim()=='')return
 				const U=`https://www.olehdtv.com/index.php/vod/search.html?wd=${encodeURIComponent(kw)}&submit=`;
+				alert(U)
 				U.r(o=>{
+					alert("zzzx")
 					o=o.os('.searchlist_item .vodlist_thumb');
 					alert(o.length)
 					const x=D.o('grid').da('a');

@@ -104,9 +104,9 @@ D.head.append(
 	modal[DK] modal-c>*:not(video){visibility:hidden!important}
 `));
 
-window.FC=()=>{
+window.FC=_=>{
 	const x=!!(document.fullscreenElement||document.webkitFullscreenElement);
-	if(x)screen.orientation.lock('landscape').catch(e=>alert(e.message));
+	if(x==_)screen.orientation.lock('landscape').catch(e=>alert(e.message));
 	else screen.orientation.unlock();
 }
 window.SC=$=>{
@@ -158,7 +158,7 @@ window.GD=async $=>{
 		const V=D.o('video');
 		R.O=new Hls({levelTargetDuration:8,maxBufferLength:50,maxBufferSize:1000*1000*2});
 		R.O.attachMedia(V);
-		V.onfullscreenchange=V.onwebkitfullscreenchange=window.FC;
+		V.onfullscreenchange=V.onwebkitfullscreenchange=()=>window.FC(V);
 		V.onwebkitbeginfullscreen=()=>screen.orientation.lock('landscape');
 		V.onwebkitendfullscreen=()=>screen.orientation.unlock();
 		V.ondurationchange=()=>{
@@ -179,8 +179,6 @@ window.GD=async $=>{
 		};
 		const U=localStorage.getItem(I+'_P')||'';
 		D.o(`p[VS]>span${U?`[u='${U}']`:''}`).click();
-		if(V.requestFullscreen)V.requestFullscreen();
-		else if(V.webkitEnterFullscreen)V.webkitEnterFullscreen();
 	},'j');
 };
 

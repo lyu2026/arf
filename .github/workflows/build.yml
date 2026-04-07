@@ -1,4 +1,4 @@
-name: 构建 Cordova 安卓 APK
+name: 构建签名包
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 检查代码
+      - name: 查看代码库
         uses: actions/checkout@v4
 
       - name: 安装 Nodejs
@@ -37,14 +37,58 @@ jobs:
       - name: 安装依赖组件
         run: npm install
 
-      - name: 添加安卓平台
-        run: cordova platform add android --no-fetch
+      - name: 解密 Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "❌ 错误：KEYSTORE_BASE64 secret 未设置"
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
 
-      - name: 构建安装包
-        run: cordova build android --debug
+      - name: 构建签名包
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          cordova platform add android@latest
+          cordova build android --release -- \
+            --keystore=release.keystore \
+            --storePassword="$KEYSTORE_PASSWORD" \
+            --alias="$KEY_ALIAS" \
+            --password="$KEY_PASSWORD"
+
+      - name: 包文件重命名
+        id: apk
+        run: |
+          APK_PATH=$(find platforms/android -name "*.apk" ! -name "*.unaligned.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "❌ 未找到 APK 文件"
+            exit 1
+          fi
+          
+          RELEASE_NAME="廷琰.apk"
+          cp "$APK_PATH" "$RELEASE_NAME"
+          
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
+          
+          echo "✅ APK 文件: $RELEASE_NAME"
+
 
       - name: 上传安装包
         uses: actions/upload-artifact@v4
         with:
           name: 廷琰
-          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ steps.apk.outputs.release_name }}
+
+      - name: 获取包信息
+        id: apk_info
+        run: |
+          echo "size=$(ls -lh ${{ steps.apk.outputs.release_name }} | awk '{print $5}')" >> $GITHUB_OUTPUT
+          echo "sha256=$(sha256sum ${{ steps.apk.outputs.release_name }} | cut -d ' ' -f 1)" >> $GITHUB_OUTPUT
+
+
+

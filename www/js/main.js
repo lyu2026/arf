@@ -88,7 +88,7 @@ D.head.append(
 	grid-c title{position:absolute;bottom:0;left:0;right:0;z-index:10;display:block;font-size:12px;color:#fff;line-height:14px;padding:4px 3px;background:linear-gradient(rgba(60,60,60,.6),rgba(0,0,0,.9))}
 	modal{touch-action:none;display:block;width:100vw.height:100vh;position:fixed;top:0;left:0;bottom:0;z-index:1000000}
 	modal mbox{touch-action:none;position:relative;display:block;width:100vw;height:100vh;background:rgba(0,0,0,.95);overflow:hidden}
-	modal-t{position:absolute;top:0;z-index:222;display:flex;width:100%;overflow:hidden;height:30px;padding:0 4px;background:rgba(0,0,0,.8)}
+	modal-t{position:absolute;top:0;z-index:222;display:flex;width:100%;overflow:hidden;height:30px;padding:8px 4px 0 4px;background:rgba(0,0,0,.8)}
 	modal-t>title{flex:1;display:block;height:30px;font-size:18px;line-height:30px;color:#fff;white-space:pre-line;word-break:break-word}
 	modal-t>icc{display:inline-block;width:30px;height:30px;line-height:30px;font-size:28px;color:#fff;margin-right:20px}
 	modal-c{margin-top:30px;display:flex;flex-direction:column;height:calc(100vh - 100px);overflow:hidden auto}

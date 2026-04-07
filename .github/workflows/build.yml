@@ -1,8 +1,6 @@
 name: 构建签名包
 
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -33,84 +31,142 @@ jobs:
 
       - name: 安装插件
         run: |
+          cordova create temp-app
+          cd temp-app
+          cordova platform add android@latest
           cordova plugin add cordova-plugin-advanced-http
           cordova plugin add cordova-plugin-screen-orientation
           cordova plugin add cordova-plugin-file
+          cd ..
+          cp -r temp-app/* . 2>/dev/null || true
 
       - name: 安装依赖组件
-        run: npm install
+        run: npm install || true
 
       - name: 解密 Keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          if [ -z "$KEYSTORE_BASE64" ]; then
-            echo "❌ 错误：KEYSTORE_BASE64 secret 未设置"
-            exit 1
-          fi
-          # 清理空白字符并解码
-          echo "$KEYSTORE_BASE64" | tr -d '\n\r\t ' | base64 -d > release.keystore
+          # 使用 Python 解码（最可靠）
+          python3 << 'PYEOF'
+          import os
+          import base64
           
-          # 验证 keystore 文件
-          if [ ! -s release.keystore ]; then
-            echo "❌ 错误：keystore 解码失败或文件为空"
-            exit 1
-          fi
-          echo "✅ Keystore 解码成功，文件大小: $(ls -lh release.keystore | awk '{print $5}')"
+          b64 = os.environ.get('KEYSTORE_BASE64', '')
+          if not b64:
+              print("❌ KEYSTORE_BASE64 为空")
+              exit(1)
+          
+          # 清理所有非 Base64 字符
+          import re
+          b64_clean = re.sub(r'[^a-zA-Z0-9+/=]', '', b64)
+          
+          try:
+              data = base64.b64decode(b64_clean)
+              with open('release.keystore', 'wb') as f:
+                  f.write(data)
+              print(f"✅ Keystore 解码成功，大小: {len(data)} bytes")
+          except Exception as e:
+              print(f"❌ 解码失败: {e}")
+              exit(1)
+          PYEOF
+          
+          # 验证文件
+          ls -lh release.keystore
 
-      - name: 构建签名包
+      - name: 准备 Android 项目
+        run: |
+          # 如果还没有 platforms/android，创建一个
+          if [ ! -d "platforms/android" ]; then
+            cordova platform add android@latest
+          fi
+
+      - name: 配置 Gradle 签名
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          cordova platform add android
-          cordova build android --release -- \
-            --keystore=release.keystore \
-            --storePassword="$KEYSTORE_PASSWORD" \
-            --alias="$KEY_ALIAS" \
-            --password="$KEY_PASSWORD"
+          cd platforms/android
+          
+          # 创建 signing.gradle 文件
+          cat > signing.gradle << 'EOF'
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file("../../../release.keystore")
+                      storePassword System.getenv("KEYSTORE_PASSWORD")
+                      keyAlias System.getenv("KEY_ALIAS")
+                      keyPassword System.getenv("KEY_PASSWORD")
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+          
+          # 在 app/build.gradle 末尾引入签名配置
+          echo "apply from: '../signing.gradle'" >> app/build.gradle
+          
+          echo "✅ Gradle 签名配置完成"
+          cd ../..
 
-      - name: 包文件重命名
-        id: apk
+      - name: 构建 APK
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          # 查找已签名的 APK（排除未对齐的）
-          APK_PATH=$(find platforms/android -name "*.apk" ! -name "*.unaligned.apk" ! -name "*-unsigned.apk" | head -n 1)
+          cd platforms/android
+          
+          # 直接使用 Gradle 构建
+          ./gradlew clean assembleRelease --stacktrace
+          
+          cd ../..
+          
+          echo "✅ 构建完成"
+
+      - name: 查找并重命名 APK
+        run: |
+          echo "📁 查找生成的 APK..."
+          
+          # 显示所有 APK 文件
+          find . -name "*.apk" -type f -exec ls -lh {} \; 2>/dev/null || true
+          
+          # 查找已签名的 release APK
+          APK_PATH=$(find platforms/android/app/build/outputs/apk/release -name "*.apk" 2>/dev/null | head -n 1)
           
           if [ -z "$APK_PATH" ]; then
-            echo "❌ 未找到已签名的 APK 文件"
-            echo "尝试查找所有 APK："
-            find . -name "*.apk" -type f
-            exit 1
+            echo "⚠️ 未找到 release APK，尝试其他位置..."
+            APK_PATH=$(find . -name "*.apk" -type f 2>/dev/null | head -n 1)
           fi
           
-          RELEASE_NAME="廷琰.apk"
-          cp "$APK_PATH" "$RELEASE_NAME"
-          
-          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
-          echo "release_name=$RELEASE_NAME" >> $GITHUB_OUTPUT
-          
-          echo "✅ APK 文件: $RELEASE_NAME"
-          ls -lh "$RELEASE_NAME"
+          if [ -n "$APK_PATH" ]; then
+            cp "$APK_PATH" 廷琰.apk
+            echo "✅ APK 已生成: 廷琰.apk"
+            ls -lh 廷琰.apk
+            
+            # 验证 APK 是否已签名
+            if jarsigner -verify -verbose 廷琰.apk 2>&1 | grep -q "jar verified"; then
+              echo "✅ APK 已签名"
+            else
+              echo "⚠️ APK 可能未签名"
+            fi
+          else
+            echo "❌ 未找到任何 APK 文件"
+            exit 1
+          fi
 
       - name: 上传安装包
         uses: actions/upload-artifact@v4
         with:
           name: 廷琰
-          path: ${{ steps.apk.outputs.release_name }}
+          path: 廷琰.apk
           retention-days: 30
 
-      - name: 获取包信息
-        id: apk_info
-        run: |
-          echo "size=$(ls -lh ${{ steps.apk.outputs.release_name }} | awk '{print $5}')" >> $GITHUB_OUTPUT
-          echo "sha256=$(sha256sum ${{ steps.apk.outputs.release_name }} | cut -d ' ' -f 1)" >> $GITHUB_OUTPUT
-          
-          echo "## 📦 构建信息" >> $GITHUB_STEP_SUMMARY
-          echo "- **文件名**: 廷琰.apk" >> $GITHUB_STEP_SUMMARY
-          echo "- **大小**: $(ls -lh ${{ steps.apk.outputs.release_name }} | awk '{print $5}')" >> $GITHUB_STEP_SUMMARY
-          echo "- **SHA256**: \`$(sha256sum ${{ steps.apk.outputs.release_name }} | cut -d ' ' -f 1)\`" >> $GITHUB_STEP_SUMMARY
-
-      - name: 清理敏感文件
+      - name: 清理
         if: always()
         run: rm -f release.keystore

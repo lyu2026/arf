@@ -50,7 +50,7 @@ _W(
 
 CC();
 D.body.h('');
-D.title='雍也';
+D.title='欧乐';
 D.head.innerHTML+=`<meta name='viewport' content='initial-scale=1.0,maximum-scale=1.0,user-scalable=no'/>`;
 D.head.append(
 	D.n('script',{src:'https://cdn.jsdelivr.net/npm/hls.js@1.6.9/dist/hls.light.min.js'},''),

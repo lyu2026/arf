@@ -1,4 +1,4 @@
-name: Build Cordova Android APK
+name: 构建 Cordova 安卓 APK
 
 on:
   push:
@@ -43,5 +43,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: yongye-debug
+          name: 廷琰
           path: platforms/android/app/build/outputs/apk/debug/app-debug.apk

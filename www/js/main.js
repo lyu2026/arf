@@ -108,7 +108,7 @@ window.GD=async $=>{
 		R.O=new Hls({levelTargetDuration:8,maxBufferLength:50,maxBufferSize:1000*1000*2});
 		R.O.attachMedia(V);
 		V.addEventListener('fullscreenchange',()=>{
-			if(!document.fullscreenElement&&!V.fsn)return screen.orientation.unlock();
+			if(!document.fullscreenElement)return screen.orientation.unlock();
 			if(document.fullscreenElement===V){
 				if(!V.fsn){
 					screen.orientation.lock('landscape');

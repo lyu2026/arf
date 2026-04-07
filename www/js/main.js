@@ -153,11 +153,11 @@ window.GD=async $=>{
 		const V=D.o('video');
 		R.O=new Hls({levelTargetDuration:8,maxBufferLength:50,maxBufferSize:1000*1000*2});
 		R.O.attachMedia(V);
-		V.addEventListener('webkitbeginfullscreen',()=>{
+		V.addEventListener('fullscreenchange',()=>{
 			alert(456)
-			if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape');
+			if(document.fullscreenElement)screen.orientation.lock('landscape');
+			else screen.orientation.unlock();
 		},false);
-		V.addEventListener('webkitendfullscreen',()=>screen.orientation.unlock(),false);
 		V.ondurationchange=()=>{
 			if(V.duration<250)return;
 			R.X=false;

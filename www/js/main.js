@@ -61,7 +61,7 @@ D.head.append(
 	}
 	[hide]{display:none!important}
 	html,body{margin:0;padding:0}
-	body{position:relative;display:block;width:100vw;min-height:100vh;overflow:hidden;background:#000}
+	body{position:relative;display:block;width:100vw;min-height:100vh;overflow:hidden;overflow-y:auto;background:#000}
 	body *{position:relative;overflow-wrap:break-word;white-space:pre-line;word-break:break-word;font-synthesis:weight style small-caps}
 	img{image-rendering:crisp-edges}
 	rbox,cbox{display:flex!important}
@@ -207,11 +207,13 @@ window.CT=$=>{
 				const U=`https://www.olehdtv.com/index.php/vod/search.html?wd=${encodeURIComponent(kw)}&submit=`;
 				U.r(o=>{
 					o=o.os('.searchlist_item .vodlist_thumb');
+					alert(o.length)
 					const x=D.o('grid').da('a');
 					o&&x.append(...o.map(_=>{
 						let n=_.ga('title').trim(),N=n.replace(/\s*[】]\s*/g,'').replace(/(\s*[【】:：·。～]\s*|\-+|—+)/g,'.').replace(/，/g,',').replace(/！/g,'!').replace(/\s\s/g,' ').replace(/\.{2,}/g,'.').trim().replace(/\s/g,'.').replace(/(\s*\.+$|\.?(剧场|真人)版)/g,'');
 						return NF.test(N)?null:D.n('grid-c',{I:_.ga('href').split('/').pop().split('.').shift(),N,onclick:'GD(this)'},`<img src='${II}' s='${_.ga('data-original')}'/><score></score><tip>${_.o('.pic_text').innerText.trim()}</tip><title>${N}</title>`);
 					}).filter(_=>_));
+					alert(x.length)
 				},'t.h');
 				return;
 			}

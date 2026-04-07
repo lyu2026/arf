@@ -154,8 +154,8 @@ window.GD=async $=>{
 		R.O=new Hls({levelTargetDuration:8,maxBufferLength:50,maxBufferSize:1000*1000*2});
 		R.O.attachMedia(V);
 		V.addEventListener('fullscreenchange',()=>{
-			alert(456)
-			if(document.fullscreenElement)screen.orientation.lock('landscape');
+			alert(456+' '+document.fullscreenElement)
+			if(document.fullscreenElement===V)screen.orientation.lock('landscape');
 			else screen.orientation.unlock();
 		},false);
 		V.ondurationchange=()=>{

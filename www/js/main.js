@@ -17,9 +17,6 @@ String.prototype.r=function(f,x){
 	r.then(f)
 };
 
-alert("oooooo")
-document.addEventListener('deviceready',()=>{
-alert("xxxxxxx")
 
 _W(
 	'D',document,'CO',console.log,'CC',console.clear,
@@ -302,6 +299,3 @@ const OO=new MutationObserver(s=>{
 	$&&OX.observe($);
 });
 OO.observe(D.body,{subtree:true,childList:true,attributeFilter:['hide','_I']});
-
-
-},false)

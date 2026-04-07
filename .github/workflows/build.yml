@@ -45,7 +45,7 @@ jobs:
             echo "❌ 错误：KEYSTORE_BASE64 secret 未设置"
             exit 1
           fi
-          echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+          echo "$KEYSTORE_BASE64" | tr -d '\n\r ' | base64 -d > release.keystore
 
       - name: 构建签名包
         env:

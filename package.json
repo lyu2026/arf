@@ -5,7 +5,7 @@
 	"displayName":"廷琰",
 	"dependencies":{
 		"cordova":"latest",
-		"cordova-android":"latest",
+		"cordova-android":"13.0.0",
 		"cordova-plugin-whitelist":"*",
 		"cordova-plugin-advanced-http":"*",
 		"cordova-plugin-screen-orientation":"*"

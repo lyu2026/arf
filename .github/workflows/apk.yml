@@ -86,10 +86,6 @@ jobs:
           cp "$BUILD_GRADLE" "$BUILD_GRADLE.bak"
           
           cat >> "$BUILD_GRADLE" << 'EOF'
-          compileOptions {
-              sourceCompatibility = JavaVersion.VERSION_17
-              targetCompatibility = JavaVersion.VERSION_17
-          }
           kotlinOptions {
               jvmTarget = "17"
           }

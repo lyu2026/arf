@@ -126,28 +126,28 @@ jobs:
           
           # 生成完整的 Release Body
           cat >> release_body_full.md << EOF
-## 🫧 廷琰 v${{ steps.version.outputs.version }}
-
-### 📦 版本信息
-| 项目 | 信息 |
-|------|------|
-| 版本号 | v${{ steps.version.outputs.version }} |
-| 构建时间 | ${{ steps.time.outputs.datetime }} |
-| 构建类型 | Release（签名） |
-
-$(cat release_body.md)
-
-### 📥 安装说明
-1. 根据手机 CPU 架构选择对应的 APK
-   - 大多数现代手机选择 \`arm64-v8a\`
-   - 老旧手机选择 \`armeabi-v7a\`
-   - 模拟器选择 \`x86_64\`
-2. 下载后在手机上允许"安装未知来源应用"
-3. 点击 APK 进行安装
-
-### 🔍 查看 CPU 架构
-如不确定手机架构，可安装 [Device Info HW](https://play.google.com/store/apps/details?id=ru.andr7e.deviceinfohw) 查看
-EOF
+          ## 🫧 廷琰 v${{ steps.version.outputs.version }}
+          
+          ### 📦 版本信息
+          | 项目 | 信息 |
+          |------|------|
+          | 版本号 | v${{ steps.version.outputs.version }} |
+          | 构建时间 | ${{ steps.time.outputs.datetime }} |
+          | 构建类型 | Release（签名） |
+          
+          $(cat release_body.md)
+          
+          ### 📥 安装说明
+          1. 根据手机 CPU 架构选择对应的 APK
+             - 大多数现代手机选择 \`arm64-v8a\`
+             - 老旧手机选择 \`armeabi-v7a\`
+             - 模拟器选择 \`x86_64\`
+          2. 下载后在手机上允许"安装未知来源应用"
+          3. 点击 APK 进行安装
+          
+          ### 🔍 查看 CPU 架构
+          如不确定手机架构，可安装 [Device Info HW](https://play.google.com/store/apps/details?id=ru.andr7e.deviceinfohw) 查看
+          EOF
 
       - name: 创建 Release 并上传 APK
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')

@@ -6,9 +6,9 @@
 	"dependencies": {
 		"cordova": "latest",
 		"cordova-android": "latest",
-		"cordova-plugin-whitelist": "latest",
-		"cordova-plugin-advanced-http": "latest",
-		"cordova-plugin-screen-orientation": "latest"
+		"cordova-plugin-whitelist": "*",
+		"cordova-plugin-advanced-http": "*",
+		"cordova-plugin-screen-orientation": "*"
 	},
 	"cordova": {
 		"plugins": {

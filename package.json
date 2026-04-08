@@ -1,14 +1,21 @@
 {
-	"name": "Steward",
-	"displayName": "廷琰",
+	"name": "tyan",
 	"version": "1.0.0",
-	"description": "视频库",
-	"main": "index.js",
-	"scripts": {
-		"build": "cordova build android"
+	"description": "...",
+	"displayName": "廷琰",
+	"dependencies": {
+		"cordova": "latest",
+		"cordova-android": "latest",
+		"cordova-plugin-whitelist": "latest",
+		"cordova-plugin-advanced-http": "latest",
+		"cordova-plugin-screen-orientation": "latest"
 	},
 	"cordova": {
-		"platforms": ["android"],
-		"plugins": {"cordova-plugin-advanced-http":{},"cordova-plugin-screen-orientation":{}}
+		"plugins": {
+			"cordova-plugin-screen-orientation": {},
+			"cordova-plugin-advanced-http": {},
+			"cordova-plugin-whitelist": {}
+		},
+		"platforms": ["android"]
 	}
 }

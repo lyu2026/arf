@@ -1,28 +1,46 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.yongye.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.tyan" version="1.0.0"
+	xmlns="http://www.w3.org/ns/widgets"
+	xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
 	<name>廷琰</name>
-	<description>视频库</description>
 	<author>该隐</author>
-	<content src="index.html" />
-	<access origin="*" />
-	<allow-navigation href="*" />
-	<allow-intent href="http://*/*" />
-	<allow-intent href="https://*/*" />
-	<preference name="Fullscreen" value="false" />
-	<preference name="Orientation" value="default" />
-	<preference name="SplashScreenDelay" value="1" />
-	<preference name="AutoHideSplashScreen" value="true" />
-	<preference name="loadUrlTimeoutValue" value="70000" />
-	<preference name="StatusBarOverlaysWebView" value="false" />
-	<preference name="android-hardwareAccelerated" value="true" />
-	<preference name="StatusBarBackgroundColor" value="#000000" />
+	<description>视频资源库</description>
+
+	<content src="index.html"/>
+
+	<access origin="*"/>
+	<allow-navigation href="*"/>
+	<allow-intent href="http://*/*"/>
+	<allow-intent href="https://*/*"/>
+
+	<preference name="Fullscreen" value="false"/>
+	<preference name="Orientation" value="default"/>
+	<preference name="SplashScreenDelay" value="1"/>
+	<preference name="AutoHideSplashScreen" value="true"/>
+	<preference name="loadUrlTimeoutValue" value="70000"/>
+	<preference name="StatusBarOverlaysWebView" value="false"/>
+	<preference name="android-hardwareAccelerated" value="true"/>
+	<preference name="StatusBarBackgroundColor" value="#000000"/>
+
 
 	<platform name="android">
-		<icon src="icons/ldpi.png" density="ldpi" />
-		<icon src="icons/mdpi.png" density="mdpi" />
-		<icon src="icons/hdpi.png" density="hdpi" />
-		<icon src="icons/xhdpi.png" density="xhdpi" />
-		<icon src="icons/xxhdpi.png" density="xxhdpi" />
-		<icon src="icons/xxxhdpi.png" density="xxxhdpi" />
+		<allow-intent href="tyan:*"/>
+		<preference name="android-minSdkVersion" value="24"/>
+		<preference name="android-targetSdkVersion" value="34"/>
 	</platform>
+
+	<plugin name="cordova-plugin-whitelist"/>
+	<plugin name="cordova-plugin-advanced-http"/>
+	<plugin name="cordova-plugin-screen-orientation"/>
+
+	<platform name="android">
+		<icon src="icons/ldpi.png" density="ldpi"/>
+		<icon src="icons/mdpi.png" density="mdpi"/>
+		<icon src="icons/hdpi.png" density="hdpi"/>
+		<icon src="icons/xhdpi.png" density="xhdpi"/>
+		<icon src="icons/xxhdpi.png" density="xxhdpi"/>
+		<icon src="icons/xxxhdpi.png" density="xxxhdpi"/>
+	</platform>
+
 </widget>

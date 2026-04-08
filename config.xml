@@ -14,6 +14,9 @@
 	<allow-intent href="http://*/*"/>
 	<allow-intent href="https://*/*"/>
 
+	<preference name="scheme" value="http"/>
+	<preference name="hostname" value="localhost"/>
+
 	<preference name="Fullscreen" value="false"/>
 	<preference name="Orientation" value="default"/>
 	<preference name="SplashScreenDelay" value="1"/>
@@ -22,7 +25,6 @@
 	<preference name="StatusBarOverlaysWebView" value="false"/>
 	<preference name="android-hardwareAccelerated" value="true"/>
 	<preference name="StatusBarBackgroundColor" value="#000000"/>
-	<preference name="AndroidInsecureFileModeEnabled" value="true"/>
 
 	<platform name="android">
 		<allow-intent href="tyan:*"/>

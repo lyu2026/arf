@@ -55,12 +55,9 @@ jobs:
           cat > platforms/android/app/src/main/res/xml/network_security_config.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <network-security-config>
-              <!-- 允许所有HTTP明文流量 -->
               <domain-config cleartextTrafficPermitted="true">
                   <domain includeSubdomains="true">*</domain>
               </domain-config>
-              
-              <!-- 允许用户安装的CA证书（支持代理和调试） -->
               <trust-anchors>
                   <certificates src="system" />
                   <certificates src="user" />
@@ -73,6 +70,8 @@ jobs:
         uses: ./.github/actions/keystore
 
       - name: 分 CPU 架构打签名包
+        env:
+          CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL: https\://services.gradle.org/distributions/gradle-8.7-all.zip
         run: |
           # 从 Action 输出读取签名参数
           KEYSTORE_PATH="${{ steps.keystore.outputs.keystore_path }}"

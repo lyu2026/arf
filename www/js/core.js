@@ -180,20 +180,20 @@
 			}
 			if(body){X.data=body.data;X.serializer=body.serializer}
 			let onAbort=null
-			log('网络请求(fetch)',R.url,Object.keys(headers).length>0?headers:null)
+			// log('网络请求(fetch)',R.url,Object.keys(headers).length>0?headers:null)
 			
 			const I=http.sendRequest(R.url,X,o=>{
 				if(signal&&onAbort)signal.removeEventListener('abort',onAbort)
 				if(signal&&signal.aborted){N(new DOMException('The operation was aborted.','AbortError'));return}
-				const oo=new TextDecoder('utf-8').decode(new Uint8Array(o.data))
-				log('请求成功(fetch)',o,oo.startsWith('{')?JSON.parse(oo):oo)
+				// const oo=new TextDecoder('utf-8').decode(new Uint8Array(o.data))
+				// log('请求成功(fetch)',o,oo.startsWith('{')?JSON.parse(oo):oo)
 				
 				Y(new RP((o.data instanceof ArrayBuffer)?o.data:new ArrayBuffer(0),{
 					status:o.status,statusText:SM[o.status]||'',url:o.url||R.url,
 					headers:new HS(o.headers||{}),redirected:!!(o.url&&o.url!==R.url)
 				}))
 			},o=>{
-				log('请求失败(fetch)',o,'error')
+				// log('请求失败(fetch)',o,'error')
 				
 				if(signal&&onAbort)signal.removeEventListener('abort',onAbort)
 				if(o.status==-8||(signal&&signal.aborted)){N(new DOMException('The operation was aborted.','AbortError'));return}

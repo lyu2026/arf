@@ -211,13 +211,10 @@ window.CT=$=>{
 
 
 DB().then(_=>{
-	log('DB() 已执行')
 	if(!(R.D=_))return
 	DG('..').then(async o=>{
-		log('DG(..) 已执行')
 		if(!o)await DA('..',{})
 		'https://api.olelive.com/v1/pub/vod/list/type'.get(o=>{
-			log('筛选数据',o)
 			o.data.filter(_=>_.typeId<5).forEach(_=>(R.TM[_.typeId]={N:_.typeName,A:_.area,Y:_.year,T:_.children.map(x=>(x.typeId+'').startsWith(_.typeId+'')?(x.typeId+':'+x.typeName):null).filter(_=>_)}))
 			R.TM['']={N:'收藏夹',A:[],Y:[],T:[]}
 			R.TM['?']={N:'搜索',A:[],Y:[],T:[]}

@@ -18,7 +18,7 @@ window.IX={
 				$O.$('head>style[ix]').innerHTML=''
 				$O.$$('head>script[ix]').forEach(_=>_.remove())
 				IX.run()
-			},onerror:e=>log(`脚本文件${js}不存在`,e)}))
+			},onerror:()=>log(`脚本文件${js}不存在`,'error')}))
 		},200)
  },
 

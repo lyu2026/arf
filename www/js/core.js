@@ -1,6 +1,23 @@
 (function(W){
 	'use strict';
 
+	document.addEventListener('backbutton',()=>{
+		if(!window.IX||window.IX.name=='home')return navigator.app.exitApp()
+		const modal=$O.$('modal')
+		if(modal&&!modal.ha('hide')){
+			if(typeof window.IX.modal_close=='function')return window.IX.modal_close()
+			return navigator.app.exitApp()
+		}
+		Object.values(typeof window.IX.observer=='object'?window.IX.observer:{}).forEach(_=>{
+			_.disconnect()
+			_=null
+		})
+		$O.body.innerHTML=window._loader
+		$O.$('head>style[ix]').innerHTML=''
+		Array.from($O.$$('head>script[ix]')).forEach(_=>_.remove())
+		$O.head.appendChild($O.node('script',{ix:'',src:`./js/home.js?_=${crypto.randomUUID()}`}))
+	},false)
+
 	W._NM={fetch:W.fetch,Request:W.Request,Headers:W.Headers,Response:W.Response,XMLHttpRequest:W.XMLHttpRequest}
 	const SM={100:'Continue',101:'Switching Protocols',200:'OK',201:'Created',
 		202:'Accepted',204:'No Content',206:'Partial Content',
@@ -13,7 +30,7 @@
 		503:'Service Unavailable',504:'Gateway Timeout'
 	},H=()=>{
 		const x=cordova.plugin
-		x.http.setRequestTimeout(5)
+		x.http.setRequestTimeout(2)
 		x.http.setFollowRedirect(true)
 		x.http.setServerTrustMode('nocheck',_=>null,_=>null)
 		return x.http
@@ -177,7 +194,7 @@
 			if(signal&&signal.aborted){N(new DOMException('The operation was aborted.','AbortError'));return}
 			const http=H(),headers=R.headers.toPlain(),body=B(R._rawBody,headers),X={
 				method:R.method.toLowerCase(),headers,
-				responseType:'arraybuffer',timeout:5,followRedirect:true
+				responseType:'arraybuffer',timeout:2,followRedirect:true
 			}
 			if(body){X.data=body.data;X.serializer=body.serializer}
 			let onAbort=null
@@ -300,7 +317,7 @@
 		const body=B(_,headers),X={
 			method:self._method.toLowerCase(),headers,
 			responseType:(rt=='arraybuffer'||rt=='blob')?'arraybuffer':'text',
-			timeout:(self.timeout>0)?(self.timeout/1000):60,
+			timeout:(self.timeout>0)?(self.timeout/1000):5,
 			followRedirect:true
 		}
 		if(body){X.data=body.data;X.serializer=body.serializer}
@@ -408,6 +425,7 @@
 			for(let k of s)u+=k+'='+p[k]+'&'
 			if(u.endsWith('&'))u=u.slice(0,-1)
 		}
+		log('请求链接',u)
 		let o=W.fetch(u)
 		if(m=='json')o=o.then(_=>_.json())
 		else o=o.then(_=>_.text())
@@ -457,6 +475,10 @@
 		for(let k of s)o[k]=this.getAttribute(k)
 		return o
 	}
+	Element.prototype.ha=function(){
+		let a=arguments.length>0&&typeof arguments[0]=='string'?arguments[0].trim():''
+		return a===''?false:this.hasAttribute(a)
+	}
 	Element.prototype.da=function(){
 		if(arguments.length>0)(new Set(arguments)).forEach(_=>(typeof _=='string')&&(_=_.trim())&&this.hasAttribute(_)&&this.removeAttribute(_))
 		return this
@@ -464,6 +486,7 @@
 
 	// 节点内容获取/设置
 	Element.prototype.html=function(_){
+		if(typeof _=='boolean')return this.outerHTML.trim()
 		if(undefined===_)return this.innerHTML.trim()
 		if(typeof _=='string')this.innerHTML=_.trim()
 		return this
@@ -502,5 +525,22 @@
 		if(b=='element')return _.includes(b)&&a.isConnected
 		return b?_.includes(b):_
 	}
+
+	// 监听错误记录
+	const ecm=new WeakSet(),ecc=me=>{
+		if(ecm.has(me))return
+		me.addEventListener('click',()=>me.remove())
+		ecm.add(me)
+	}
+	const eoc=me=>me.$$('[type]').forEach(ecc),wgs=$O.$('#w_logs')
+	new MutationObserver(s=>s.forEach(_=>_.addedNodes.forEach(_=>{
+		if(_.nodeType!==1)return
+		if(_.id=='w_logs')eoc(_)
+		if(_.matches?.('[type]'))ecc(_)
+		_.$$?.('[type]').forEach(ecc)
+		_=_.$?.('#w_logs')
+		_&&eoc(_)
+	}))).observe($O.body,{childList:true,subtree:true})
+	if(wgs)eoc(wgs)
 
 })(window)

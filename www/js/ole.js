@@ -203,7 +203,9 @@ window.IX={
 		IX.wait=true
 		const url=me.ga('u')
 		me.parentElement.$$(`div`).forEach(_=>_[_==me?'sa':'da']('c'))
-		IX.hls.loadSource(url);(IX.id+'_ole_part_url').sc(url)
+		window.plugins.streamingMedia.playVideo(url,{orientation:'landscape',errorCallback:_=>log('视频播放错误',_),successCallback:()=>log('视频正常关闭')});
+		// IX.hls.loadSource(url);
+		(IX.id+'_ole_part_url').sc(url)
 	},
 
 	trim_click:_=>{ // 视频片头/尾设置
@@ -227,7 +229,7 @@ window.IX={
 
 	modal_close:async()=>{ // 关闭详情弹层
 		const video=$O.$('video')
-		video&&(IX.id+'_ole_part_ctime').sc($O.$('[VS]>[c]').ga('u')+'$'+video.currentTime)
+		// video&&(IX.id+'_ole_part_ctime').sc($O.$('[VS]>[c]').ga('u')+'$'+video.currentTime)
 		IX.wait=false
 		IX.id=IX.curr=null
 		IX.hls&&(await IX.hls.destroy())

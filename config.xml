@@ -59,6 +59,7 @@
 
 	<plugin name="cordova-plugin-whitelist"/>
 	<plugin name="cordova-plugin-advanced-http"/>
+	<plugin name="cordova-plugin-streaming-media"/>
 	<plugin name="cordova-plugin-screen-orientation"/>
 
 </widget>

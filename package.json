@@ -8,12 +8,15 @@
 		"cordova-android":"13.0.0",
 		"cordova-plugin-whitelist":"*",
 		"cordova-plugin-advanced-http":"*",
+		"cordova-plugin-streaming-media":"*",
 		"cordova-plugin-screen-orientation":"*"
+}
 	},
 	"cordova":{
 		"plugins":{
 			"cordova-plugin-whitelist":{},
 			"cordova-plugin-advanced-http":{},
+			"cordova-plugin-streaming-media":{},
 			"cordova-plugin-screen-orientation":{}
 		},
 		"platforms":["android"]

@@ -19,7 +19,7 @@ window.IX={
 			$O.head.appendChild($O.node('script',{ix:'',src:`./js/${js}?_=${crypto.randomUUID()}`,onload:()=>{
 				$O.$('head>style[ix]').innerHTML=''
 				$O.$$('head>script[ix]').forEach(_=>_.remove())
-				$O.body.html(`<sk w100 p20 f fv g4><sk n h40></sk><sk n h24></sk><sk n h24></sk><sk n h24></sk><sk b h8 w70></sk><sk b w50 h8></sk><br><br><sk f1 x3><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk></sk></sk>`)
+				$O.body.html(`<sk w100 p20 pt60 f fv g4><sk n h40></sk><sk n h24></sk><sk n h24></sk><sk n h24></sk><sk b h8 w70></sk><sk b w50 h8></sk><br><br><sk f1 x3><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk><sk q h130></sk></sk></sk>`)
 				IX.run()
 			},onerror:()=>log(`脚本文件${js}不存在`,'error')}))
 		},200)
@@ -27,10 +27,10 @@ window.IX={
 
 	run:()=>{ // 启动执行
 		$O.$('head>style[ix]').innerHTML=`
-body{padding:30px;overflow:hidden auto!important}
+body{padding:60px 30px 30px 30px;overflow:hidden auto!important}
 card{display:block;text-align:center;margin-bottom:14px}
 card:last-child{margin-bottom:0}
-card>.front,card>.back{width:inherit;transition:.5s cubic-bezier(.175,.885,.32,1.275);color:#fff;aspect-ratio:7/4;padding:1em 2em;background:#313131;border-radius:10px;background-size:cover;background-position:center}
+card>.front,card>.back{width:inherit;transition:.5s cubic-bezier(.175,.885,.32,1.275);color:#fff;aspect-ratio:7/3;padding:1em 2em;background:#313131;border-radius:10px;background-size:cover;background-position:center}
 card>.front{transform:rotateY(0)}
 card>.back{position:absolute!important;opacity:0;top:0;left:0;width:100%;height:100%;transform:rotateY(-180deg)}
 card:hover>.front{transform:rotateY(180deg)}

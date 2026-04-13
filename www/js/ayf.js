@@ -133,7 +133,7 @@ window.IX={
 
 	card_click:me=>{ // 打开详情弹层
 		const K=IX.key=crypto.randomUUID(),mk=me.ga('I')
-		const videos='ayf_favorite_videos'.gc({}),mbox=$O.$('modal-c').html(`<sk f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
+		const videos='ayf_favorite_videos'.gc({}),mbox=$O.$('modal-c').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
 		IX.mk=mk
 		IX.curr={N:me.ga('N'),C:me.$('img').ga('s'),S:me.$('score').innerText}
 		$O.$('modal-t [SC]').innerText=mk in videos?'♡':'⊕'
@@ -292,6 +292,7 @@ body[ns]{overflow:hidden!important}
 
 tab{display:flex;width:100vw;height:26px;align-items:center;overflow:auto hidden;border-bottom:1px solid rgba(255,255,255,.1);position:relative}
 tab::-webkit-scrollbar{width:0;height:0}
+tab:first-child{margin-top:20px}
 tab>div{width:auto;padding:0 10px;color:rgba(255,255,255,.8);line-height:25px;white-space:nowrap}
 tab>div[c]{color:#fff;font-weight:bold}
 tab>div[c]::after{content:'';display:block;width:40%;height:1.5px;background:#7bda3e;position:absolute;left:30%;bottom:0;z-index:10}

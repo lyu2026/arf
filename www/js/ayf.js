@@ -106,8 +106,6 @@ window.IX={
 		const TS=JSON.stringify({filters:IX.filters,search_key:IX.search_key,search_val:IX.search_val})
 		U.get(_=>{
 			if(IX.key!=K)return
-			log('tab_click',IX.filters.category,_)
-			
 			gbox.da('a').sa({_:`————  ${_===null?'🚨 请求失败，请重试':'🫧 数据为空'}！  ————`})
 			if(_===null){
 				return go(false)
@@ -142,13 +140,8 @@ window.IX={
 		$O.$('modal').da('hide').$('modal-t>title').html('&nbsp;&nbsp;'+IX.curr.N);
 		`${['japan','european','domestic'].includes(IX.filters.category)?IX.wh:IX.mh}video/videodetails?mediaKey=${mk}`.get(_=>{
 			if(IX.key!=K)return
-			if(_===null){
-				
-				return
-			}
+			if(_===null)return
 			const {cidMapper,regional,lang,postTime,date,director,starring,episodes,introduce}=_.data.detailInfo
-			log('card_click',_.data.detailInfo)
-
 			const [trim_start,trim_end]=(mk+'_ayf_trim_config').gc('0:0').split(':').map(_=>parseFloat(_)),o=[]
 			o.push(`<div><div><b>类型:</b>&nbsp;<em>${cidMapper}</em>&emsp;&emsp;<b>地区:</b>&nbsp;<em>${regional}</em>&emsp;&emsp;<b>语言:</b>&nbsp;<em>${lang}</em>&emsp;&emsp;<b>年份:</b>&nbsp;<em>${new Date(postTime||date).toLocaleString().split('/').shift()}</em></div></div>`)
 			o.push(`<div T='director'${director!=''?'':' hide'}><div b>导演:</div>${(director||'').split(/[\/,]/).filter(_=>_.trim()!='').map(_=>`<div V='${_.trim()}' onclick='run("IX","tab_click",WI)(this)'><em>${_.trim()}</em></div>`).join('')}</div>`)
@@ -207,8 +200,6 @@ window.IX={
 		const K=IX.key=crypto.randomUUID(),{mk,vid}=me.ga('mk','vid')
 		me.parentElement.$$(`div`).forEach(_=>_[_==me?'sa':'da']('c'));
 		`${['japan','european','domestic'].includes(IX.filters.category)?IX.wh:IX.mh}video/getplaydata`.get(o=>{
-			log('part_click',o)
-			
 			if(IX.key!=K||!o||!o.data.list)return
 			o=o.data.list.filter(_=>_.mediaUrl).sort((a,b)=>parseInt(a.resolution)-parseInt(b.resolution)).pop()
 			if(!o||!o.mediaUrl)return
@@ -286,6 +277,7 @@ window.IX={
 	},
 
 	run:()=>{ // 启动执行
+		log('进入页面，自定义样式')
 		$O.$('head>style[ix]').innerHTML=`
 body{display:flex!important;flex-direction:column!important}
 body[ns]{overflow:hidden!important}
@@ -350,7 +342,7 @@ modal[DK] modal-c>video{position:absolute;left:0;right:0;bottom:50px;width:100vw
 	}
 }`;
 		const render=()=>{
-			log('所有分类',IX.tmap)
+			log('渲染页面，构建 DOM 树')
 			let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
 			o+=`<grid></grid>`
 			o+=`<modal hide><mbox><modal-t><title></title>`
@@ -360,11 +352,14 @@ modal[DK] modal-c>video{position:absolute;left:0;right:0;bottom:50px;width:100vw
 			o+=`</modal-t><modal-c></modal-c></mbox></modal>`
 			$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 			$O.body.html(o+($O.$('#w_logs')?.html(true)||''))
+			log('绑定事件，节点监听')
 			IX.watch()
+			log('获取记忆，开始筛选')
 			const {filters}='ayf_filters'.gc({filters:{}})
 			$O.$(`tab[T='category']>div${filters.category?`[V='${filters.category}']`:''}`).click()
 		}
 
+		log('获取记忆，分类信息')
 		const tmap='ayf_tmap'.gc({})
 		if(tmap.movie&&tmap.movie.types.length>0){
 			IX.tmap=tmap

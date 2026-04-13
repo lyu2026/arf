@@ -12,8 +12,9 @@
 			_.disconnect()
 			_=null
 		})
-		$O.body.innerHTML=window._loader
+		const sk=`<sk w100 p30 pt60 f fv g30><sk q r73></sk><sk q r73></sk><sk q h110></sk><sk b w80 h12></sk><sk b w50 h12></sk></sk>`
 		$O.$('head>style[ix]').innerHTML=''
+		$O.body.html(sk+($O.$('#w_logs')?.html(true)||''))
 		Array.from($O.$$('head>script[ix]')).forEach(_=>_.remove())
 		$O.head.appendChild($O.node('script',{ix:'',src:`./js/home.js?_=${crypto.randomUUID()}`}))
 	},false)

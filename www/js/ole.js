@@ -56,11 +56,13 @@ window.IX={
 			IX.modal_close()
 			screen.orientation.unlock()
 			key=me.parentElement.ga('T');val=me.ga('V')
+			log(`手动筛选，点击 ${key}: ${val}`)
 			gbox.da('a').sa({_:key=='category'&&val=='?'?'💡 请输入关键字 . . ':'🥏 正在搜索，请稍等 . . .'}).html('')
 			if(key=='category'&&val=='?'){
 				IX.search_val=prompt('搜索关键字:')
 				IX.search_key='name'
 				IX.filters.category='?'
+				log(`手动搜索，关键词 ${IX.search_val}`)
 				gbox.sa({_:IX.search_val?`🔍 开始搜索关键字“${IX.search_val}”`:`————  🚨 关键字为空，肯定冇数据啊瑟瑟！  ————`})
 			}else if(key=='actor'||key=='director'){
 				me=$O.$(`tab[T='category']>div[V='?']`)
@@ -68,6 +70,7 @@ window.IX={
 				IX.search_key=key
 				IX.search_val=val
 				key='category'
+				log(`特定搜索，关键词 ${IX.search_val}`)
 			}else{
 				IX.search_key=IX.search_val=null
 				IX.filters[key]=val
@@ -81,6 +84,7 @@ window.IX={
 			'ole_filters'.sc({filters:IX.filters,search_key:IX.search_key,search_val:IX.search_val})
 			if(key=='category'){
 				if(IX.filters.category==''){
+					log(`获取收藏`)
 					gbox.da('_')
 					const videos='ole_favorite_videos'.gc({})
 					gbox.append(...Object.keys(videos).map(_=>$O.node('grid-c',{I:_,N:videos[_].N,onclick:'run("IX","card_click",WI)(this)'},`<img src='${IX.cover}' s='${videos[_].C}'/><score>${videos[_].S}</score><title>${videos[_].N}</title>`)))
@@ -203,8 +207,7 @@ window.IX={
 		IX.wait=true
 		const url=me.ga('u')
 		me.parentElement.$$(`div`).forEach(_=>_[_==me?'sa':'da']('c'))
-		window.plugins.streamingMedia.playVideo(url,{orientation:'landscape',errorCallback:_=>log('视频播放错误',_),successCallback:()=>log('视频正常关闭')});
-		// IX.hls.loadSource(url);
+		IX.hls.loadSource(url);
 		(IX.id+'_ole_part_url').sc(url)
 	},
 
@@ -277,7 +280,8 @@ window.IX={
 	},
 
 	run:()=>{ // 启动执行
-		$O.$('head>style[ix]').innerHTML=`
+		log('进入页面，自定义样式')
+	$O.$('head>style[ix]').innerHTML=`
 body{display:flex!important;flex-direction:column!important}
 body[ns]{overflow:hidden!important}
 
@@ -339,7 +343,7 @@ modal[DK] modal-c>video{position:absolute;left:0;right:0;bottom:50px;width:100vw
 	}
 }`;
 	const render=()=>{
-		log(IX.tmap)
+		log('渲染页面，构建 DOM 树')
 		let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
 		o+=`<grid></grid><modal hide><mbox><modal-t><title></title>`
 		o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px'>⊕</icc>`
@@ -348,20 +352,25 @@ modal[DK] modal-c>video{position:absolute;left:0;right:0;bottom:50px;width:100vw
 		o+=`</modal-t><modal-c></modal-c></mbox></modal>`
 		$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 		$O.body.html(o+($O.$('#w_logs')?.html(true)||''))
+		log('绑定事件，节点监听')
 		IX.watch()
+		log('获取记忆，开始筛选')
 		const {filters}='ole_filters'.gc({filters:{}})
 		$O.$(`tab[T='category']>div${filters.category?`[V='${filters.category}']`:''}`).click()
 	}
 
+	log('获取记忆，分类数据')
 	IX.tmap='ole_tmap'.gc({})
 	if(Object.keys(IX.tmap).length>0)return render()
-	
+
+	log('获取失败，重新拉取分类数据')
 	const K=IX.key=crypto.randomUUID()
 	'https://api.olelive.com/v1/pub/vod/list/type'.get(o=>{
 			if(!o||K!=IX.key)return
 			o.data.filter(_=>_.typeId<5).forEach(_=>(IX.tmap[_.typeId]={name:_.typeName,areas:_.area,years:_.year,types:_.children.map(x=>(x.typeId+'').startsWith(_.typeId+'')?(x.typeId+':'+x.typeName):null).filter(_=>_)}))
 			IX.tmap['']={name:'收藏夹',areas:[],years:[],types:[]}
 			IX.tmap['?']={name:'搜索',areas:[],years:[],types:[]}
+			log('拉取成功，缓存分类数据')
 			'ole_tmap'.sc(IX.tmap)
 			render()
 		},{_vv:IX.vv()},'json')

@@ -1,6 +1,6 @@
 {
 	"name":"tyan",
-	"version":"1.0.1",
+	"version":"2026.4.14",
 	"description":"...",
 	"displayName":"廷琰",
 	"dependencies":{
@@ -8,14 +8,12 @@
 		"cordova-android":"13.0.0",
 		"cordova-plugin-whitelist":"*",
 		"cordova-plugin-advanced-http":"*",
-		"cordova-plugin-streaming-media":"*",
 		"cordova-plugin-screen-orientation":"*"
 	},
 	"cordova":{
 		"plugins":{
 			"cordova-plugin-whitelist":{},
 			"cordova-plugin-advanced-http":{},
-			"cordova-plugin-streaming-media":{},
 			"cordova-plugin-screen-orientation":{}
 		},
 		"platforms":["android"]

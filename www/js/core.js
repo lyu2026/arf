@@ -31,7 +31,7 @@
 		503:'Service Unavailable',504:'Gateway Timeout'
 	},H=()=>{
 		const x=cordova.plugin
-		x.http.setRequestTimeout(2)
+		x.http.setRequestTimeout(5)
 		x.http.setFollowRedirect(true)
 		x.http.setServerTrustMode('nocheck',_=>null,_=>null)
 		return x.http
@@ -195,7 +195,7 @@
 			if(signal&&signal.aborted){N(new DOMException('The operation was aborted.','AbortError'));return}
 			const http=H(),headers=R.headers.toPlain(),body=B(R._rawBody,headers),X={
 				method:R.method.toLowerCase(),headers,
-				responseType:'arraybuffer',timeout:2,followRedirect:true
+				responseType:'arraybuffer',timeout:5,followRedirect:true
 			}
 			if(body){X.data=body.data;X.serializer=body.serializer}
 			let onAbort=null
@@ -432,7 +432,7 @@
 		else o=o.then(_=>_.text())
 		if(m=='html')o=o.then(_=>_.html())
 		o.then(_=>f(_)).catch(e=>{
-			log('请求失败',e.message,e)
+			log('请求失败',e)
 			f(null)
 		})
 	}

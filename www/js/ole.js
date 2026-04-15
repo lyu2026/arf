@@ -43,7 +43,10 @@ window.IX={
 	filters:{category:'',type:'',area:'',year:'',sort:''},search_key:null,search_val:null,
 
 	// 控制参数
-	tmap:{},hls:null,page:0,id:null,curr:null,wait:true,key:null,
+	tmap:{
+		'':{name:'收藏夹',areas:[],years:[],types:[]},
+		'?':{name:'搜索',areas:[],years:[],types:[]},
+	},hls:null,page:0,id:null,curr:null,wait:true,key:null,
 
 	// 节点监听器
 	load_more:null,img_lazy:null,get_nodes:null,
@@ -316,8 +319,6 @@ window.IX={
 			if(!o||K!=IX.key)return
 			log('分类数据',o)
 			o.data.filter(_=>_.typeId<5).forEach(_=>(IX.tmap[_.typeId]={name:_.typeName,areas:_.area,years:_.year,types:_.children.map(x=>(x.typeId+'').startsWith(_.typeId+'')?(x.typeId+':'+x.typeName):null).filter(_=>_)}))
-			IX.tmap['']={name:'收藏夹',areas:[],years:[],types:[]}
-			IX.tmap['?']={name:'搜索',areas:[],years:[],types:[]}
 			log('拉取成功，缓存分类数据')
 			'ole_tmap'.sc(IX.tmap)
 			render()

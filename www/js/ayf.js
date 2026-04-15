@@ -19,6 +19,8 @@ window.IX={
 
 	// 控制参数
 	tmap:{
+		'':{name:'收藏夹',areas:[],years:[],types:[]},
+		'?':{name:'搜索',areas:[],years:[],types:[]},
 		movie:{name:'电影',areas:[],years:[],langs:[],sorts:[],types:[]},
 		drama:{name:'电视剧',areas:[],years:[],langs:[],sorts:[],types:[]},
 		variety:{name:'综艺',areas:[],years:[],langs:[],sorts:[],types:[]},
@@ -317,8 +319,6 @@ tab:not(tab:first-of-type):not(tab:last-of-type){padding-left:60px}`
 		const K=IX.key=crypto.randomUUID(),cs=Object.keys(IX.tmap),one=()=>{
 			if(cs.length<1){
 				if(K!=IX.key)return
-				IX.tmap['']={name:'收藏夹',areas:[],years:[],types:[]}
-				IX.tmap['?']={name:'搜索',areas:[],years:[],types:[]}
 				'ayf_tmap'.sc(IX.tmap)
 				render()
 				return

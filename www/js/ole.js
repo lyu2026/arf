@@ -294,7 +294,7 @@ window.IX={
 		$O.$('head>style[ix]').innerHTML=`body{display:flex!important;flex-direction:column!important}`
 		const render=()=>{
 			log('渲染页面，构建 DOM 树')
-			let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
+			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!=''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
 			o+=`<grid></grid><modal hide><mbox><modal-t><title></title>`
 			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px'>⊕</icc>`
 			o+=`<icc onclick='run("IX","dark_toggle",WI)(this)' style='line-height:33px'>⊙</icc>`
@@ -305,7 +305,7 @@ window.IX={
 			log('绑定事件，节点监听')
 			IX.watch()
 			log('获取记忆，开始筛选')
-			const {filters}='ole_filters'.gc({filters:{}})
+			const {filters}='ole_filters'.gc({filters:{category:''}})
 			$O.$(`tab[T='category']>div${filters.category?`[V='${filters.category}']`:''}`).click()
 		}
 

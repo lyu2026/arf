@@ -292,7 +292,7 @@ body{display:flex!important;flex-direction:column!important}
 tab:not(tab:first-of-type):not(tab:last-of-type){padding-left:60px}`
 		const render=()=>{
 			log('渲染页面，构建 DOM 树')
-			let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
+			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!=''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
 			o+=`<grid></grid>`
 			o+=`<modal hide><mbox><modal-t><title></title>`
 			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px'>⊕</icc>`
@@ -304,7 +304,7 @@ tab:not(tab:first-of-type):not(tab:last-of-type){padding-left:60px}`
 			log('绑定事件，节点监听')
 			IX.watch()
 			log('获取记忆，开始筛选')
-			const {filters}='ayf_filters'.gc({filters:{}})
+			const {filters}='ayf_filters'.gc({filters:{category:''}})
 			$O.$(`tab[T='category']>div${filters.category?`[V='${filters.category}']`:''}`).click()
 		}
 
@@ -316,7 +316,7 @@ tab:not(tab:first-of-type):not(tab:last-of-type){padding-left:60px}`
 			return
 		}
 
-		const K=IX.key=crypto.randomUUID(),cs=Object.keys(IX.tmap),one=()=>{
+		const K=IX.key=crypto.randomUUID(),cs=Object.keys(IX.tmap).filter(_=>_!=''&&_!='?'),one=()=>{
 			if(cs.length<1){
 				if(K!=IX.key)return
 				'ayf_tmap'.sc(IX.tmap)

@@ -77,8 +77,9 @@ modal-c>[VL]>[VL]{display:block;height:30px;line-height:30px;text-align:left;wid
 modal-c>[VL]>[VL]:nth-child(2){float:right;text-align:right}
 modal-c>[tg]{display:flex;white:100%}
 modal-c>[tg]>div{margin-left:auto;margin-bottom:-30px;margin-right:-8px;font-size:40px;line-height:40px;width:40px;height:40px;border-radius:100%;z-index:10}
-modal-c>[VS],modal-c>[BF]{padding:6px;border-radius:3px;background:rgb(0,0,0,.1)}
-body[dark] modal-c>[VS],body[dark] modal-c>[BF]{background:rgba(255,255,255,.1)}
+modal-c>[VS],modal-c>[SS],modal-c>[BF]{padding:6px;border-radius:3px;background:rgb(0,0,0,.1)}
+body[dark] modal-c>[VS],body[dark] modal-c>[SS],body[dark] modal-c>[BF]{background:rgba(255,255,255,.1)}
+modal-c>[VS]{margin-bottom:2px}
 modal-c>[VS][x]>*:nth-child(n+14){display:none}
 modal-c>[VS][x]::after{content:'···';float:left;display:inline-block;margin-right:10px;line-height:2;font-size:14px}
 modal-c>[BF]{font-size:12px;line-height:1.5}

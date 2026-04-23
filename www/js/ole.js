@@ -46,7 +46,7 @@ window.IX={
 	tmap:{
 		'':{name:'收藏夹',areas:[],years:[],types:[]},
 		'?':{name:'搜索',areas:[],years:[],types:[]},
-	},hls:null,page:0,id:null,curr:null,wait:true,key:null,
+	},sm:{},hls:null,page:0,id:null,curr:null,wait:true,key:null,
 
 	// 节点监听器
 	load_more:null,img_lazy:null,get_nodes:null,
@@ -55,6 +55,7 @@ window.IX={
 		let key,val
 		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
 		if(me){
+			IX.sm={}
 			IX.page=0
 			IX.modal_close()
 			screen.orientation.unlock()
@@ -62,7 +63,7 @@ window.IX={
 			log(`手动筛选，点击 ${key}: ${val}`)
 			gbox.da('a').sa({_:key=='category'&&val=='?'?'💡 请输入关键字 . . ':'🥏 正在搜索，请稍等 . . .'}).html('')
 			if(key=='category'&&val=='?'){
-				IX.search_val=prompt('搜索关键字:')
+				IX.search_val=prompt('搜索关键字:')||''
 				IX.search_key='name'
 				IX.filters.category='?'
 				log(`手动搜索，关键词 ${IX.search_val}`)
@@ -114,10 +115,13 @@ window.IX={
 				}
 			}
 		}
+		if(IX.search_key&&!IX.search_val)return
+
 		if(IX.page>0){
 			gbox.da('_').sa('a')
 			scrollTo(0,$O.body.scrollHeight)
 		}
+
 		if(Object.keys(IX.filters).filter(_=>IX.filters[_]!='').length<1&&!IX.search_key)return true
 		let S=IX.search_key,page=++IX.page,U=`https://api.olelive.com/v1/pub/vod/list/true/3/0/${encodeURIComponent(IX.filters.area)}/${IX.filters.category}/${IX.filters.type}/${IX.filters.year}/${IX.filters.sort}/${page}/30`
 		if(S)U=`https://www.olehdtv.com/index.php/vod/search/${IX.search_key}/${encodeURIComponent(IX.search_val)}/page/${page}.html`
@@ -130,10 +134,12 @@ window.IX={
 			if(TS!=JSON.stringify({filters:IX.filters,search_key:IX.search_key,search_val:IX.search_val}))return go(true)
 			o=S?o.$$('.vodlist_thumb'):o.data.list
 			o&&gbox.append(...o.map(_=>{
-				const n=(S?_.ga('title'):_.name).trim()
+				const n=(S?_.ga('title'):_.name).trim(),I=S?_.ga('href').split('/').pop().split('.').shift():_.id
+				if(S&&I in IX.sm)return null
+				IX.sm[I]=1
 				let N=n.replace(/\s*[】]\s*/g,'').replace(/(\s*[【】:：·。～]\s*|\-+|—+)/g,'.').replace(/，/g,',').replace(/！/g,'!').replace(/\s\s/g,' ').replace(/\.{2,}/g,'.').trim().replace(/\s/g,'.').replace(/(\s*\.+$|\.?(剧场|真人)版)/g,'')
 				if(IX.filters.category=='1')N=N.replace(/\.?电影版/g,'')
-				return IX.name_reg.test(N)?null:$O.node('grid-c',{I:S?_.ga('href').split('/').pop().split('.').shift():_.id,N,onclick:'run("IX","card_click",WI)(this)'},`<img src='${IX.cover}' s='${S?_.ga('data-original'):`https://static.olelive.com/${_.pic}`}'/><score>${S?'':_.score}</score><tip>${S?_.$('.pic_text').innerText.trim():(_.remarks?_.remarks.trim():'')}</tip><title>${N}</title>`)
+				return IX.name_reg.test(N)?null:$O.node('grid-c',{I,N,onclick:'run("IX","card_click",WI)(this)'},`<img src='${IX.cover}' s='${S?_.ga('data-original'):`https://static.olelive.com/${_.pic}`}'/><score>${S?'':_.score}</score><tip>${S?_.$('.pic_text').innerText.trim():(_.remarks?_.remarks.trim():'')}</tip><title>${N}</title>`)
 			}).filter(Boolean))
 			go(true)
 		},{_vv:IX.vv()},S?'html':'json')

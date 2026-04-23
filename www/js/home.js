@@ -9,6 +9,7 @@ window.IX={
 	observer:{},
 
 	cards:[ // 所有页面
+		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in'},
 		{key:'ole',name:'欧乐视频',title:'数据来源',brief:'www.olehdtv.com'},
 		{key:'ayf',name:'爱一帆',title:'数据来源',brief:'m.yfsp.tv'},
 		{key:'news',name:'实时资讯',title:'数据来源',brief:'flw.ph/'},

@@ -64,19 +64,19 @@ window.IX={
 			if(o===null)return go(false)
 			if(TS!=JSON.stringify(IX.filters))return go(true)
 			if(IX.filters.category=='fsb')o=o.$$('.conlist').map(_=>{
-				const a=_.$('.contt>a'),brief=_.$('.container').innerText.replace(/\n{2,}/g,'\n').replace(/^\n+|\n+$/g,'\n').trim().f2j()
-				return {I:a.href,N:a.innerText.f2j(),brief,time:_.$('.conpubtime').innerText}
+				const a=_.$('.contt>a'),brief=_.$('.container').innerText.replace(/\n{2,}/g,'\n').replace(/^\n+|\n+$/g,'\n').trim().f2j().sb().replace(/ *\[详细\]|本报讯\:/g,'')
+				return {I:a.href.replace('http://','https://'),N:a.innerText.f2j().sb(),brief,time:_.$('.conpubtime').innerText}
 			})
 			else if(IX.filters.category=='fhw')o=o.$$('.li_item').map(_=>{
-				const I='https://www.phhua.com/'+_.$('.li_item_img>a').href.split('///').pop(),N=_.$('.li_item_title').innerText.trim()
-				const brief=_.$('.li_item_des').innerText.replace(/\n{2,}/g,'\n').replace(/^\n+|\n+$/g,'\n').trim()
+				const I='https://www.phhua.com/'+_.$('.li_item_img>a').href.split('///').pop(),N=_.$('.li_item_title').innerText.sb().trim()
+				const brief=_.$('.li_item_des').innerText.replace(/\n{2,}/g,'\n').replace(/^\n+|\n+$/g,'\n').sb().trim()
 				return {I,N,brief,cover:_.$('.li_item_img img').src}
 			})
 			else if(IX.filters.category=='flw')o=o.$$('#threadlist>li').map(_=>{
 				if(!_.ga('id'))return null
 				const I=`https://www.flw.ph/forum.php?mod=viewthread&tid=${_.ga('id').split('_').pop()}&mobile=2`
-				const N=_.$('.threaditem>a>h3').innerText.replace(/(\s+New$|\s*[\r\n\t]\s*)/g,'').trim()
-				const brief=_.$('.threaditem>a>.desc .art-title').innerText.replace(/\s*[\r\n\t]\s*/g,'').split('专讯】').pop().trim()
+				const N=_.$('.threaditem>a>h3').innerText.replace(/(\s+New$|\s*[\r\n\t]\s*)/g,'').sb().trim()
+				const brief=_.$('.threaditem>a>.desc .art-title').innerText.replace(/\s*[\r\n\t]\s*/g,'').split('专讯】').pop().sb().trim()
 				const time=_.$('.itemhead>.time').innerText.replace(/-/g,'/').trim()
 				const cover=_.$('.threaditem>a>.content .piclist>span>b>img')?.ga('src')||null
 				return {I,N,brief,time,cover}
@@ -99,34 +99,79 @@ window.IX={
 			if(IX.key!=K)return
 			if(_===null)return
 
-			log('<pre>'+_.$('body').html(true).replace(/&/g,'&amp;').replace(/\</g,'&lt;').replace(/\>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')+'<pre>')
-			let time='???',o=''
+			let O,X,time='???',o=''
 			if(W=='flw'){
-				const O=_.$('.message');
-				time=_.$('.time').innerText.replace(/\-/g,'/').trim();
-				O.$$('a>img,div,font,strong').forEach(_=>{
-					if(_.tagName=='IMG'){
-						const x=$O.node('img',{src:_.src.startsWith('http')?_.src:`https://www.flw.ph/${_.src}`})
-						_.parentNode.parentNode.replaceChild(x,_.parentNode)
-						_=x
-					}
-					if(_.nextElementSibling&&_.nextElementSibling.tagName=='BR')_.nextElementSibling.remove()
-					if(_.previousElementSibling&&_.previousElementSibling.tagName=='BR')_.previousElementSibling.remove()
-					if(_.tagName=='FONT'&&!_.innerText.trim())_.remove()
-				});
-				o=O.html().replace(/((\s|\n|&nbsp;)*<br\/?>|(<br\/?>){2,})/g,'<br/>').replace(/(<br\/?>){2,}/g,'<br/>&emsp;&emsp;').split(/<br\/?>(\s|\n|&nbsp;)*延伸阅读(\s|\n|&nbsp;)*<br\/?>/).shift().replaceAll('【菲龙网专讯】','').trim()
+				time=_.$('.time').innerText.replace(/\-/g,'/').trim()
+				O=_.$('.message')
+				X=O.$(':scope>font')
+				if(X&&O.innerText.trim()==X.innerText.trim())O=X
+				O.innerHTML=O.innerHTML.replaceAll('<div align="left">','<br><div align="left">')
 			}else if(W=='fhw'){
-				const O=_.$('.content_content>div');
-				time=_.$('.content_date').innerText.replace(/\-/g,'/').trim();
-				O.$$('p').forEach(_=>{
-					if(_.innerText.trim()==''&&!_.$('img'))return
-					const img=_.$('img'),x=$O.node('img',{src:img.src})
-					_.parentNode.replaceChild(x,_)
+				time=_.$('.content_date').innerText.replace(/\-/g,'/').trim()
+				O=_.$('.content_content>div')
+				O.$$('[data-we-empty-p]').forEach(_=>{
+					_.da('style').$$('br').forEach(_=>_.remove())
+					if(_.innerText.trim()=='')_.remove()
 				})
-				o=O.html().split(/\-\-\- END \-\-\-|了解更多请搜索/).shift().replace(/\< *\/? *br *\>|\< *br *\/? *\>/g,'<br>').replace(/^[\s\t\n\r]*\<br\>[\s\t\n\r]*|[\s\t\n\r]*\<br\>[\s\t\n\r]*$|[\s\t]*[\n\r][\s\t]*/g,'').replace(/(\<img src\=[^\>]+\>)([\r\n\d\t]*\<br\>[\r\n\d\t]*)*([^\<]+)(?=\<br\>)(\<br\>)+/g,'$1<div center>$3</div><br>').replace(/\<br\>/g,'<br>&emsp;&emsp;').trim()
 			}else if(W=='fsb'){
-				
+				time=_.$('.wap_time>p:last-child').innerText.replace(/[年月日]/g,'/').trim()
+				O=_.$('#fontzoom')
+				O.$('#function_code_page')?.remove()
+				O.innerHTML=O.innerHTML.replaceAll('</p>','</p><br>').f2j()
 			}else return
+			log('<pre>'+O.html(true).replace(/&/g,'&amp;').replace(/\</g,'&lt;').replace(/\>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')+'<pre>')
+			
+			O.$$(':scope>br').forEach(_=>_.parentNode.replaceChild($O.createTextNode('[???]'),_))
+			O.$$('a').forEach(_=>{
+				if(_.$('img'))return _.parentNode.replaceChild(_.$('img'),_)
+				const x=_.innerText.sb().trim()
+				if(x=='')return _.remove()
+				_.parentNode.replaceChild($O.createTextNode(x),_)
+			})
+			O.$$('strong,b').forEach(_=>{
+				const x=_.innerText.sb().trim()
+				if(x=='')return _.remove()
+				_.parentNode.replaceChild($O.node('b',{},x),_)
+			})
+			o=O.html().split('[???]').filter(Boolean).map(_=>{
+				_=_.sb().replace(/\<br\>$/g,'').trim()
+				if(_==='')return null
+				if(_.replace(/\<[^\>]+\>/g,'').trim()===''){
+					if(_.includes('<img '))return [..._.matchAll(/<img\b[^>]*\bsrc\s*=\s*['"]?([^'"\s>]+)/gi)].map(_=>_[1]).map(_=>{
+						if(!_.startsWith('http')&&W=='flw')_=`https://www.flw.ph/${_}`
+						_=_.replaceAll(':////','://').replace('http:','https:')
+						if(_.startsWith('https://'))return `<img src='${_}'/>`
+						return ''
+					}).join('')
+					return null
+				}
+				if(_.startsWith('<p')){
+					_=_.replace(/^\<p[^\>]*\>(.+)(?=\<\/p\>)\<\/p\>$/g,'$1').trim()
+					if(_===''||_=='<br>')return null
+				}
+				if(!_.startsWith('<'))return `<div p>&emsp;${_}</div>`
+				if(_.startsWith('<div')){
+					_=_.replace(/^\<div[^\>]*\>([^\<]+)\<\/div\>/g,'$1').trim()
+					if(_===''||_=='<br>')return null
+				}
+				if(_.startsWith('<font')){
+					_=_.replace(/^\<font[^\>]*\>([^\<]+)\<\/font\>/g,'$1').trim()
+					if(_===''||_=='<br>')return null
+				}
+				if(_.startsWith('<a')||_.startsWith('<p')){
+					_=_.replace(/^\<a[^\>]*\>([^\<]+)\<\/a\>/g,'$1').replace(/^\<p[^\>]*\>([^\<]+)\<\/p\>/g,'$1').trim()
+					if(_===''||_=='<br>')return null
+				}
+				if(_.startsWith('<img')){
+					let iu=_.split('src="').pop().split('"').shift()
+					if(!iu.startsWith('http'))iu=`https://www.flw.ph/${iu}`
+					iu=iu.replaceAll(':////','://').replace('http:','https:')
+					return `<img src='${iu}'/>`
+				}
+				if(_=='<br>')return null
+				if(_.startsWith('<b>'))return `<div p>&emsp;${_}</div>`
+				return `<div p>&emsp;${_}</div>`
+			}).filter(Boolean).join('').split(/(\s|\n|&nbsp;)*延伸阅读(\s|\n|&nbsp;)*|\-\-\- END \-\-\-|了解更多请搜索/).shift().replace(/\[菲龙网专讯\]|本报讯\:/g,'').trim()
 			mbox.html(`<div>${N}</div><div>发布时间:&emsp;${time}</div><br>${o}`)
 		},{},'html')
 	},
@@ -185,11 +230,13 @@ body[dark] grid-c{background:rgba(255,255,255,.1)}
 body[dark] grid-c>div>*:nth-child(2){background:rgba(255,255,255,.1)}
 
 modal-c{display:flex;flex-direction:column;line-height:1.3;font-size:12px;padding:10px 12px 50px 12px;min-height:calc(100vh - 40px)}
-modal-c>*{display:block;line-height:1.3;font-size:12px}
+modal-c>*{display:block;line-height:1.4;font-size:16px}
 modal-c>div:first-child{font-size:18px;line-height:1.2;color:darkorange!important}
 modal-c>div:nth-child(2){font-size:14px;line-height:1.2;color:cyan!important}
-modal-c>div[center]{line-height:1.5;margin-bottom:10px;text-align:center}
-modal-c img{display:block;width:100%;margin:0}
+modal-c>div[c]{line-height:1.5;margin-bottom:10px;text-align:center}
+modal-c>div[p]{color:black!important;font-size:15px!important;line-height:1.5!important;margin-bottom:5px}
+body[dark] modal-c>div[p]{color:white!important}
+modal-c>img{display:block;width:100%;margin:0 0 5px 0}
 `
 		log('渲染页面，构建 DOM 树')
 		let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`

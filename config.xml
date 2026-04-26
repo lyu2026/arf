@@ -60,7 +60,8 @@
 	<plugin name="cordova-plugin-file"/>
 	<plugin name="cordova-plugin-whitelist"/>
 	<plugin name="cordova-plugin-advanced-http"/>
-	<plugin name="cordova-plugin-screen-orientation"/>
 	<plugin name="@e-is/cordova-plugin-downloader"/>
+	<plugin name="cordova-plugin-screen-orientation"/>
+	<plugin name="cordova-plugin-android-permissions"/>
 
 </widget>

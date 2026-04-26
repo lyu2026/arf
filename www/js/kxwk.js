@@ -197,10 +197,11 @@ window.IX={
 		else if(IX.curr.N.length>10)$O.$('modal-t>title').sa('s10');
 	},
 
- iframe_show:me=>{ // iframe初始化
+ iframe_show:async me=>{ // iframe初始化
 		IX.ready=false
 		const $w=IX.$w=me?.contentWindow,$o=IX.$o=me?.contentDocument
 		if(!$o?.body)return
+
 		$w.Document.prototype.node=function(tag='div',attrs={},html=''){
 			const o=this.createElement(tag)
 			for(let k in attrs){
@@ -213,101 +214,119 @@ window.IX={
 			if(html.trim()!='')o.innerHTML=html.trim()
 			return o
 		}
-		$o.head.appendChild($o.node('link',{rel:'stylesheet',href:'/kxwk5_style/lib/UIExtension.css',onload:_=>{
-			log('载入 UIExtension.css')
-			const tdark='dark'.gc(null)=='yes',N=IX.id+'.PDF'
-			$o.head.innerHTML+=`<style>
-			html,body,.fv__ui-pdfviewer,.fv__pdf-page-container{background:rgba(0,0,0,0)}
-			.context-menu-list,.fv__ui-layer{visibility:hidden!important}.fv__ui-layer-modal{display:none!important}
-			.fv__pdf-view-mode-item{margin:0 auto!important;border-top:1.3px solid rgba(${tdark?'255,255,255,.1':'0,0,0,.1'})}
-			${tdark?'.fv__pdf-page-content-container{filter:invert(1) hue-rotate(180deg)}':''}
-			.fv__ui-page-scroll-button{background-color:rgba(${tdark?'255,255,255,.1':'0,0,0,.1'});font-size:16px;padding-top:3px;color:#${tdark?'ddd':'222'}}
-			</style>`
-			$o.head.appendChild($o.node('script',{src:'/kxwk5_style/lib/license-key.js',onload:_=>{
-				log('载入 license-key.js')
-				$o.head.appendChild($o.node('script',{src:'/kxwk5_style/lib/preload-jr-worker.js',onload:_=>{
-					log('载入 preload-jr-worker.js')
-					$o.head.appendChild($o.node('script',{src:'/kxwk5_style/lib/UIExtension.full.js',onload:async _=>{
-						log('载入 UIExtension.full.js')
-						$w.readyWorker=$w.preloadJrWorker({
-							enginePath:'/kxwk5_style/lib/jr-engine/gsdk',
-							fontPath:'/kxwk5_style/external/brotli',
-							workerPath:'/kxwk5_style/lib/',
-							licenseKey:$w.licenseKey,
-							licenseSN:$w.licenseSN,
-						})
-						$w.pdf=new $w.UIExtension.PDFUI({
-							viewerOptions:{
-								libPath:'/kxwk5_style/lib',jr:{readyWorker:$w.readyWorker},
-								customs:{
-									closeDocBefore:void 0,
-									PageCustomRender:function(){
-										function F(ec,pr){this.eCustom=ec;this.pdfPageRender=pr}
-										F.prototype.destroy=function(){this.eCustom.innerHTML=''}
-										F.prototype.render=function(){return this.pdfPageRender.getPDFPage().then(_=>(_.getIndex()+1))}
-										return F
-									}(),
-									ScrollWrap:$w.UIExtension.PDFViewCtrl.CustomScrollWrap
-								}
-							},
-							renderTo:'#pdf',template:IX.tpl,
-							appearance:$w.UIExtension.appearances.adaptive,
-							addons:'/kxwk5_style/lib/uix-addons/allInOne.mobile.js'
-						})
 
-						$w.UIExtension.PDFViewCtrl.shared.setThemeColor([{dom:$o.body,colors:{background:tdark?'#000000':'#FFFFFF'}}])
+		const tdark='dark'.gc(null)=='yes',N=IX.id+'.PDF'
 
-						let lp,es=$w.UIExtension.PDFViewCtrl.Events
-						$w.pdf.addViewerEventListener(es.beforeOpenFile,()=>(lp=$w.pdf.loading()))
-						$w.pdf.addViewerEventListener(es.openFileSuccess,async()=>{
-							me.da('hide').previousElementSibling?.remove()
-							lp.then(_=>_.close())
-							IX.ready=true
-						})
-						$w.pdf.addViewerEventListener(es.openFileFailed,_=>{if(_&&_.error===3)return;lp?.then(_=>_.close())})
-						$w.pdf.addViewerEventListener(es.renderFileSuccess,()=>$w.pdf.goToPage(1))
-						
-						const text=await $w.fetch(`https://book.sciencereading.cn/shop/book/Booksimple/onlineRead.do?id=${IX.id}&readMark=0`).then(_=>_.text()).then(_=>{
-							_=(new $w.DOMParser()).parseFromString(_,'text/html')
-							_=_.querySelector('#AESCode')
-							return _.value.trim()
-						})
-						log('密钥信息',text)
-						if(!text)return
+		let DX=await DB('o','o')
+		if(!DX)DX=await DB('o','o')
 
-						const body=new $w.FormData()
-						body.append('text',text)
-						const {cmisdoc,appID,userToken,contentKey}=await $w.fetch(`https://cws-wkreader.sciencereading.cn/cpdfapi/v2/documents/science-server-info-decrypt`,{method:'post',body}).then(_=>_.json()).then(_=>_.data)
-						log('解密信息',{cmisdoc,appID,userToken,contentKey})
-						if(!cmisdoc)return
+		let css=await DG(DX,'o','UIExtension.css')||''
+		if(''===css){
+			css=await $w.fetch('/kxwk5_style/lib/UIExtension.css').then(_=>_.text())
+			await DA(DX,'o','UIExtension.css',css)
+		}
+		$o.head.appendChild($o.node('style',{},`${css}html,body,.fv__ui-pdfviewer,.fv__pdf-page-container{background:rgba(0,0,0,0)}.context-menu-list,.fv__ui-layer{visibility:hidden!important}.fv__ui-layer-modal{display:none!important}.fv__pdf-view-mode-item{margin:0 auto!important;border-top:1.3px solid rgba(${tdark?'255,255,255,.1':'0,0,0,.1'})}${tdark?'.fv__pdf-page-content-container{filter:invert(1) hue-rotate(180deg)}':''}.fv__ui-page-scroll-button{background-color:rgba(${tdark?'255,255,255,.1':'0,0,0,.1'});font-size:16px;padding-top:3px;color:#${tdark?'ddd':'222'}}`))
+		log('载入 UIExtension.css')
 
-						resolveLocalFileSystemURL(cordova.file.dataDirectory+N,e=>{
-							e.file(f=>{
-								const r=new FileReader()
-								r.onloadend=()=>{
-									const buff=r.result instanceof ArrayBuffer?r.result.slice(0):r.result
-									log(cordova.file.dataDirectory+N+' 从缓存中获取成功','success')
-									$w.pdf.openPDFByFile(buff,{cdrm:{appID,userToken,contentKey,encrptType:1,hasPermission:true}})
-								}
-								r.readAsArrayBuffer(f)
-							})
-						},e=>{
-							log(N+' 从缓存中获取失败，拉取数据','warn')
-							$w.fetch(`https://cws-wkreader.sciencereading.cn/cpdfapi/v1/documents/download-file?cmisdoc=${cmisdoc}`,{method:'get',headers:{'Access-Token':userToken,'Foxit-App-Name':'Creader_client_mobile'}}).then(_=>_.arrayBuffer()).then(buff=>{
-								if(!buff)return
-								const b=structuredClone(buff)
-								log(b.byteLength)
-								resolveLocalFileSystemURL(cordova.file.dataDirectory,o=>o.getFile(N,{create:true},e=>e.createWriter(w=>w.write(b))))
-								$w.pdf.openPDFByFile(buff,{cdrm:{appID,userToken,contentKey,encrptType:1,hasPermission:true}})
-							})
-						})
+		$o.head.appendChild($o.node('script',{src:'/kxwk5_style/lib/license-key.js',onload:async _=>{
+			log('载入 license-key.js')
 
-					}}))
-				}}))
-			}}))
+			let worker=await DG(DX,'o','preload-jr-worker.js')||''
+			if(''===worker){
+				worker=await $w.fetch('/kxwk5_style/lib/preload-jr-worker.js').then(_=>_.text())
+				await DA(DX,'o','preload-jr-worker.js',worker)
+			}
+			let ui=await DG(DX,'o','UIExtension.full.js')||''
+			if(''===ui){
+				ui=await $w.fetch('/kxwk5_style/lib/UIExtension.full.js').then(_=>_.text())
+				await DA(DX,'o','UIExtension.full.js',ui)
+			}
+
+			$o.head.appendChild($o.node('script',{},worker+'\n\n'+ui))
+			log('载入 Preload-jr-worker.js + UIExtension.full.js')
+
+			while(true){
+				if(!$w.preloadJrWorker||!$w.UIExtension)return
+
+				$w.readyWorker=$w.preloadJrWorker({
+					enginePath:'/kxwk5_style/lib/jr-engine/gsdk',
+					fontPath:'/kxwk5_style/external/brotli',
+					workerPath:'/kxwk5_style/lib/',
+					licenseKey:$w.licenseKey,
+					licenseSN:$w.licenseSN,
+				})
+				$w.pdf=new $w.UIExtension.PDFUI({
+					viewerOptions:{
+						libPath:'/kxwk5_style/lib',jr:{readyWorker:$w.readyWorker},
+						customs:{
+							closeDocBefore:void 0,
+							PageCustomRender:function(){
+								function F(ec,pr){this.eCustom=ec;this.pdfPageRender=pr}
+								F.prototype.destroy=function(){this.eCustom.innerHTML=''}
+								F.prototype.render=function(){return this.pdfPageRender.getPDFPage().then(_=>(_.getIndex()+1))}
+								return F
+							}(),
+							ScrollWrap:$w.UIExtension.PDFViewCtrl.CustomScrollWrap
+						}
+					},
+					renderTo:'#pdf',template:IX.tpl,
+					appearance:$w.UIExtension.appearances.adaptive,
+					addons:'/kxwk5_style/lib/uix-addons/allInOne.mobile.js'
+				})
+
+				$w.UIExtension.PDFViewCtrl.shared.setThemeColor([{dom:$o.body,colors:{background:tdark?'#000000':'#FFFFFF'}}])
+
+				let lp,es=$w.UIExtension.PDFViewCtrl.Events
+				$w.pdf.addViewerEventListener(es.beforeOpenFile,()=>(lp=$w.pdf.loading()))
+				$w.pdf.addViewerEventListener(es.openFileSuccess,async()=>{
+					me.da('hide').previousElementSibling?.remove()
+					lp.then(_=>_.close())
+					IX.ready=true
+				})
+				$w.pdf.addViewerEventListener(es.openFileFailed,_=>{if(_&&_.error===3)return;lp?.then(_=>_.close())})
+				$w.pdf.addViewerEventListener(es.renderFileSuccess,()=>$w.pdf.goToPage((IX.id+'_index').gc(2)-1))
+
+				const text=await $w.fetch(`https://book.sciencereading.cn/shop/book/Booksimple/onlineRead.do?id=${IX.id}&readMark=0`).then(_=>_.text()).then(_=>{
+					_=(new $w.DOMParser()).parseFromString(_,'text/html')
+					_=_.querySelector('#AESCode')
+					return _.value.trim()
+				})
+				log('密钥信息',text)
+				if(!text)return
+
+				const body=new $w.FormData()
+				body.append('text',text)
+				const {cmisdoc,appID,userToken,contentKey}=await $w.fetch(`https://cws-wkreader.sciencereading.cn/cpdfapi/v2/documents/science-server-info-decrypt`,{method:'post',body}).then(_=>_.json()).then(_=>_.data)
+				log('解密信息',{cmisdoc,appID,userToken,contentKey})
+				if(!cmisdoc)return
+
+				resolveLocalFileSystemURL(cordova.file.dataDirectory+N,e=>{
+					e.file(f=>{
+						const r=new FileReader()
+						r.onloadend=()=>{
+							const buff=r.result instanceof ArrayBuffer?r.result.slice(0):r.result
+							log(cordova.file.dataDirectory+N+' 从缓存中获取成功','success')
+							$w.pdf.openPDFByFile(buff,{cdrm:{appID,userToken,contentKey,encrptType:1,hasPermission:true}})
+						}
+						r.readAsArrayBuffer(f)
+					})
+				},e=>{
+					log(N+' 从缓存中获取失败，拉取数据','warn')
+					$w.fetch(`https://cws-wkreader.sciencereading.cn/cpdfapi/v1/documents/download-file?cmisdoc=${cmisdoc}`,{method:'get',headers:{'Access-Token':userToken,'Foxit-App-Name':'Creader_client_mobile'}}).then(_=>_.arrayBuffer()).then(buff=>{
+						if(!buff)return
+						const b=structuredClone(buff)
+						log(b.byteLength)
+						resolveLocalFileSystemURL(cordova.file.dataDirectory,o=>o.getFile(N,{create:true},e=>e.createWriter(w=>w.write(b))))
+						$w.pdf.openPDFByFile(buff,{cdrm:{appID,userToken,contentKey,encrptType:1,hasPermission:true}})
+					})
+				})
+
+				break
+			}
+
 		}}))
 		$o.body.innerHTML=`<div id='pdf'></div>`
- },
+},
 
 	collect_toggle:me=>{ // 视频收藏切换
 		const uncollected=me.innerText=='⊕',books='kxwk_favorite_books'.gc({})
@@ -321,6 +340,8 @@ window.IX={
 	},
 
 	modal_close:async()=>{ // 关闭详情弹层
+		const o=IX.$o?.querySelector('.fv__ui-page-scroll-button')||null
+		if(o)(IX.id+'_index').sc(parseInt(o.innerText))
 		IX.ready=false
 		IX.id=IX.curr=null
 		$O.$('modal').sa('hide','_I').$('modal-t>title').html('')

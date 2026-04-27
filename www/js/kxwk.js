@@ -231,6 +231,7 @@ window.IX={
 			let lp,es=$w.UIExtension.PDFViewCtrl.Events
 			$w.pdf.addViewerEventListener(es.beforeOpenFile,()=>(lp=$w.pdf.loading()))
 			$w.pdf.addViewerEventListener(es.openFileSuccess,async()=>{
+				await (await $w.pdf.pdfViewer.currentPDFDoc.getViewPreference()).setPageLayout($w.UIExtension.PDFViewCtrl.PDF.constant.PageLayout.OneColumn)
 				me.da('hide').previousElementSibling?.remove()
 				lp.then(_=>_.close())
 				IX.ready=true

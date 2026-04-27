@@ -61,8 +61,8 @@
 			log('捕获 (onerror): '+message,error)
 		}
 		window.addEventListener('unhandledrejection',e=>{
-			if(!e.reason)e.promise.catch(_=>log('捕获 (unhandledrejection): '+(_?.message||'UnHandledRejection'),_,'error'))
-			else log('捕获 (unhandledrejection): '+e.reason.message,e.reason.stack,'error')
+			if(!e.reason)e.promise.catch(_=>log('捕获 (unhandledrejection): ',_||'UnHandledRejection','error'))
+			else log('捕获 (unhandledrejection): ',e.reason,'error')
 		})
 
 		// 页面正在加载

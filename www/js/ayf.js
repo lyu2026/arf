@@ -160,12 +160,14 @@ window.IX={
 			mbox.html(o.join(''))
 
 			if(!window.Hls){
+				let DX=await DB('o','o')
+				if(!DX)DX=await DB('o','o')
 				let hls=await DG(DX,'o','hls.js')||''
 				if(''===hls){
-					hls=await $w.fetch('https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.13/hls.light.min.js').then(_=>_.text())
+					hls=await new Promise((res,rej)=>'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.13/hls.light.min.js'.get(_=>res(_),{},'text'))
 					await DA(DX,'o','hls.js',hls)
 				}
-				$O.head.appendChild($o.node('script',{ix:''},hls))
+				$O.head.appendChild($O.node('script',{ix:''},hls))
 				log('载入 hls.js')
 				while(true)if(window.Hls)break
 			}

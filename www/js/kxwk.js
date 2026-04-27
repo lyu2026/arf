@@ -311,13 +311,18 @@ window.IX={
 			const c=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id,o.id)).map((_,i)=>X(_,i,o)))
 			return {o,c}
 		}
-		const s=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id)).map((_,i)=>X(_,i,null))),ks=Object.keys(pm)
+		let s=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id)).map((_,i)=>X(_,i,null))),ks=Object.keys(pm)
 		ks.sort()
 		for(let i=1;i<ks.length;i++){
-			const kp=ks[i-1],ko=ks[i],pp=pm[kp],po=pm[ko],j=po.i
-			if(po.o.page>=pp.o.page)continue
-			if(po.p)delete po.p.c[j]
-			else delete s[j]
+			const kp=ks[i-1],ko=ks[i],pp=pm[kp].o.page,{o,p}=pm[ko]
+			if(o.page>=pp)continue
+			if(p&&p.c&&_T(p.c,'array')&&p.c.length>0){
+				const j=p.c.findIndex(_=>_.id===o.id)
+				if(j>-1)delete pm[ko].p.c[j]
+				continue
+			}
+			const j=s.findIndex(_=>_.id===o.id)
+			if(j>-1)delete s[j]
 		}
 		const bm=s.length>1?s:s.pop()
 		log('提取书签',bm,'success')

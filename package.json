@@ -3,6 +3,9 @@
 	"version": "2026.4.27",
 	"description": "...",
 	"displayName": "廷琰",
+	"scripts": {
+		"postbuild": "node fix-manifest.js"
+	},
 	"dependencies": {
 		"cordova": "latest",
 		"cordova-android": "13.0.0",

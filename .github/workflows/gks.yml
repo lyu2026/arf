@@ -1,4 +1,4 @@
-name: 生成&上传签名
+name: 生成签名
 
 on:
   workflow_dispatch:

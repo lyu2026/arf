@@ -68,17 +68,13 @@ jobs:
           sed -i 's|<application|<application android:requestLegacyExternalStorage="true"|' "$MANIFEST"
           echo "✓ AndroidManifest 已添加 requestLegacyExternalStorage 属性"
 
-      - name: 调用签名生成
-        id: keystore
-        uses: ./.github/actions/keystore
+      - name: 解密签名信息
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > "$GITHUB_WORKSPACE/tyan.keystore"
 
       - name: 区分架构打包
         run: |
-          # 从 Action 输出读取签名参数
-          KEYSTORE_PATH="${{ steps.keystore.outputs.keystore_path }}"
-          STORE_PASSWORD="${{ steps.keystore.outputs.store_password }}"
-          KEY_ALIAS="${{ steps.keystore.outputs.key_alias }}"
-          KEY_PASSWORD="${{ steps.keystore.outputs.key_password }}"
+          KEYSTORE_PATH="$GITHUB_WORKSPACE/tyan.keystore"
 
           # 支持的三种 CPU 架构
           ABIS=("arm64-v8a" "armeabi-v7a" "x86_64")
@@ -91,9 +87,9 @@ jobs:
               --packageType=apk \
               --gradleArg="-Pandroid.defaultConfig.abiFilters=$ABI" \
               --keystore="$KEYSTORE_PATH" \
-              --storePassword="$STORE_PASSWORD" \
-              --alias="$KEY_ALIAS" \
-              --password="$KEY_PASSWORD"
+              --storePassword="Tyan2026" \
+              --alias="tyan" \
+              --password="Tyan2026"
 
             # 按架构重命名归档
             cp platforms/android/app/build/outputs/apk/release/app-release.apk \

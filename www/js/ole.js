@@ -161,7 +161,7 @@ window.IX={
 
 		`https://api.olelive.com/v1/pub/vod/detail/${id}/true`.get(async _=>{
 			if(IX.key!=K)return
-			log('详情数据',_)
+
 			const {area,year,director,actor,urls,content}=_.data,o=[]
 			const [trim_start,trim_end]=(id+'_ole_trim_config').gc('0:0').split(':').map(_=>parseFloat(_))
 			o.push(`<div><div><b>地区:</b>&emsp;<em>${area}</em>&emsp;&emsp;&emsp;<b>年份:</b>&emsp;<em>${year}</em></div></div>`)

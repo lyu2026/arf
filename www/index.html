@@ -45,9 +45,8 @@
 				if(!e)return '<pre>'+JSON.stringify(_,null,2)+'</pre>'
 				type='error'
 				fx=_.message
-				_=_.stack.split('\n').map(v=>v.replace('file:///android_asset/www/','').replace(/\?_\=[\d\-a-z]+\:(\d+\:\d+)\)/,' $1').replace(' (',' ').trim()).filter(Boolean)
-				_.shift()
-				// .filter(_=>_.match(/\d+\:\d+/))
+				_=_.stack.split('\n').map(v=>v.replace('file:///android_asset/www/','').replace(/\?_\=[\-0-9a-z]+\:(\d+\:\d+)\)*/,' $1').replace(' (',' ').trim()).filter(Boolean)
+				if(_.length>1)_.shift()
 				return _.join('<br>')
 			}).filter(Boolean)
 			if(!type){
@@ -62,8 +61,8 @@
 
 		// 系统错误拦截
 		window.onerror=(message,source,lineno,colno,error)=>{
-			if(!error.stack.includes('.js'))error.stack='at '+source+':'+lineno+':'+colno+')'
-			log('捕获 (onerror)',error)
+			if(!error.stack.includes('.js'))error.stack='at '+source+':'+lineno+':'+colno
+			log('捕获 (onerror)',error,'error')
 		}
 		window.addEventListener('unhandledrejection',e=>{
 			if(!e.reason)e.promise.catch(_=>log('捕获 (1:unhandledrejection): UnHandledRejection','error'))

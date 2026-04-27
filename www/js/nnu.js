@@ -139,8 +139,7 @@ window.IX={
 
 		`https://nnyy.in/${id.replace(/\./g,'/')}.html`.get(async _=>{
 			if(IX.key!=K||_===null)return
-			log('详情数据',_)
-			
+
 			const o=[],x={director:[],actor:[],year:_.$('.product-title span')?.innerText?.replace(/\D/g,'')||'未知'}
 			_.$$('.product-excerpt').forEach(_=>{
 				let [k,v]=_.innerText.split('：')

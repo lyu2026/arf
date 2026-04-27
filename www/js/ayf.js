@@ -145,9 +145,8 @@ window.IX={
 		else if(IX.curr.N.length>10)$O.$('modal-t>title').sa('s10');
 
 		`${['japan','european','domestic'].includes(IX.filters.category)?IX.wh:IX.mh}video/videodetails?mediaKey=${mk}`.get(async _=>{
-			if(IX.key!=K)return
-			if(_===null)return
-			log('详情数据',_)
+			if(IX.key!=K||_===null)return
+
 			const {cidMapper,regional,lang,postTime,date,director,starring,episodes,introduce}=_.data.detailInfo
 			const [trim_start,trim_end]=(mk+'_ayf_trim_config').gc('0:0').split(':').map(_=>parseFloat(_)),o=[]
 			o.push(`<div><div><b>类型:</b>&emsp;<em>${cidMapper}</em>&emsp;&emsp;<b>地区:</b>&emsp;<em>${regional}</em>&emsp;&emsp;<b>年份:</b>&emsp;<em>${new Date(postTime||date).toLocaleString().split('/').shift()}</em></div></div>`)

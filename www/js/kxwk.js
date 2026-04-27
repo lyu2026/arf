@@ -152,6 +152,11 @@ window.IX={
 		const $w=IX.$w=me?.contentWindow,$o=IX.$o=me?.contentDocument
 		if(!$o?.body)return
 
+		$w.eval(`const __LS__={_:{},getItem(k){return this._[k]||null},setItem(k,v){this._[k]=v},removeItem(k){delete this._[k]},clear(){this._={}}}
+		try{
+			Object.defineProperty(window,'sessionStorage',{get:()=>__LS__,configurable:true})
+			Object.defineProperty(window,'localStorage',{get:()=>__LS__,configurable:true})
+		}catch(e){alert(e.stack)}`)
 		$w.Document.prototype.node=function(tag='div',attrs={},html=''){
 			const o=this.createElement(tag)
 			for(let k in attrs){
@@ -219,7 +224,6 @@ window.IX={
 			await DA(DX,'o','UIExtension.full.js',ui)
 		}
 
-		$w.localStorage=NativeStorage
 		$w.eval(worker+'\n\n'+ui)
 		if(!$w.preloadJrWorker||!$w.UIExtension)return log('插件 UIExtension 载入失败','error')
 		log('载入 Preload-jr-worker.js + UIExtension.full.js','success')
@@ -301,12 +305,20 @@ window.IX={
 		const doc=IX.$w.pdf.pdfViewer.currentPDFDoc,N=IX.curr.N+'.PDF'
 		const {id,api,info}=doc,{pageCount,pageSizes}=info,{width,height}=pageSizes[1]||{}
 		log('文档信息',{id,width,height,pageCount})
-		const X=async o=>{
+		const pm={},X=async(o,i,p)=>{
+			pm[o.id]={o,p,i}
 			if(!o.hasChild)return o
-			const c=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id,o.id)).map(X))
+			const c=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id,o.id)).map((_,i)=>X(_,i,o)))
 			return {o,c}
 		}
-		const s=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id)).map(X))
+		const s=await IX.$w.Promise.all((await api.getBookmarkChildren({path:'jr/doc'},id)).map((_,i)=>X(_,i,null))),ks=Object.keys(pm)
+		ks.sort()
+		for(let i=1;i<ks.length;i++){
+			const kp=ks[i-1],ko=ks[i],pp=pm[kp],po=pm[ko],j=po.i
+			if(po.o.page>=pp.o.page)continue
+			if(po.p)delete po.p.c[j]
+			else delete s[j]
+		}
 		const bm=s.length>1?s:s.pop()
 		log('提取书签',bm,'success')
 		for(let i=0;i<pageCount;i++)await doc.getPageByIndex(i)
@@ -355,7 +367,7 @@ window.IX={
 					r.onload=()=>w.write(r.result)
 					w.onwriteend=()=>{
 						log('文件保存成功！路径：'+fe.nativeURL,'success')
-						ndoc.destroy()
+						IX.modal_close()
 					}
 					r.readAsArrayBuffer(O)
 				},e=>log('fe.createWriter',e,'error'))

@@ -1,7 +1,7 @@
 name: 生成&上传签名
 
 on:
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 jobs:
   generate-keystore:
@@ -20,7 +20,6 @@ jobs:
       - name: 生成签名
         id: keystore
         run: |
-          echo "生成 Keystore..."
           keytool -genkeypair -v \
             -keystore tyan.keystore \
             -alias tyan \
@@ -31,10 +30,7 @@ jobs:
             -keypass Tyan2026 \
             -dname "CN=Tyan, OU=Dev, O=Tyan, L=City, ST=State, C=CN"
 
-          # 转为 Base64
           KEYSTORE_BASE64=$(base64 -w 0 tyan.keystore)
-
-          # 保存为 output，供后续步骤使用
           echo "keystore_base64=$KEYSTORE_BASE64" >> $GITHUB_OUTPUT
           echo "✅ Keystore 生成完成"
 
@@ -42,58 +38,55 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           REPO: ${{ github.repository }}
+          KEYSTORE_BASE64: ${{ steps.keystore.outputs.keystore_base64 }}
         run: |
-          # 获取仓库的公钥（加密 Secrets 需要）
-          PUBLIC_KEY=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$REPO/actions/secrets/public-key")
-
-          KEY_ID=$(echo "$PUBLIC_KEY" | jq -r '.key')
-          KEY=$(echo "$PUBLIC_KEY" | jq -r '.key_id')
-
-          # 加密函数
-          encrypt_secret() {
-            local secret_value="$1"
-            local public_key="$2"
-
-            # 使用 Python 或 Node.js 加密
-            python3 -c "
-            import base64
-            import json
-            import sys
-            from nacl import encoding, public
-
-            def encrypt(public_key: str, secret_value: str) -> str:
-                public_key = public.PublicKey(public_key.encode('utf-8'), encoding.Base64Encoder())
-                sealed_box = public.SealedBox(public_key)
-                encrypted = sealed_box.encrypt(secret_value.encode('utf-8'))
-                return base64.b64encode(encrypted).decode('utf-8')
-
-            print(encrypt('$public_key', '$secret_value'))
-            " 2>/dev/null
-          }
-
-          # 检查依赖
           pip3 install pynacl --quiet
 
-          # 上传各个 Secret
+          # 获取公钥
+          PUBLIC_KEY=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/actions/secrets/public-key")
+
+          KEY_ID=$(echo "$PUBLIC_KEY" | jq -r '.key_id')
+          KEY=$(echo "$PUBLIC_KEY" | jq -r '.key')
+
+          echo "Key ID: $KEY_ID"
+
+          # 上传函数
           upload_secret() {
-            local secret_name="$1"
-            local secret_value="$2"
+            local name="$1"
+            local value="$2"
 
-            ENCRYPTED_VALUE=$(encrypt_secret "$secret_value" "$KEY")
+            ENCRYPTED=$(python3 -c "
+            import base64
+            from nacl import encoding, public
 
-            curl -s -X PUT \
+            key = '$KEY'
+            val = '''$value'''
+
+            pk = public.PublicKey(key.encode('utf-8'), encoding.Base64Encoder())
+            box = public.SealedBox(pk)
+            enc = box.encrypt(val.encode('utf-8'))
+            print(base64.b64encode(enc).decode('utf-8'))
+            ")
+
+            STATUS=$(curl -s -X PUT \
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/$REPO/actions/secrets/$secret_name" \
-              -d "{\"encrypted_value\":\"$ENCRYPTED_VALUE\",\"key_id\":\"$KEY_ID\"}" \
-              -o /dev/null -w "%{http_code}"
+              -H "Content-Type: application/json" \
+              "https://api.github.com/repos/$REPO/actions/secrets/$name" \
+              -d "{\"encrypted_value\":\"$ENCRYPTED\",\"key_id\":\"$KEY_ID\"}" \
+              -w "%{http_code}" -o /dev/null)
+
+            echo "上传 $name: HTTP $STATUS"
           }
 
-          echo "上传 KEYSTORE_BASE64..."
-          STATUS=$(upload_secret "KEYSTORE_BASE64" "${{ steps.keystore.outputs.keystore_base64 }}")
-          echo "状态: $STATUS"
-          echo "🎉 所有 Secrets 上传完成！"
+          upload_secret "KEYSTORE_BASE64" "$KEYSTORE_BASE64"
+          upload_secret "KEYSTORE_PASSWORD" "Tyan2026"
+          upload_secret "KEY_ALIAS" "tyan"
+          upload_secret "KEY_PASSWORD" "Tyan2026"
+
+          echo "🎉 完成！"
 
       - name: 清空
         run: rm -f tyan.keystore

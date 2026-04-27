@@ -136,7 +136,7 @@ window.IX={
 		const K=IX.key=crypto.randomUUID()
 		const id=IX.id=me.ga('I'),books='kxwk_favorite_books'.gc({})
 		const sk=`<br><sk w100 p10 f fv g4><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h20></sk><sk n h8></sk><sk n h50></sk></sk>`
-		const mbox=$O.$('modal-c').html(`${sk}<iframe hide crossorigin='anonymous' onload='run("IX","iframe_show",WI)(this)' src='https://book.sciencereading.cn/!'></iframe>`)
+		const mbox=$O.$('modal-c').html(`${sk}<iframe hide crossorigin='anonymous' sandbox='allow-scripts allow-same-origin allow-storage-access-by-user-activation' allow='storage-access' onload='run("IX","iframe_show",WI)(this)' src='https://book.sciencereading.cn/!'></iframe>`)
 		IX.curr={N:me.ga('N'),C:me.$('img').ga('s')}
 		$O.$('modal-t [SC]').innerText=id in books?'♡':'⊕'
 		$O.body.sa('ns')
@@ -219,11 +219,10 @@ window.IX={
 			await DA(DX,'o','UIExtension.full.js',ui)
 		}
 
-		$o.head.appendChild($o.node('script',{},worker+'\n\n'+ui))
-		log('载入 Preload-jr-worker.js + UIExtension.full.js','success')
-
-		const __n=Date.now(),__x=setInterval(()=>(Date.now()-__n>5000||$w.preloadJrWorker&&$w.UIExtension)&&clearInterval(__x),200)
+		$w.localStorage=NativeStorage
+		$w.eval(worker+'\n\n'+ui)
 		if(!$w.preloadJrWorker||!$w.UIExtension)return log('插件 UIExtension 载入失败','error')
+		log('载入 Preload-jr-worker.js + UIExtension.full.js','success')
 
 		$w.readyWorker=$w.preloadJrWorker({
 			enginePath:'/kxwk5_style/lib/jr-engine/gsdk',

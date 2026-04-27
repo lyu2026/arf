@@ -181,10 +181,8 @@ window.IX={
 					hls=await new Promise((res,rej)=>'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.13/hls.light.min.js'.get(_=>res(_),{},'text'))
 					await DA(DX,'o','hls.js',hls)
 				}
-				$O.head.appendChild($O.node('script',{ix:''},hls))
-				log('载入 hls.js')
-				const __n=Date.now(),__x=setInterval(()=>(Date.now()-__n>5000||window.Hls)&&clearInterval(__x),200)
-				if(!window.Hls)return log('插件 HLS 载入失败','error')
+				eval(hls)
+				log('载入 HLS.JS')
 			}
 
 			const V=$O.$('video')

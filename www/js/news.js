@@ -13,8 +13,8 @@ window.IX={
 
 	// 控制参数
 	tmap:{
+		flw:{name:'菲龙网',types:['40:本地','157:国内','91:国际']},
 		fsb:{name:'菲商报',types:['fgyw:本地','zgxw:国内','gjxw:国际']},
-		flw:{name:'菲龙网',types:['40:本地','82:华人','157:国内','91:国际']},
 		fhw:{name:'菲华网',types:['news:快讯','hots:热贴','visa:签证','travel:旅游']},
 	},page:0,key:null,
 

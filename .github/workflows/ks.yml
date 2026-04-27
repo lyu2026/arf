@@ -58,18 +58,16 @@ jobs:
             local value="$2"
 
             ENCRYPTED=$(python3 << EOF
-import base64
-from nacl import encoding, public
-
-key = '$KEY'
-val = '$value'
-
-pk = public.PublicKey(key.encode('utf-8'), encoding.Base64Encoder())
-box = public.SealedBox(pk)
-enc = box.encrypt(val.encode('utf-8'))
-print(base64.b64encode(enc).decode('utf-8'))
-EOF
-)
+             import base64
+             from nacl import encoding, public
+             key = '$KEY'
+             val = '$value'
+             pk = public.PublicKey(key.encode('utf-8'), encoding.Base64Encoder())
+             box = public.SealedBox(pk)
+             enc = box.encrypt(val.encode('utf-8'))
+             print(base64.b64encode(enc).decode('utf-8'))
+             EOF
+            )
 
             STATUS=$(curl -s -X PUT \
               -H "Authorization: token $GITHUB_TOKEN" \

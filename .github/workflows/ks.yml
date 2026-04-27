@@ -22,14 +22,14 @@ jobs:
         run: |
           echo "生成 Keystore..."
           keytool -genkeypair -v \
-		          -keystore tyan.keystore \
-		          -alias tyan \
-		          -keyalg RSA \
-		          -keysize 2048 \
-		          -validity 10000 \
-		          -storepass Tyan2026 \
-		          -keypass Tyan2026 \
-		          -dname "CN=Tyan, OU=Dev, O=Tyan, L=City, ST=State, C=CN"
+            -keystore tyan.keystore \
+            -alias tyan \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass Tyan2026 \
+            -keypass Tyan2026 \
+            -dname "CN=Tyan, OU=Dev, O=Tyan, L=City, ST=State, C=CN"
 
           # 转为 Base64
           KEYSTORE_BASE64=$(base64 -w 0 tyan.keystore)

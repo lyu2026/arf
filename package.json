@@ -40,7 +40,7 @@
 			"@e-is/cordova-plugin-downloader": {},
 			"cordova-plugin-screen-orientation": {},
 			"cordova-plugin-android-permissions": {},
-			"cordova-plugin-network-information": {},
+			"cordova-plugin-network-information": {}
 		},
 		"platforms": [
 			"android"

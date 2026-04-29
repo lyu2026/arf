@@ -22,6 +22,7 @@ body *{
 	/*overscroll-behavior:contain;*/
 }
 img{image-rendering:crisp-edges}
+input,textarea{-webkit-user-select:text;white-space:initial;overflow-wrap:initial;word-break:initial;touch-action:auto!important}
 
 /* TAB栏组件 */
 tab{display:flex;width:100vw;height:26px;align-items:center;overflow:auto hidden;border-bottom:1px solid rgba(0,0,0,.1);position:relative}

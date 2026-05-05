@@ -95,21 +95,17 @@ window.IX={
 		log('开始转屏')
 		// cordova.plugin.orient.set('H')
 		log('已经转屏')
-		
-		log('开始检查')
-		let ok=await cordova.plugin.badge.check()
-		log('支持角标:',ok)
-		
-		cordova.plugin.badge.set(5)
+
+		await cordova.plugin.badge.set(5)
 		log('设置成功')
-		
-		let n=await cordova.plugin.badge.get()
-		log('当前角标:',n)
-		
-		
+
 	},
 
 	add:async()=>{ // 新增
+		
+		await cordova.plugin.badge.clear()
+		log('清除成功')
+
 		const title='挖掘客户举报检测方法关系还记得盖好'
 		const content='顾虑感觉刚放假你好哥哥很多地方个非常喜欢好看'
 		const address='中国.黑龙江.漠河',location='45.89666,86.88556'

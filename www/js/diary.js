@@ -10,7 +10,7 @@ window.IX={
 
 	ftime:ts=>{
 		const wd=['日','一','二','三','四','五','六'],mc=['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月']
-		let d=new Date(ts),y=d.getFullYear(),m=d.getMonth(),w=d.getDay(),t=d.toTimeString().slice(0,8)
+		let d=new Date(parseInt(ts)),y=d.getFullYear(),m=d.getMonth(),w=d.getDay(),t=d.toTimeString().slice(0,8)
 		return{w:'星期'+wd[w],y,m:mc[m],d:d.getDate(),t}
 	},
 
@@ -18,32 +18,28 @@ window.IX={
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const gbox=$O.$('grid').html('')
+
 		// 总条数和平均字数
-		const s=await IX.S.select('O',{cs:['content','at'],oy:'id DESC'})
-		const count=s.length
-		const days=new Set(s.map(r=>new Date(r.at).toLocaleDateString())).size
-		const lavg=Math.round(s.reduce((x,r)=>x+(r.content||'').length,0)/count*10)/10
-		const peak=Math.round(s.reduce((x,r)=>x+new Date(r.at).getHours(),0)/count*10)/10
-		
+		let s=await IX.S.select('O',{cs:['content','at'],oy:'id DESC'}),count=s.length
+		const days=count<1?0:new Set(s.map(r=>new Date(parseInt(r.at)).toLocaleDateString())).size
+		const lavg=count<1?0:Math.round(s.reduce((x,r)=>x+(r.content||'').length,0)/count*10)/10
+		const peak=count<1?0:Math.round(s.reduce((x,r)=>x+new Date(parseInt(r.at)).getHours(),0)/count*10)/10
+
 		// 图片/文件去重 - 只查有数据的
-		const imgs=await IX.S.select('O',{cs:['imgs'],w:{imgs:{ne:'[]'}}}),si=new Set()
-		imgs.forEach(r=>{
-			if(!r.imgs)return
-			log(r.imgs,JSON.parse(r.imgs))
-			JSON.parse(r.imgs).forEach(v=>si.add(v))
-		})
-		
-		const files=await IX.S.select('O',{cs:['files'],w:{files:{ne:'[]'}}}),sf=new Set()
-		files.forEach(r=>{if(r.files)JSON.parse(r.files).forEach(v=>sf.add(v))})
-		
+		const si=new Set(),sf=new Set(),dm=new Map()
+		s=await IX.S.select('O',{cs:['imgs'],w:{imgs:{ne:'[]'}}})
+		s.forEach(r=>r.imgs&&JSON.parse(r.imgs).forEach(v=>si.add(v)))
+		s=await IX.S.select('O',{cs:['files'],w:{files:{ne:'[]'}}})
+		s.forEach(r=>r.files&&JSON.parse(r.files).forEach(v=>sf.add(v)))
+
 		// 连续天数 - 只查不同日期
-		const ds=await IX.S.select('O',{cs:['at']}),dm=new Map()
-		ds.forEach(r=>{let d=new Date(r.at).toLocaleDateString();dm.set(d,true)})
-		const da=[...dm.keys()].sort().reverse()
+		s=await IX.S.select('O',{cs:['at']})
+		s.forEach(r=>{let d=new Date(r.at).toLocaleDateString();dm.set(d,true)})
+		s=[...dm.keys()].sort().reverse()
 		let streak=0,today=new Date().toLocaleDateString()
-		for(let i=0;i<da.length;i++){
-			if(i==0&&da[i]!=today)break
-			if(i==0||(new Date(da[i-1])-new Date(da[i]))/864e5==1)streak++
+		for(let i=0;i<s.length;i++){
+			if(i==0&&s[i]!=today)break
+			if(i==0||(new Date(s[i-1])-new Date(s[i]))/864e5==1)streak++
 			else break
 		}
 		gbox.html(`
@@ -102,7 +98,7 @@ window.IX={
 	},
 
 	add:async()=>{ // 新增
-		
+
 		await cordova.plugin.badge.clear()
 		log('清除成功')
 
@@ -110,7 +106,7 @@ window.IX={
 		const content='顾虑感觉刚放假你好哥哥很多地方个非常喜欢好看'
 		const address='中国.黑龙江.漠河',location='45.89666,86.88556'
 		const mood='said',tags='徐',imgs=['https://pixabay.com/zh/images/download/x-10222434_1920.jpg']
-		let o=await IX.S.insert('O',{title,content,address,location,mood,tags,imgs,files:[]},true,false)
+		let o=await IX.S.insert('O',{title,content,address,location,mood,tags,imgs,files:[]},true,true)
 		if(!o||!o.id||o.id<1){
 			log('添加失败','error')
 			return
@@ -257,8 +253,9 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:white}
 		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
-		const e=await IX.S.exist('O')
-		if(e)await IX.S.drop('O')
+		let e=await IX.S.exist('O')
+		log(e?"yes":"no")
+		if(e)await IX.S.clear('O')
 		await IX.S.create('O',{
 			cs:[
 				{n:'id',tp:'INTEGER',pk:true,ai:true},
@@ -272,6 +269,9 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:white}
 				{n:'tags',tp:'TEXT',df:'[]'}
 			],ec:['title','content','imgs','files']
 		})
+		e=await IX.S.exist('O')
+		log(e?"yes":"no")
+		
 		const s=await IX.K.list('tyan').then(_=>_.o.files.map(_=>_.name.endsWith('.json')?_.name:null).filter(Boolean)).catch(_=>[])
 		log('线上数据，文件清单',s)
 		for(let _ of s){
@@ -281,7 +281,6 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:white}
 			o=await IX.S.insert('O',o,false,true)
 			log(`线上数据，存储 ${_} 内容: `,o)
 		}
-		
 		log('绑定事件，节点监听')
 		// IX.watch()
 		log('获取缓存，点击 TAB')

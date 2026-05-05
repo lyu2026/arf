@@ -7,7 +7,7 @@ window.IX={
 
 	// 所有监听对象
 	observer:{},
-	O:cordova.plugin.sorient,
+	O:cordova.plugin.orient,
 
 	vv:()=>{ // 链接公共参数
 		const x=(Date.parse(new Date())/1e3).toString(),a=x.md5(),b=[],c=[[],[],[],[]]

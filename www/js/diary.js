@@ -18,7 +18,6 @@ window.IX={
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const gbox=$O.$('grid').html('')
-		// 统计 - 多次select按需拉取，避免全表
 		// 总条数和平均字数
 		const s=await IX.S.select('O',{cs:['content','at'],oy:'id DESC'})
 		const count=s.length
@@ -28,7 +27,11 @@ window.IX={
 		
 		// 图片/文件去重 - 只查有数据的
 		const imgs=await IX.S.select('O',{cs:['imgs'],w:{imgs:{ne:'[]'}}}),si=new Set()
-		imgs.forEach(r=>{if(r.imgs)JSON.parse(r.imgs).forEach(v=>si.add(v))})
+		imgs.forEach(r=>{
+			if(!r.imgs)return
+			log(r.imgs,JSON.parse(r.imgs))
+			JSON.parse(r.imgs).forEach(v=>si.add(v))
+		})
 		
 		const files=await IX.S.select('O',{cs:['files'],w:{files:{ne:'[]'}}}),sf=new Set()
 		files.forEach(r=>{if(r.files)JSON.parse(r.files).forEach(v=>sf.add(v))})
@@ -94,8 +97,8 @@ window.IX={
 		log('已经转屏')
 		
 		log('开始检查')
-		// let ok=await cordova.plugin.badge.check()
-		// log('支持角标:',ok)
+		let ok=await cordova.plugin.badge.check()
+		log('支持角标:',ok)
 		
 		cordova.plugin.badge.set(5)
 		log('设置成功')
@@ -111,21 +114,18 @@ window.IX={
 		const content='顾虑感觉刚放假你好哥哥很多地方个非常喜欢好看'
 		const address='中国.黑龙江.漠河',location='45.89666,86.88556'
 		const mood='said',tags='徐',imgs=['https://pixabay.com/zh/images/download/x-10222434_1920.jpg']
-		let o=await IX.S.insert('O',{title,content,address,location,mood,tags,imgs,files:[]})
+		let o=await IX.S.insert('O',{title,content,address,location,mood,tags,imgs,files:[]},true,false)
 		if(!o||!o.id||o.id<1){
 			log('添加失败','error')
 			return
 		}
 		log('已添数据',o)
-		
-		o=await IX.S.select('O',{w:{id:o.id},ec:false}).then(_=>_.shift())
-		log('该编详细',o)
-		
+
 		const id=o.id,uo=await IX.K.upload('tyan',`${o.id}.json`,Array.from(new Uint8Array(new TextEncoder().encode(JSON.stringify(o)))))
 		log('已传数据',uo.o.name+' '+uo.o.hash)
-		
+
 		if('diary_tab'.gc()!='list')return
-		
+
 		o=await IX.S.select('O',{cs:'at',w:id})
 		const {y,m,d,w,t}=IX.ftime(o.at)
 		if(!$O.$('grid-c'))$O.$('grid').append($O.node('grid-c',{my:''},`${m} ${y}`))
@@ -262,7 +262,8 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:white}
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
 		const e=await IX.S.exist('O')
-		if(!e)await IX.S.create('O',{
+		if(e)await IX.S.drop('O')
+		await IX.S.create('O',{
 			cs:[
 				{n:'id',tp:'INTEGER',pk:true,ai:true},
 				{n:'title',tp:'TEXT',nn:true},
@@ -273,23 +274,16 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:white}
 				{n:'files',tp:'TEXT',df:'[]'},
 				{n:'mood',tp:'TEXT'},
 				{n:'tags',tp:'TEXT',df:'[]'}
-			],ec:['content'],ix:['title','mood','tags','address']
+			],ec:['title','content','imgs','files']
 		})
-		const s=await IX.K.list('tyan').then(_=>_.o.files.map(_=>_.name.endsWith('.json')?_.name:null).filter(Boolean)).catch(_=>{
-			log('线上数据，文件清单获取失败',_,'error')
-			return []
-		})
+		const s=await IX.K.list('tyan').then(_=>_.o.files.map(_=>_.name.endsWith('.json')?_.name:null).filter(Boolean)).catch(_=>[])
 		log('线上数据，文件清单',s)
 		for(let _ of s){
-			const o=await IX.K.download('tyan',_).then(_=>JSON.parse(_.o)).catch(_=>{
-				log(`线上数据，文件 ${_} 内容获取失败`,_,'error')
-				return null
-			})
+			let o=await IX.K.download('tyan',_).then(_=>JSON.parse(_.o)).catch(_=>null)
 			if(!o)continue
-			o.imgs=JSON.stringify(o.imgs)
-			o.files=JSON.stringify(o.files)
-			const {id}=await IX.S.insert('O',o,{ec:false})
-			log(`线上数据，存储 ${_} 内容，记录编号: `+id)
+			log(`线上数据，原文 ${_} 内容: `,o)
+			o=await IX.S.insert('O',o,false,true)
+			log(`线上数据，存储 ${_} 内容: `,o)
 		}
 		
 		log('绑定事件，节点监听')

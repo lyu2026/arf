@@ -28,9 +28,9 @@ window.IX={
 		// 图片/文件去重 - 只查有数据的
 		const si=new Set(),sf=new Set(),dm=new Map()
 		s=await IX.S.select('O',{cs:['imgs'],w:{imgs:{ne:'[]'}}})
-		s.forEach(r=>r.imgs&&JSON.parse(r.imgs).forEach(v=>si.add(v)))
+		s.forEach(r=>r.imgs&&r.imgs.forEach(v=>si.add(v)))
 		s=await IX.S.select('O',{cs:['files'],w:{files:{ne:'[]'}}})
-		s.forEach(r=>r.files&&JSON.parse(r.files).forEach(v=>sf.add(v)))
+		s.forEach(r=>r.files&&r.files.forEach(v=>sf.add(v)))
 
 		// 连续天数 - 只查不同日期
 		s=await IX.S.select('O',{cs:['at']})
@@ -113,15 +113,15 @@ window.IX={
 		// cordova.plugin.orient.set('H')
 		log('已经转屏')
 
-		await cordova.plugin.badge.set(5)
+		await cordova.plugin.notify.send({id:13,title:'看考场',text:'刚刚好的方法媳妇儿',num:4})
 		log('设置成功')
 
 	},
 
 	add:async()=>{ // 新增
 
-		await cordova.plugin.badge.clear()
-		log('清除成功')
+		await cordova.plugin.notify.badge(45)
+		log('设置成功')
 
 		const title='挖掘客户举报检测方法关系还记得盖好'
 		const content='顾虑感觉刚放假你好哥哥很多地方个非常喜欢好看'

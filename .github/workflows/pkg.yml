@@ -249,7 +249,11 @@ jobs:
               --keystore="$KEYSTORE_PATH" \
               --storePassword="Tyan2026" \
               --alias="tyan" \
-              --password="Tyan2026" > /dev/null
+              --password="Tyan2026" 2>&1 > /dev/null \
+              | grep -v "uses or overrides a deprecated API" \
+              | grep -v "Recompile with -Xlint:deprecation" \
+              | grep -v "uses unchecked or unsafe operations" \
+              | grep -v "Recompile with -Xlint:unchecked"
 
             cp platforms/android/app/build/outputs/apk/release/app-release.apk \
                output/${ABI}.apk

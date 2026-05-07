@@ -86,18 +86,14 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		log('渲染页面，构建 DOM 树')
 		$O.body.html(o.join('')+($O.$('#w_logs')?.html(true)||''))
 		
-		const cc=cordova.plugin.clip,ca=await cc.copy("hjjg"),cv=await cc.paste()
-		log({ca,cv})
 		
 		// 预览图片 show(urls,index,options)
 	// options: {share,bg,min,max,alpha,loader,loaderColor}
 	// loader: 'circle'=圆环旋转 'dots'=圆点闪烁 'ring'=圆环脉冲 'bar'=横条扫描
 	// show('https://x.com/a.jpg')
-		await cordova.plugin.photo.show(['https://pixabay.com/zh/images/download/x-9258598_1920.jpg','https://pixabay.com/zh/images/download/x-7999748_1920.jpg'],0,{share:true,down:true,loader:'dots',loaderColor:'#ff6600',share:true,bg:'#000',alpha:0.9})
+		await UP.fss.prv(['https://pixabay.com/zh/images/download/x-9258598_1920.jpg','https://pixabay.com/zh/images/download/x-7999748_1920.jpg'],0,{share:true,down:true,loader:'dots',lcolor:'#ff6600',share:true,bg:'#000',alpha:0.6})
 	
 		
-		const z=cordova.plugin.biometric
-		const x=await z.check()
 		if(!x.ok)return
 		await z.auth('指纹认证','','取消').catch(_=>{
 			log('指纹认证，操作异常',_,'error')

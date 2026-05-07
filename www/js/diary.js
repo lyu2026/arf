@@ -5,11 +5,6 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',
 	observer:{},
-	GX:cordova.plugin.gex,
-	GO:cordova.plugin.geo,
-	K:cordova.plugin.koofr,
-	S:cordova.plugin.sqlite,
-	N:cordova.plugin.notify,
 
 	FM:{},MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
 	loader:`<svg viewBox='0 0 100 100' width='40' height='40'><style>path{fill:#fff}path:nth-child(1){animation:r1 2s linear infinite;transform-origin:50px 50px}path:nth-child(2){animation:r2 1s linear infinite;transform-origin:50px 50px}path:nth-child(3){animation:r1 2s linear infinite;transform-origin:50px 50px}@keyframes r1{to{transform:rotate(360deg)}}@keyframes r2{to{transform:rotate(-360deg)}}</style><path d='M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z'/><path d='M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z'/><path d='M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z'/></svg>`,
@@ -124,10 +119,10 @@ window.IX={
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		
 		log('开始转屏')
-		// cordova.plugin.orient.set('H')
+		// UP.dev.sp.set('H')
 		log('已经转屏')
 
-		await cordova.plugin.notify.send({id:13,title:'看考场',text:'刚刚好的方法媳妇儿',num:4,page:'hj'})
+		await UP.ntf.set({t:'看考场',m:'刚刚好的方法媳妇儿',num:4,page:'hj'})
 		log('设置成功')
 
 	},
@@ -140,7 +135,7 @@ window.IX={
 		$O.body.sa('ns')
 		$O.$('grid').da('a')
 		$O.$('modal').da('hide').$('modal-t>title').html((id>0?'编辑':'添加')+'日记')
-		const {title,content,address,location,mood,tags,imgs,files}=id>0?await IX.S.select('O',id):{},[lng,lat]=location?.split(',')||['','']
+		const {title,content,address,location,mood,tags,imgs,files}=id>0?await UP.get('O',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
 		<div x='title'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
@@ -160,18 +155,13 @@ window.IX={
 	},
 
 	location:async(me)=>{
-		let o=await IX.GO.perm(true).catch(_=>{
-			log('鉴权失败',_,'error')
-			return 'deny'
-		})
-		if(o=='deny')return
-		o=await IX.GO.get(true).then(_=>_?.coords||{}).catch(_=>{
+		let o=await UP.gps.lget().then(_=>_?.coords||{}).catch(_=>{
 			log('定位失败',_,'error')
 			return {}
 		})
 		log('定位信息',o)
 		if(!o)return
-		const {lat,lng,lines}=await IX.GX.rev(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
+		const {lat,lng,lines}=await UP.gps.aget(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
 			log('解析失败',_,'error')
 			return {}
 		})
@@ -204,16 +194,14 @@ window.IX={
 		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`modal-c [x='address']>input`).value.trim()
 		const location=`${$O.$(`modal-c [x='lng']>input`).value.trim()||'0'},${$O.$(`modal-c [x='lat']>input`).value.trim()||'0'}`
-		let imgs=[],files=[],o
-		if(id>0)o=await IX.S.modify('O',{id,title,content,address,location,mood,tags,imgs,files},id,true,true)
-		else o=await IX.S.insert('O',{title,content,address,location,mood,tags,imgs,files},true,true)
+		let imgs=[],files=[],o=await UP.svv('O',{id,title,content,address,location,mood,tags,imgs,files},true,true)
 		if(!o||!o.id||o.id<1){
 			log('操作失败','error')
 			IX.wait=false
 			return
 		}
 		log(`已${id>0?'改':'添'}记录`,o)
-		const uo=await IX.K.upload('tyan',`${id}.json`,Array.from(new Uint8Array(new TextEncoder().encode(JSON.stringify(o)))))
+		const uo=await UP.net.kf.up('tyan',`${id}.json`,Array.from(new Uint8Array(new TextEncoder().encode(JSON.stringify(o)))))
 		log('已传数据',uo.o.name+' '+uo.o.hash)
 		IX.modal_close()
 		const tk='diary_tab'.gc('statistics')

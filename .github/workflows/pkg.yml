@@ -130,7 +130,7 @@ jobs:
           npm config set prefer-online true
 
       - name: 安装科尔多瓦
-        run: npm install -g cordova@^13.0.0
+        run: npm install -g --loglevel=error cordova@^13.0.0
 
       - name: 安装项目依赖
         run: npm install --no-audit --no-fund --loglevel=error > /dev/null
@@ -149,11 +149,9 @@ jobs:
             GRADLE_FILE="platforms/android/app/build.gradle"
             USE_KTS=false
           fi
-          echo ">>> 检测到文件: $GRADLE_FILE"
           if grep -q "kotlin-stdlib.*1.9.22" "$GRADLE_FILE"; then
             echo ">>> Kotlin 版本已锁定，跳过"
           else
-            echo ">>> 正在锁定 Kotlin 版本到 1.9.22"
             if [ "$USE_KTS" = true ]; then
               echo "" >> "$GRADLE_FILE"
               echo "configurations.all {" >> "$GRADLE_FILE"
@@ -173,9 +171,7 @@ jobs:
               echo "    }" >> "$GRADLE_FILE"
               echo "}" >> "$GRADLE_FILE"
             fi
-            echo ">>> Kotlin 版本锁定完成"
           fi
-          echo ">>> 验证当前配置"
           grep -A4 "resolutionStrategy" "$GRADLE_FILE" || echo "(未找到 resolutionStrategy)"
 
       - name: 配置 ABI过滤
@@ -216,20 +212,16 @@ jobs:
           </network-security-config>
           EOF
 
-          echo ">>> 修改 AndroidManifest.xml 引用网络安全配置"
           MANIFEST="platforms/android/app/src/main/AndroidManifest.xml"
           if grep -q "android:networkSecurityConfig" "$MANIFEST"; then
             echo "networkSecurityConfig 已存在，跳过"
           else
             sed -i 's|<application|<application android:networkSecurityConfig="@xml/network_security_config"|' "$MANIFEST"
-            echo "已注入 networkSecurityConfig"
           fi
 
-          echo ">>> 清理可能被误拷贝的 config.xml"
           rm -f platforms/android/app/src/main/res/xml/config.xml
           rm -f platforms/android/res/xml/config.xml
 
-          echo ">>> 验证"
           ls -la platforms/android/app/src/main/res/xml/network_security_config.xml
           grep "networkSecurityConfig" "$MANIFEST"
 

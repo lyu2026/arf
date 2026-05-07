@@ -177,7 +177,6 @@ jobs:
               echo "}" >> "$GRADLE_FILE"
             fi
           fi
-          grep -A4 "resolutionStrategy" "$GRADLE_FILE" || echo "(未找到 resolutionStrategy)"
 
       - name: 配置 ABI过滤
         run: |
@@ -226,9 +225,6 @@ jobs:
 
           rm -f platforms/android/app/src/main/res/xml/config.xml
           rm -f platforms/android/res/xml/config.xml
-
-          ls -la platforms/android/app/src/main/res/xml/network_security_config.xml
-          grep "networkSecurityConfig" "$MANIFEST"
 
       - name: 解密签名信息
         run: |

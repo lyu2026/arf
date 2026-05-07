@@ -133,7 +133,7 @@ jobs:
         run: npm install -g cordova@^13.0.0
 
       - name: 安装项目依赖
-        run: npm install --no-progress --no-audit --no-fund > /dev/null
+        run: npm install --no-audit --no-fund --loglevel=error > /dev/null
 
       - name: 添加安卓平台
         run: |

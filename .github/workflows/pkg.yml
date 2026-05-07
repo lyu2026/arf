@@ -241,7 +241,7 @@ jobs:
             rm -f platforms/android/app/src/main/res/xml/config.xml
             rm -f platforms/android/res/xml/config.xml
 
-            cordova build android --release -- \
+            GRADLE_OPTS="-Dorg.gradle.warning.mode=none" cordova build android --release -- \
               --packageType=apk \
               --gradleArg="-PtargetAbi=$ABI" \
               --keystore="$KEYSTORE_PATH" \

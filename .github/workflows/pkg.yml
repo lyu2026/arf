@@ -130,13 +130,18 @@ jobs:
           npm config set prefer-online true
 
       - name: 安装科尔多瓦
-        run: npm install -g --loglevel=error cordova@^13.0.0
+        run: |
+          npm config set fund false
+          npm install -g --loglevel=error cordova@^13.0.0
 
       - name: 安装项目依赖
-        run: npm install --no-audit --no-fund --loglevel=error > /dev/null
+        run: |
+          npm config set fund false
+          npm install --no-audit --no-fund --loglevel=error > /dev/null
 
       - name: 添加安卓平台
         run: |
+          npm config set fund false
           rm -rf platforms/android/app/build platforms/android/build platforms/android/.gradle output
           cordova platform add android@13.0.0 > /dev/null
 
@@ -234,6 +239,7 @@ jobs:
           KEYSTORE_PATH="$GITHUB_WORKSPACE/tyan.keystore"
           ABIS=("arm64-v8a" "armeabi-v7a")
           mkdir -p output
+          npm config set fund false
 
           for ABI in "${ABIS[@]}"; do
             echo ">>> 正在打包架构：$ABI"

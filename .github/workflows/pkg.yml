@@ -236,29 +236,60 @@ jobs:
           ABIS=("arm64-v8a" "armeabi-v7a")
           mkdir -p output
           npm config set fund false
-
+      
           for ABI in "${ABIS[@]}"; do
             echo ">>> 正在打包架构：$ABI"
-
+      
             rm -f platforms/android/app/src/main/res/xml/config.xml
             rm -f platforms/android/res/xml/config.xml
-
+      
+            # 将错误输出重定向到临时文件
+            TEMP_ERR=$(mktemp)
+            
             GRADLE_OPTS="-Dorg.gradle.warning.mode=none" cordova build android --release -- \
               --packageType=apk \
               --gradleArg="-PtargetAbi=$ABI" \
               --keystore="$KEYSTORE_PATH" \
               --storePassword="Tyan2026" \
               --alias="tyan" \
-              --password="Tyan2026" 2>&1 > /dev/null \
-              | grep -v "uses or overrides a deprecated API" \
-              | grep -v "Recompile with -Xlint:deprecation" \
-              | grep -v "uses unchecked or unsafe operations" \
-              | grep -v "Recompile with -Xlint:unchecked"
-
-            cp platforms/android/app/build/outputs/apk/release/app-release.apk \
-               output/${ABI}.apk
-
-            echo ">>> $ABI 打包完成"
+              --password="Tyan2026" 2>"$TEMP_ERR" > /dev/null
+            BUILD_EXIT_CODE=$?
+      
+            # 读取错误输出
+            ERROR_OUTPUT=$(cat "$TEMP_ERR")
+            rm -f "$TEMP_ERR"
+      
+            # 判断构建结果并写入 summary
+            if [ $BUILD_EXIT_CODE -ne 0 ]; then
+              {
+                echo "## ❌ $ABI 架构打包失败"
+                echo '```'
+                echo "$ERROR_OUTPUT"
+                echo '```'
+                echo ""
+              } >> $GITHUB_STEP_SUMMARY
+              
+              echo "::error::$ABI 打包失败，查看 summary 获取详情"
+            else
+              # 构建成功，检查 APK 是否存在
+              if [ -f platforms/android/app/build/outputs/apk/release/app-release.apk ]; then
+                cp platforms/android/app/build/outputs/apk/release/app-release.apk \
+                   output/${ABI}.apk
+                
+                echo "✅ $ABI 架构打包成功" >> $GITHUB_STEP_SUMMARY
+                echo ">>> $ABI 打包完成"
+              else
+                {
+                  echo "## ❌ $ABI 架构 APK 未生成"
+                  echo '```'
+                  echo "$ERROR_OUTPUT"
+                  echo '```'
+                  echo ""
+                } >> $GITHUB_STEP_SUMMARY
+                
+                echo "::error::$ABI APK 未生成"
+              fi
+            fi
           done
 
       - name: 获取版本编号

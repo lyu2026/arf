@@ -33,35 +33,12 @@
 	<preference name="StatusBarBackgroundColor" value="#000000" />
 
 	<!-- 开屏 -->
+	<preference name="SplashScreenDelay" value="1" />
 	<preference name="SplashScreen" value="screen" />
-	<preference name="SplashScreenDelay" value="10" />
 	<preference name="AutoHideSplashScreen" value="true" />
-	<preference name="FadeSplashScreenDuration" value="10" />
+	<preference name="FadeSplashScreenDuration" value="1" />
 
-	<!-- 插件 
-	<plugin name="cordova-sms-plugin" />
-	<plugin name="cordova-plugin-badge" />
-	<plugin name="cordova-sqlite-storage" />
-	<plugin name="cordova-plugin-device" />
-	<plugin name="cordova-plugin-dialogs" />
-	<plugin name="cordova-plugin-camera">
-		<variable name="ANDROIDX_CORE_VERSION" value="1.6+" />
-	</plugin>
-	<plugin name="cordova-plugin-contacts" />
-	<plugin name="cordova-plugin-geolocation">
-		<variable name="GPS_REQUIRED" value="true" />
-	</plugin>
-	<plugin name="cordova.plugins.diagnostic" />
-	<plugin name="cordova-plugin-datepicker" />
-	<plugin name="cordova-plugin-native-logs" />
-	<plugin name="cordova-plugin-filechooser" />
-	<plugin name="cordova-plugin-photo-library" />
-	<plugin name="cordova-plugin-nativestorage" />
-	<plugin name="cordova-plugin-file" spec="^8.0.0" />
-	<plugin name="cordova-plugin-network-information" />
-	<plugin name="cordova-plugin-android-fingerprint-auth" />
-	<plugin name="cordova-plugin-koofr" spec="https://github.com/lyu2026/cordova-plugin-koofr" />
-	-->
+	<!-- 插件 -->
 	<plugin name="cordova-plugin-advanced-http" />
 	<plugin name="cordova-plugin-file" spec="^8.0.0" />
 	<plugin name="@e-is/cordova-plugin-downloader" />
@@ -81,13 +58,6 @@
 
 		<!-- 允许 WebView 不安全文件访问 -->
 		<preference name="AndroidInsecureFileModeEnabled" value="true" />
-
-		<!-- 拷贝透明启动屏图片 -->
-		<resource-file src="res/splash.png" target="app/src/main/res/drawable/splash.png" />
-		<!-- 设置启动屏图标为透明图片 -->
-		<preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/splash.png" />
-		<!-- 设置启动屏背景色为透明 -->
-		<preference name="AndroidWindowSplashScreenBackground" value="@android:color/transparent" />
 
 		<!-- 应用图标 -->
 		<icon src="res/icons/ldpi.png" density="ldpi" />

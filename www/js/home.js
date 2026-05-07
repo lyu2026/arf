@@ -11,7 +11,7 @@ window.IX={
 	name:'home',
 
 	// 所有监听对象
-	observer:{},
+	observer:{},provide:false,
 
 	cards:[ // 所有页面
 		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in'},
@@ -25,6 +25,7 @@ window.IX={
 	],
 
 	toggle:me=>{ // 切换开关
+		if(!IX.provide)return
 		const _=me.ga('k'),x=_.gc(null)=='yes'
 		log(`切换状态，${_.toUpperCase()} 的当前状态: ${x?'YES':'NO'}`)
 		if(x)_.dc()
@@ -41,6 +42,7 @@ window.IX={
 	},
 
  goto:me=>{ // 页面跳转
+		if(!IX.provide)return
 		setTimeout(()=>{
 			const js=`${me.ga('K')}.js`
 			log(`载入脚本 ${js.toUpperCase()}`)
@@ -83,6 +85,13 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		for(let {key,name,title,brief} of IX.cards)o.push(`<card${(i++)%2<1?' v':''} onclick='run("IX","goto",WI)(this)' K='${key}'><div class='front' style='--u:url(./img/${key}.webp)'><h1>${name}</h1></div><div class='back'><h2>${title}</h2><p>${brief}</p></div></card>`)
 		log('渲染页面，构建 DOM 树')
 		$O.body.html(o.join('')+($O.$('#w_logs')?.html(true)||''))
+		
+		const z=cordova.plugin.biometric
+		const x=await z.check()
+		if(!x.ok)return
+		await z.auth('指纹认证','','取消').catch(_=>{
+			log('指纹认证，操作异常',_,'error')
+		}).then(_=>(_=='')&&(IX.provide=true))
 	},
 
 }

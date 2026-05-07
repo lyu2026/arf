@@ -5,6 +5,8 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',
 	observer:{},
+	GX:cordova.plugin.gex,
+	GO:cordova.plugin.geo,
 	K:cordova.plugin.koofr,
 	S:cordova.plugin.sqlite,
 	N:cordova.plugin.notify,
@@ -157,13 +159,25 @@ window.IX={
 		me.sa('c')
 	},
 
-	location:me=>{
-		let o=await IX.GO.perm(true).catch(_=>'deny')
+	location:async(me)=>{
+		let o=await IX.GO.perm(true).catch(_=>{
+			log('鉴权失败',_,'error')
+			return 'deny'
+		})
 		if(o=='deny')return
-		const {lng,lat}o=await IX.GO.get(true)
-		if(!lng||!lat)return
-		o=await IX.GX.rev(lat,lng,{max:3,lc:'zh'})
-		log(lng,lat,o)
+		o=await IX.GO.get(true).then(_=>_?.coords||{}).catch(_=>{
+			log('定位失败',_,'error')
+			return {}
+		})
+		log('定位信息',o)
+		if(!o)return
+		const {lat,lng,lines}=await IX.GX.rev(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
+			log('解析失败',_,'error')
+			return {}
+		})
+		$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
+		$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
+		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
 	},
 
 	upload:(me,tp='img')=>{

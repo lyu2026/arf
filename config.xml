@@ -65,7 +65,6 @@
 	<plugin name="cordova-plugin-advanced-http" />
 	<plugin name="cordova-plugin-file" spec="^8.0.0" />
 	<plugin name="@e-is/cordova-plugin-downloader" />
-	<plugin name="cordova-plugin-android-permissions" />
 	<plugin name="cordova-plugin-tyan" spec="https://github.com/lyu2026/cordova-plugin-tyan" />
 
 

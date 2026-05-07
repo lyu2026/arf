@@ -32,6 +32,12 @@
 	<preference name="StatusBarOverlaysWebView" value="false" />
 	<preference name="StatusBarBackgroundColor" value="#000000" />
 
+	<!-- 开屏 -->
+	<preference name="SplashScreen" value="screen" />
+	<preference name="SplashScreenDelay" value="10" />
+	<preference name="AutoHideSplashScreen" value="true" />
+	<preference name="FadeSplashScreenDuration" value="10" />
+
 	<!-- 插件 
 	<plugin name="cordova-sms-plugin" />
 	<plugin name="cordova-plugin-badge" />

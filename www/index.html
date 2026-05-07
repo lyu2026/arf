@@ -35,7 +35,7 @@
 
 		// 打印日志
 		window.log=function(){
-			if('yes'!=='debug'.gc(null))return
+			if('yes'!=='debug'.gc(null))return null
 			let $=$O.$('#w_logs'),prx=(window.IX?.name||'...').toUpperCase()
 			if(!$)$O.body.appendChild($=$O.node('div',{id:'w_logs'},`<div onclick='this.parentElement.remove()'>清空日志</div>`))
 			let type=null,fx='',s=Array.from(arguments).map((_,i)=>{
@@ -57,6 +57,7 @@
 			if(fx!=='')s[0]+=': '+fx
 			const o=s.length>0&&(!_T(s[0],'array')&&!_T(s[0],'object'))?s.shift():''
 			$.prepend($O.node('div',{type},`<b>${prx}: ${o}</b><br>${s.join('<br>')}`))
+			return null
 		}
 
 		// 系统错误拦截

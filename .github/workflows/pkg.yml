@@ -133,13 +133,12 @@ jobs:
         run: npm install -g cordova@^13.0.0
 
       - name: 安装项目依赖
-        run: |
-          npm install
+        run: npm install --no-progress --no-audit --no-fund > /dev/null
 
       - name: 添加安卓平台
         run: |
           rm -rf platforms/android/app/build platforms/android/build platforms/android/.gradle output
-          cordova platform add android@13.0.0
+          cordova platform add android@13.0.0 > /dev/null
 
       - name: 强制Kotn版本
         run: |
@@ -256,7 +255,7 @@ jobs:
               --keystore="$KEYSTORE_PATH" \
               --storePassword="Tyan2026" \
               --alias="tyan" \
-              --password="Tyan2026"
+              --password="Tyan2026" > /dev/null
 
             cp platforms/android/app/build/outputs/apk/release/app-release.apk \
                output/${ABI}.apk

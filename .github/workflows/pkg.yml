@@ -181,7 +181,7 @@ jobs:
               --password="Tyan2026" 2>&1 \
               | sed 's/^[ \t]*//;s/[ \t]*$//' \
               | grep -v "^Note: " \
-              | sed '/^\* What went wrong:/,$d' \
+              | sed '/^FAILURE: Build failed with an exception./,$d' \
               | grep -v "^$" \
               | sed "s|$PWD/||g" \
               | sed "s|/home/runner/work/tyan/tyan/||g" \

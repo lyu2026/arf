@@ -179,11 +179,9 @@ jobs:
               --storePassword="Tyan2026" \
               --alias="tyan" \
               --password="Tyan2026" 2>&1 > /dev/null \
-              | grep -v "uses or overrides a deprecated API" \
-              | grep -v "Recompile with -Xlint:deprecation" \
-              | grep -v "uses unchecked or unsafe operations" \
-              | grep -v "Recompile with -Xlint:unchecked" \
+              | grep -v "^Note: " \
               | sed "s|$PWD/||g" \
+              | sed "s|platforms/android/app/src/main/java/com/||g" \
               | sed "s|/home/runner/work/tyan/tyan/||g" > "$CURRENT_LOG" || true
             
             # 检查是否有真正错误

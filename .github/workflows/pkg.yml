@@ -178,11 +178,14 @@ jobs:
               --keystore="$KEYSTORE_PATH" \
               --storePassword="Tyan2026" \
               --alias="tyan" \
-              --password="Tyan2026" 2>&1 > /dev/null \
+              --password="Tyan2026" 2>&1 \
+              | sed 's/^[ \t]*//;s/[ \t]*$//' \
               | grep -v "^Note: " \
+              | sed '/^\* What went wrong:/,$d' \
+              | grep -v "^$" \
               | sed "s|$PWD/||g" \
-              | sed "s|platforms/android/app/src/main/java/com/||g" \
-              | sed "s|/home/runner/work/tyan/tyan/||g" > "$CURRENT_LOG" || true
+              | sed "s|/home/runner/work/tyan/tyan/||g" \
+              | sed "s|platforms/android/app/src/main/java/com/||g" > "$CURRENT_LOG" || true
             
             # 检查是否有真正错误
             if grep -E "FAILURE|BUILD FAILED|error:" "$CURRENT_LOG" | grep -q .; then

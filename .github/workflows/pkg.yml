@@ -236,13 +236,16 @@ jobs:
           ABIS=("arm64-v8a" "armeabi-v7a")
           mkdir -p output
           npm config set fund false
-
+          
+          ERROR_LOG=$(mktemp)
+          HAS_ERROR=false
+      
           for ABI in "${ABIS[@]}"; do
             echo ">>> 正在打包架构：$ABI"
-
+      
             rm -f platforms/android/app/src/main/res/xml/config.xml
             rm -f platforms/android/res/xml/config.xml
-
+      
             GRADLE_OPTS="-Dorg.gradle.warning.mode=none" cordova build android --release -- \
               --packageType=apk \
               --gradleArg="-PtargetAbi=$ABI" \
@@ -253,13 +256,32 @@ jobs:
               | grep -v "uses or overrides a deprecated API" \
               | grep -v "Recompile with -Xlint:deprecation" \
               | grep -v "uses unchecked or unsafe operations" \
-              | grep -v "Recompile with -Xlint:unchecked"
-
-            cp platforms/android/app/build/outputs/apk/release/app-release.apk \
-               output/${ABI}.apk
-
-            echo ">>> $ABI 打包完成"
+              | grep -v "Recompile with -Xlint:unchecked" >> "$ERROR_LOG" || true
+            
+            # 检查是否有真正错误（排除警告信息）
+            if grep -E "FAILURE|BUILD FAILED|error:" "$ERROR_LOG" | grep -q .; then
+              HAS_ERROR=true
+              echo "[$ABI] 打包失败" >> "$ERROR_LOG"
+            fi
+      
+            if [ -f platforms/android/app/build/outputs/apk/release/app-release.apk ]; then
+              cp platforms/android/app/build/outputs/apk/release/app-release.apk \
+                 output/${ABI}.apk
+              echo ">>> $ABI 打包完成"
+            else
+              echo ">>> $ABI APK文件未生成" >> "$ERROR_LOG"
+              HAS_ERROR=true
+            fi
           done
+          
+          # 如果有错误，导出到summary并失败
+          if [ "$HAS_ERROR" = true ]; then
+            echo "### ❌ Android 区分架构打包未通过" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat "$ERROR_LOG" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
       - name: 获取版本编号
         id: version

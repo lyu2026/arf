@@ -85,6 +85,7 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		$O.body.html(o.join('')+($O.$('#w_logs')?.html(true)||''))
 		
 		await UP.fss_prv([
+			'/tyan/files/o.jpeg',
 			'https://cdn.pixabay.com/photo/2023/05/17/10/26/woman-7999748_1280.jpg',
 			'https://cdn.pixabay.com/photo/2024/12/10/20/52/ballerina-9258598_1280.jpg'
 		],0,{share:true,down:true,loader:'dots',lcolor:'#ff6600',bg:'#000',alpha:0.6})

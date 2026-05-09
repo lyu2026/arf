@@ -5,9 +5,10 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',observer:{},
 
-	FM:'data:image/svg+xml,%3Csvg%20fill%3D%22%23fff%22%20width%3D%22500px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-153.6%20-153.6%20819.20%20819.20%22%3E%3Cpath%20d%3D%22M256%2C0C114.842%2C0%2C0%2C114.842%2C0%2C256s114.842%2C256%2C256%2C256s256-114.842%2C256-256S397.158%2C0%2C256%2C0z%20M256%2C474.537%20c-120.501%2C0-218.537-98.036-218.537-218.537S135.499%2C37.463%2C256%2C37.463S474.537%2C135.499%2C474.537%2C256S376.501%2C474.537%2C256%2C474.537z%22%2F%3E%3Ctext%20x%3D%22256%22%20y%3D%22256%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20font-size%3D%22140%22%20font-weight%3D%22bold%22%20font-family%3D%22Arial%2C%20sans-serif%22%3E%7B%7Btext%7D%7D%3C%2Ftext%3E?%3C%2Fsvg%3E',
+	FM:'data:image/svg+xml,%3Csvg%20fill%3D%22%23fff%22%20width%3D%22500px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-153.6%20-153.6%20819.20%20819.20%22%3E%3Cpath%20d%3D%22M256%2C0C114.842%2C0%2C0%2C114.842%2C0%2C256s114.842%2C256%2C256%2C256s256-114.842%2C256-256S397.158%2C0%2C256%2C0z%20M256%2C474.537%20c-120.501%2C0-218.537-98.036-218.537-218.537S135.499%2C37.463%2C256%2C37.463S474.537%2C135.499%2C474.537%2C256S376.501%2C474.537%2C256%2C474.537z%22%2F%3E%3Ctext%20x%3D%22256%22%20y%3D%22256%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20font-size%3D%22140%22%20font-weight%3D%22bold%22%20font-family%3D%22Arial%2C%20sans-serif%22%3E?%3C%2Ftext%3E%3C%2Fsvg%3E',
 	IH:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDBweCIgdmlld0JveD0iLTggLTggNDguMDAgNDguMDAiPgo8Y2lyY2xlIGZpbGw9IiM1RjVCNUJDRiIgY3g9IjE2IiBjeT0iMTYiIHI9IjE2Ii8+PGcgZmlsbD0iI2ZmZiI+CjxwYXRoIGQ9Ik0xNi4wOTIgMjMuMTk2QzEwLjUxOCAyMy4xOTYgNiAyMS41ODYgNiAxOS40MjhjMC0xLjEyNiAxLjIzLTIuMTQgMy4yLTIuODU2IDEuNTM4Ljk4NyA0LjExNyAxLjQ5MyA3LjA0MiAxLjQ5MyAyLjg1NiAwIDUuMzgtLjYxNyA2LjkzLTEuNTYyIDEuODU5LjcwNyAzLjAxMyAxLjY5NCAzLjAxMyAyLjc4MiAwIDIuMTYxLTQuNTE4IDMuOTExLTEwLjA5MyAzLjkxMXoiLz4KPHBhdGggZD0iTTE2LjE1MiAxNy41OGMtNC4yMjYgMC03LjY1Mi0xLjMyNS03LjY1Mi0yLjk2IDAtLjkwNiAxLjA1Ni0xLjcxOCAyLjcxMi0yLjI1OSAxLjE4Mi42MTcgMi45NTMgMS4wMTEgNC45NCAxLjAxMSAxLjk4NyAwIDMuNzU4LS4zOTQgNC45NC0xLjAxIDEuNjU5LjU0MyAyLjcxMiAxLjM1MiAyLjcxMiAyLjI1OC4wMDMgMS42MzUtMy40MjQgMi45Ni03LjY1MiAyLjk2eiIvPgo8cGF0aCBkPSJNMTYuMTI0IDEyLjg4Yy0zLjI2NyAwLTUuOTE2LTEuMDk0LTUuOTE2LTIuNDQgMC0xLjM0NSAyLjY1LTIuNDQgNS45MTYtMi40NCAzLjI2NiAwIDUuOTE2IDEuMDk1IDUuOTE2IDIuNDQgMCAxLjM0Ni0yLjY1IDIuNDQtNS45MTYgMi40NHoiLz4KPC9nPjwvc3ZnPg==',
 	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
+	ME:{'image/jpeg':'JPG','image/png':'PNG','image/gif':'GIF','image/svg+xml':'SVG','image/webp':'WEBP','image/bmp':'BMP','video/mp4':'MP4','video/webm':'WEBM','video/3gpp':'3GP','audio/mpeg':'MP3','audio/wav':'WAV','audio/ogg':'OGG','audio/aac':'AAC','application/pdf':'PDF','application/msword':'DOC','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'DOCX','application/vnd.ms-excel':'XLS','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'XLSX','application/vnd.ms-powerpoint':'PPT','application/vnd.openxmlformats-officedocument.presentationml.presentation':'PPTX','text/plain':'TXT','text/html':'HTML','text/css':'CSS','application/javascript':'JS','application/json':'JSON','application/xml':'XML','application/zip':'ZIP','application/vnd.android.package-archive':'APK','text/markdown':'MD','text/csv':'CSV','text/yaml':'YAML'},
 	loader:`<svg viewBox='0 0 100 100' width='40' height='40'><style>path{fill:#fff}path:nth-child(1){animation:r1 2s linear infinite;transform-origin:50px 50px}path:nth-child(2){animation:r2 1s linear infinite;transform-origin:50px 50px}path:nth-child(3){animation:r1 2s linear infinite;transform-origin:50px 50px}@keyframes r1{to{transform:rotate(360deg)}}@keyframes r2{to{transform:rotate(-360deg)}}</style><path d='M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z'/><path d='M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z'/><path d='M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z'/></svg>`,
 
 	ftime:ts=>{
@@ -190,10 +191,10 @@ window.IX={
 	},
 	upload:async(me,t='img')=>{
 		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true),c=$O.$$(`modal-c [x='${t=='img'?'img':'file'}s']>*:not(div)`).length
-		log(s)
 		s.forEach((_,i)=>{
-			const n=$O.node('img',{v:_.uri,src:t=='img'?_.uri:IX.FM.replace('?',_.mime.split('/'.pop())),onclick:`run("IX","preview",WI)(this,${c+i})`,ondblclick:'this.remove()'})
-			me.parentNode.insertBefore(n,me)
+			const x=_.mime.startsWith('image/'),$=$O.$(`modal-c [x='${x?'imgs':'files'}']>div`)
+			const o=$O.node('img',{v:_.uri,src:x?_.base64:IX.FM.replace('?',IX.ME[_.mime]||'未知'),onclick:`run("IX","preview",WI)(this,${c+i})`,ondblclick:'this.remove()'})
+			$.parentNode.insertBefore(o,$)
 		})
 	},
 
@@ -338,9 +339,9 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
-		await UP.sql_dt('diary')
-		// let e=await UP.sql_xt('diary')
-		// if(!e){
+		let e=await UP.sql_xt('diary')
+		if(!e){
+			// await UP.sql_dt('diary')
 			await UP.sql_ct('diary',[
 				{n:'title',tp:'TEXT',nn:true},
 				{n:'content',tp:'TEXT'},
@@ -353,7 +354,7 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 				{n:'location',tp:'TEXT'}
 			],['title','mood','tags','address','location','weather'])
 			await UP.sql_sy(true,'diary')
-		// }
+		}
 		log('绑定事件，节点监听')
 		IX.watch()
 		log('获取缓存，点击 TAB')

@@ -344,35 +344,25 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
-		/*
-		let e=await UP.sql_ex('O')
+		let e=await UP.sql_xt('O')
 		log(e?"yes":"no")
-		if(e)await UP.sql_cr('O')
-		await UP.sql_tb('O',{
-			cs:[
-				{n:'id',tp:'INTEGER',pk:true,ai:true},
-				{n:'title',tp:'TEXT',nn:true},
-				{n:'content',tp:'TEXT'},
-				{n:'address',tp:'TEXT'},
-				{n:'location',tp:'TEXT'},
-				{n:'imgs',tp:'TEXT',df:'[]'},
-				{n:'files',tp:'TEXT',df:'[]'},
-				{n:'mood',tp:'TEXT'},
-				{n:'tags',tp:'TEXT',df:'[]'}
-			],ec:['title','content','imgs','files']
-		})
-		e=await UP.sql_ex('O')
+		
+		await UP.sql_rm('O')
+		
+		await UP.sql_tb('O',[
+			{n:'title',tp:'TEXT',nn:true},
+			{n:'content',tp:'TEXT'},
+			{n:'imgs',tp:'TEXT',df:'[]'},
+			{n:'files',tp:'TEXT',df:'[]'},
+			{n:'tags',tp:'TEXT',df:'[]'},
+			{n:'mood',tp:'TEXT'},
+			{n:'address',tp:'TEXT'},
+			{n:'location',tp:'TEXT'}
+		])
+		e=await UP.sql_xt('O')
 		log(e?"yes":"no")
-		const s=await UP.net_kf_ls('tyan').then(_=>_.o.files.map(_=>_.name.endsWith('.json')?_.name:null).filter(Boolean)).catch(_=>[])
-		log('线上数据，文件清单',s)
-		for(let _ of s){
-			let o=await UP.net_kf_dn('tyan',_).then(_=>JSON.parse(_.o)).catch(_=>null)
-			if(!o)continue
-			log(`线上数据，原文 ${_} 内容: `,o)
-			o=await UP.sql_sv('O',o,false,true)
-			log(`线上数据，存储 ${_} 内容: `,o)
-		}
-		*/
+		await UP.sql_sy(true,'O')
+		
 		log('绑定事件，节点监听')
 		IX.watch()
 		log('获取缓存，点击 TAB')

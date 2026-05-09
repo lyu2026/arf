@@ -5,7 +5,9 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',observer:{},
 
-	FM:{},MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
+	FM:'data:image/svg+xml,%3Csvg%20fill%3D%22%23fff%22%20width%3D%22500px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-153.6%20-153.6%20819.20%20819.20%22%3E%3Cpath%20d%3D%22M256%2C0C114.842%2C0%2C0%2C114.842%2C0%2C256s114.842%2C256%2C256%2C256s256-114.842%2C256-256S397.158%2C0%2C256%2C0z%20M256%2C474.537%20c-120.501%2C0-218.537-98.036-218.537-218.537S135.499%2C37.463%2C256%2C37.463S474.537%2C135.499%2C474.537%2C256S376.501%2C474.537%2C256%2C474.537z%22%2F%3E%3Ctext%20x%3D%22256%22%20y%3D%22256%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20font-size%3D%22140%22%20font-weight%3D%22bold%22%20font-family%3D%22Arial%2C%20sans-serif%22%3E%7B%7Btext%7D%7D%3C%2Ftext%3E?%3C%2Fsvg%3E',
+	IH:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDBweCIgdmlld0JveD0iLTggLTggNDguMDAgNDguMDAiPgo8Y2lyY2xlIGZpbGw9IiM1RjVCNUJDRiIgY3g9IjE2IiBjeT0iMTYiIHI9IjE2Ii8+PGcgZmlsbD0iI2ZmZiI+CjxwYXRoIGQ9Ik0xNi4wOTIgMjMuMTk2QzEwLjUxOCAyMy4xOTYgNiAyMS41ODYgNiAxOS40MjhjMC0xLjEyNiAxLjIzLTIuMTQgMy4yLTIuODU2IDEuNTM4Ljk4NyA0LjExNyAxLjQ5MyA3LjA0MiAxLjQ5MyAyLjg1NiAwIDUuMzgtLjYxNyA2LjkzLTEuNTYyIDEuODU5LjcwNyAzLjAxMyAxLjY5NCAzLjAxMyAyLjc4MiAwIDIuMTYxLTQuNTE4IDMuOTExLTEwLjA5MyAzLjkxMXoiLz4KPHBhdGggZD0iTTE2LjE1MiAxNy41OGMtNC4yMjYgMC03LjY1Mi0xLjMyNS03LjY1Mi0yLjk2IDAtLjkwNiAxLjA1Ni0xLjcxOCAyLjcxMi0yLjI1OSAxLjE4Mi42MTcgMi45NTMgMS4wMTEgNC45NCAxLjAxMSAxLjk4NyAwIDMuNzU4LS4zOTQgNC45NC0xLjAxIDEuNjU5LjU0MyAyLjcxMiAxLjM1MiAyLjcxMiAyLjI1OC4wMDMgMS42MzUtMy40MjQgMi45Ni03LjY1MiAyLjk2eiIvPgo8cGF0aCBkPSJNMTYuMTI0IDEyLjg4Yy0zLjI2NyAwLTUuOTE2LTEuMDk0LTUuOTE2LTIuNDQgMC0xLjM0NSAyLjY1LTIuNDQgNS45MTYtMi40NCAzLjI2NiAwIDUuOTE2IDEuMDk1IDUuOTE2IDIuNDQgMCAxLjM0Ni0yLjY1IDIuNDQtNS45MTYgMi40NHoiLz4KPC9nPjwvc3ZnPg==',
+	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
 	loader:`<svg viewBox='0 0 100 100' width='40' height='40'><style>path{fill:#fff}path:nth-child(1){animation:r1 2s linear infinite;transform-origin:50px 50px}path:nth-child(2){animation:r2 1s linear infinite;transform-origin:50px 50px}path:nth-child(3){animation:r1 2s linear infinite;transform-origin:50px 50px}@keyframes r1{to{transform:rotate(360deg)}}@keyframes r2{to{transform:rotate(-360deg)}}</style><path d='M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z'/><path d='M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z'/><path d='M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z'/></svg>`,
 
 	ftime:ts=>{
@@ -77,25 +79,17 @@ window.IX={
 		}
 		go&&go(true)
 	},
-
 	remove:async(me)=>{ // 删除记录
 		if(IX.wait||!confirm('你确定删除此记录吗？'))return
 		IX.wait=true
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('grid-c[dr]')
 		$.$('[F]').sa('wait')
 		$.$('button').html(IX.loader)
-		const id=parseInt($.ga('I')),s=await UP.sql_gt('diary',{cs:['imgs','files'],w:id}).then(_=>{
-			const o=[]
-			o.push(...(_.files||[]).filter(_=>_.startsWith('/tyan/files/')))
-			o.push(...(_.imgs||[]).filter(_=>_.startsWith('/tyan/files/')))
-			return o
-		}).catch(_=>log(_))
-		s.push(id+'.json')
-		log(id,s)
-		await UP.net_kf_rm('tyan',s).catch(_=>log('线上删除，操作失败',_))
-		log("ghh")
-		await UP.sql_rm('diary',id)
-		log("jkkk")
+		const o=await UP.sql_rm('diary',$.ga('I'),true).then(_=>true).catch(_=>{
+			log(_,'error')
+			return false
+		})
+		if(!o)return
 		setTimeout(()=>{
 			$.remove()
 			if($p.children.length>0)return
@@ -132,36 +126,11 @@ window.IX={
 		<div x='tags'><input placeholder=' ' value='${(tags||[]).join(' ')}'/><label>日志标签，空格分割</label></div>
 		<div x='address'><input placeholder=' ' value='${address||''}'/><label>当前地址，手动输入/自动定位</label><span onclick='run("IX","location",WI)(this)'>🎯</span></div>
 		<div xx><div x='lng'><input readonly placeholder=' ' value='${lng||''}'/><label>当前经度</label></div><div x='lat'><input readonly placeholder=' ' value='${lat||''}'/><label>当前纬度</label></div></div>
-		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img src='${_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
-		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img src='${IX.FM[_.split('.').pop()]}'/>`).join(''):''}<div onclick='run("IX","ufile",WI)(this,"file")'>╋</div></div>
+		<div x='weather'><input readonly placeholder=' ' value='${weather||''}'/><label>当前天气</label></div>
+		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map((_,i)=>`<img onclick='run("IX","preview",WI)(this,${i})' ondblclick='this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
+		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img ondblclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","ufile",WI)(this,"file")'>╋</div></div>
 		<button onclick='run("IX","save",WI)(this)'>保存</button>`)
 	},
-
-	mood:me=>{
-		$O.$$(`[x='mood']>*`).forEach(_=>_.da('c'))
-		me.sa('c')
-	},
-
-	location:async(me)=>{
-		let o=await UP.gps_lg().catch(_=>{
-			log('定位失败',_,'error')
-			return {}
-		})
-		log('定位信息',o)
-		if(!o)return
-		const {lat,lng,lines}=await UP.gps_ag(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
-			log('解析失败',_,'error')
-			return {}
-		})
-		$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
-		$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
-		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
-	},
-
-	upload:(me,tp='img')=>{
-		
-	},
-
 	save:async(me)=>{
 		if(IX.wait)return
 		IX.wait=true
@@ -181,22 +150,50 @@ window.IX={
 		const mood=$O.$(`modal-c [x='mood']>[c]`).innerText
 		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`modal-c [x='address']>input`).value.trim()
+		const weather=$O.$(`modal-c [x='weather']>input`).value.trim()
 		const location=`${$O.$(`modal-c [x='lng']>input`).value.trim()||'0'},${$O.$(`modal-c [x='lat']>input`).value.trim()||'0'}`
-		const imgs=[],files=[]
-		const ox={title,content,address,location,mood,tags,imgs,files}
+		const imgs=$O.$$(`modal-c [x='imgs']>*:not(div)`).map(_=>_.ga('v'))
+		const files=$O.$$(`modal-c [x='files']>*:not(div)`).map(_=>_.ga('v'))
+		const ox={title,content,address,weather,location,mood,tags,imgs,files}
 		if(id>0)ox.id=id
-		const o=await UP.sql_sv('diary',ox,true,true)
+		const o=await UP.sql_sv('diary',ox,true)
 		if(!o||!o.id||o.id<1){
 			log('操作失败',o,'error')
 			IX.wait=false
 			return
 		}
 		log(`已${id>0?'改':'添'}记录`,o)
-		const uo=await UP.net_kf_up('tyan',`${id}.json`,Array.from(new Uint8Array(new TextEncoder().encode(JSON.stringify(o)))))
-		log('已传数据',uo.o.name+' '+uo.o.hash)
 		IX.modal_close()
 		const tk='diary_tab'.gc('statistics')
 		if(tk)$O.$(`tab>[v='${tk}']`)?.click()
+	},
+	mood:me=>{
+		$O.$$(`[x='mood']>*`).forEach(_=>_.da('c'))
+		me.sa('c')
+	},
+	location:async(me)=>{
+		let o=await UP.gps_lg().catch(_=>{
+			log('定位失败',_,'error')
+			return {}
+		})
+		log('定位信息',o)
+		if(!o)return
+		let {lat,lng,lines,w}=await UP.gps_ag(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
+			log('解析失败',_,'error')
+			return {}
+		})
+		if(lat&&lng)w=await UP.net_wt(lat,lng)
+		$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
+		$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
+		$O.$(`modal-c [x='weather']>input`)?.sa({value:w||''})
+		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
+	},
+	upload:async(me,tp='img')=>{
+		const s=await UP.fss_fs((t=='img'?'image':'file')+'/*',true),c=$O.$$(`modal-c [x='${t=='img'?'img':'file'}s']>*:not(div)`).length
+		s.forEach((_,i)=>{
+			const n=$O.node('img',{v:_.uri,src:t=='img'?_.uri:IX.FM.replace('?',_.mime.split('/'.pop())),onclick=`run("IX","preview",WI)(this,${c+i})`,ondblclick='this.remove()'})
+			me.parentNode.insertBefore(n,me)
+		})
 	},
 
 	modal_close:()=>{ // 关闭详情弹层
@@ -341,8 +338,8 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
 		await UP.sql_dt('diary')
-		let e=await UP.sql_xt('diary')
-		if(!e){
+		// let e=await UP.sql_xt('diary')
+		// if(!e){
 			await UP.sql_ct('diary',[
 				{n:'title',tp:'TEXT',nn:true},
 				{n:'content',tp:'TEXT'},
@@ -350,11 +347,12 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 				{n:'files',tp:'TEXT',df:'[]'},
 				{n:'tags',tp:'TEXT',df:'[]'},
 				{n:'mood',tp:'TEXT'},
+				{n:'weather',tp:'TEXT'},
 				{n:'address',tp:'TEXT'},
 				{n:'location',tp:'TEXT'}
-			])
+			],['title','mood','tags','address','location','weather'])
 			await UP.sql_sy(true,'diary')
-		}
+		// }
 		log('绑定事件，节点监听')
 		IX.watch()
 		log('获取缓存，点击 TAB')

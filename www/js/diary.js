@@ -64,6 +64,7 @@ window.IX={
 		if(s.length<30)IX.stop=true
 		for(let d,m,y,i=0;i<s.length;i++){
 			const x=IX.ftime(s[i].at)
+			log(i,s[i])
 			if(i===0||x.m!=m||x.y!=y){
 				y=x.y
 				m=x.m
@@ -83,26 +84,18 @@ window.IX={
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('grid-c[dr]')
 		$.$('[F]').sa('wait')
 		$.$('button').html(IX.loader)
-		const id=$.ga('I'),s=await UP.sql_gt('diary',{cs:['imgs','files'],w:id}).then(_=>{
+		const id=parseInt($.ga('I')),s=await UP.sql_gt('diary',{cs:['imgs','files'],w:id}).then(_=>{
 			const o=[]
 			o.push(...(_.files||[]).filter(_=>_.startsWith('/tyan/files/')))
 			o.push(...(_.imgs||[]).filter(_=>_.startsWith('/tyan/files/')))
 			return o
-		})
+		}).catch(_=>log(_))
 		s.push(id+'.json')
-		let o=await UP.net_kf_rm('tyan',s).catch(_=>log('线上删除，操作失败',_))
-		if(!o){
-			IX.wait=false
-			me.da('wait')
-			return
-		}
-		o=await UP.sql_rm('diary',id)
-		if(o<1){
-			log('本地数据，删除失败，请刷新重试')
-			IX.wait=false
-			me.da('wait')
-			return
-		}
+		log(id,s)
+		await UP.net_kf_rm('tyan',s).catch(_=>log('线上删除，操作失败',_))
+		log("ghh")
+		await UP.sql_rm('diary',id)
+		log("jkkk")
 		setTimeout(()=>{
 			$.remove()
 			if($p.children.length>0)return
@@ -150,7 +143,7 @@ window.IX={
 	},
 
 	location:async(me)=>{
-		let o=await UP.gps_lg().then(_=>_?.coords||{}).catch(_=>{
+		let o=await UP.gps_lg().catch(_=>{
 			log('定位失败',_,'error')
 			return {}
 		})
@@ -189,9 +182,12 @@ window.IX={
 		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`modal-c [x='address']>input`).value.trim()
 		const location=`${$O.$(`modal-c [x='lng']>input`).value.trim()||'0'},${$O.$(`modal-c [x='lat']>input`).value.trim()||'0'}`
-		let imgs=[],files=[],o=await UP.sql_sv('diary',{id,title,content,address,location,mood,tags,imgs,files},true,true)
+		const imgs=[],files=[]
+		const ox={title,content,address,location,mood,tags,imgs,files}
+		if(id>0)ox.id=id
+		const o=await UP.sql_sv('diary',ox,true,true)
 		if(!o||!o.id||o.id<1){
-			log('操作失败','error')
+			log('操作失败',o,'error')
 			IX.wait=false
 			return
 		}
@@ -344,25 +340,21 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
-		let e=await UP.sql_xt('diary')
-		log(e?"yes":"no")
-		
 		await UP.sql_dt('diary')
-		
-		await UP.sql_ct('diary',[
-			{n:'title',tp:'TEXT',nn:true},
-			{n:'content',tp:'TEXT'},
-			{n:'imgs',tp:'TEXT',df:'[]'},
-			{n:'files',tp:'TEXT',df:'[]'},
-			{n:'tags',tp:'TEXT',df:'[]'},
-			{n:'mood',tp:'TEXT'},
-			{n:'address',tp:'TEXT'},
-			{n:'location',tp:'TEXT'}
-		])
-		e=await UP.sql_xt('diary')
-		log(e?"yes":"no")
-		await UP.sql_sy(true,'diary')
-		
+		let e=await UP.sql_xt('diary')
+		if(!e){
+			await UP.sql_ct('diary',[
+				{n:'title',tp:'TEXT',nn:true},
+				{n:'content',tp:'TEXT'},
+				{n:'imgs',tp:'TEXT',df:'[]'},
+				{n:'files',tp:'TEXT',df:'[]'},
+				{n:'tags',tp:'TEXT',df:'[]'},
+				{n:'mood',tp:'TEXT'},
+				{n:'address',tp:'TEXT'},
+				{n:'location',tp:'TEXT'}
+			])
+			await UP.sql_sy(true,'diary')
+		}
 		log('绑定事件，节点监听')
 		IX.watch()
 		log('获取缓存，点击 TAB')

@@ -241,7 +241,7 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           cd output
           {
-            echo "### 📦 APK 文件清单"
+            echo "### 📦 文件清单"
             echo ""
             echo "| 文件名 | 大小 | SHA256 |"
             echo "|--------|------|--------|"

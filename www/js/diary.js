@@ -20,20 +20,20 @@ window.IX={
 		const gbox=$O.$('grid').html('')
 
 		// 总条数和平均字数
-		let s=await UP.sql_gt('O',{cs:['content','at'],oy:'id DESC'}),count=s.length
+		let s=await UP.sql_gt('diary',{cs:['content','at'],oy:'id DESC'}),count=s.length
 		const days=count<1?0:new Set(s.map(r=>new Date(parseInt(r.at)).toLocaleDateString())).size
 		const lavg=count<1?0:Math.round(s.reduce((x,r)=>x+(r.content||'').length,0)/count*10)/10
 		const peak=count<1?0:Math.round(s.reduce((x,r)=>x+new Date(parseInt(r.at)).getHours(),0)/count*10)/10
 
 		// 图片/文件去重 - 只查有数据的
 		const si=new Set(),sf=new Set(),dm=new Map()
-		s=await UP.sql_gt('O',{cs:['imgs'],w:{imgs:{ne:'[]'}}})
+		s=await UP.sql_gt('diary',{cs:['imgs'],w:{imgs:{ne:'[]'}}})
 		s.forEach(r=>r.imgs&&r.imgs.forEach(v=>si.add(v)))
-		s=await UP.sql_gt('O',{cs:['files'],w:{files:{ne:'[]'}}})
+		s=await UP.sql_gt('diary',{cs:['files'],w:{files:{ne:'[]'}}})
 		s.forEach(r=>r.files&&r.files.forEach(v=>sf.add(v)))
 
 		// 连续天数 - 只查不同日期
-		s=await UP.sql_gt('O',{cs:['at']})
+		s=await UP.sql_gt('diary',{cs:['at']})
 		s.forEach(r=>{let d=new Date(r.at).toLocaleDateString();dm.set(d,true)})
 		s=[...dm.keys()].sort().reverse()
 		let streak=0,today=new Date().toLocaleDateString()
@@ -60,7 +60,7 @@ window.IX={
 			IX.page=me=1
 		}else if(IX.stop)return go&&go(true)
 
-		const s=await UP.sql_pg('O',{p:me,z:30,oy:'at DESC'}).then(_=>_.rows)
+		const s=await UP.sql_pg('diary',{p:me,z:30,oy:'at DESC'}).then(_=>_.rows)
 		if(s.length<30)IX.stop=true
 		for(let d,m,y,i=0;i<s.length;i++){
 			const x=IX.ftime(s[i].at)
@@ -83,7 +83,7 @@ window.IX={
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('grid-c[dr]')
 		$.$('[F]').sa('wait')
 		$.$('button').html(IX.loader)
-		const id=$.ga('I'),s=await UP.sql_gt('O',{cs:['imgs','files'],w:id}).then(_=>{
+		const id=$.ga('I'),s=await UP.sql_gt('diary',{cs:['imgs','files'],w:id}).then(_=>{
 			const o=[]
 			o.push(...(_.files||[]).filter(_=>_.startsWith('/tyan/files/')))
 			o.push(...(_.imgs||[]).filter(_=>_.startsWith('/tyan/files/')))
@@ -96,7 +96,7 @@ window.IX={
 			me.da('wait')
 			return
 		}
-		o=await UP.sql_rm('O',id)
+		o=await UP.sql_rm('diary',id)
 		if(o<1){
 			log('本地数据，删除失败，请刷新重试')
 			IX.wait=false
@@ -130,7 +130,7 @@ window.IX={
 		$O.body.sa('ns')
 		$O.$('grid').da('a')
 		$O.$('modal').da('hide').$('modal-t>title').html((id>0?'编辑':'添加')+'日记')
-		const {title,content,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('O',id):{},[lng,lat]=location?.split(',')||['','']
+		const {title,content,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
 		<div x='title'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
@@ -189,7 +189,7 @@ window.IX={
 		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`modal-c [x='address']>input`).value.trim()
 		const location=`${$O.$(`modal-c [x='lng']>input`).value.trim()||'0'},${$O.$(`modal-c [x='lat']>input`).value.trim()||'0'}`
-		let imgs=[],files=[],o=await UP.sql_sv('O',{id,title,content,address,location,mood,tags,imgs,files},true,true)
+		let imgs=[],files=[],o=await UP.sql_sv('diary',{id,title,content,address,location,mood,tags,imgs,files},true,true)
 		if(!o||!o.id||o.id<1){
 			log('操作失败','error')
 			IX.wait=false
@@ -344,12 +344,12 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
 		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
 
-		let e=await UP.sql_xt('O')
+		let e=await UP.sql_xt('diary')
 		log(e?"yes":"no")
 		
-		await UP.sql_rm('O')
+		await UP.sql_dt('diary')
 		
-		await UP.sql_tb('O',[
+		await UP.sql_ct('diary',[
 			{n:'title',tp:'TEXT',nn:true},
 			{n:'content',tp:'TEXT'},
 			{n:'imgs',tp:'TEXT',df:'[]'},
@@ -359,9 +359,9 @@ modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
 			{n:'address',tp:'TEXT'},
 			{n:'location',tp:'TEXT'}
 		])
-		e=await UP.sql_xt('O')
+		e=await UP.sql_xt('diary')
 		log(e?"yes":"no")
-		await UP.sql_sy(true,'O')
+		await UP.sql_sy(true,'diary')
 		
 		log('绑定事件，节点监听')
 		IX.watch()

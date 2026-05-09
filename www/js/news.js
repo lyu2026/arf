@@ -217,7 +217,7 @@ window.IX={
 body{display:flex!important;flex-direction:column!important}
 
 grid-c{float:unset;display:flex;width:100%;height:auto;margin-bottom:3px;background:rgba(0,0,0,.1)}
-grid-c>img{display:block;width:30%;aspect-ratio:5/3;object-fit:cover;margin-right:3px}
+grid-c>img{display:block;width:114px;aspect-ratio:5/3;object-fit:cover;margin-right:3px}
 grid-c>div{flex:1;display:flex;flex-direction:column}
 grid-c>div>*:first-child{color:darkorange;font-size:13px;font-weight:700;line-height:1.2;border-top:1px solid rgba(0,0,0,.3);border-bottom:1px solid rgba(0,0,0,.1);padding:2px}
 grid-c>div>*:nth-child(2){color:darkgreen;font-size:10px;padding:4px;background:rgba(0,0,0,.06);line-height:1.2}

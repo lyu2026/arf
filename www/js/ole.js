@@ -3,10 +3,7 @@
 WI=window.I=crypto.randomUUID()
 
 window.IX={
-	name:'ole',
-
-	// 所有监听对象
-	observer:{},
+	name:'ole',observer:{},
 
 	vv:()=>{ // 链接公共参数
 		const x=(Date.parse(new Date())/1e3).toString(),a=x.md5(),b=[],c=[[],[],[],[]]
@@ -53,7 +50,7 @@ window.IX={
 			IX.sm={}
 			IX.page=0
 			IX.modal_close()
-			UP.dev_sp_set('SO')
+			UP.dev_sp_st('SO')
 			key=me.parentElement.ga('T');val=me.ga('V')
 			log(`手动筛选，点击 ${key}: ${val}`)
 			gbox.da('a').sa({_:key=='category'&&val=='?'?'💡 请输入关键字 . . ':'🥏 正在搜索，请稍等 . . .'}).html('')
@@ -190,16 +187,16 @@ window.IX={
 			IX.hls.attachMedia(V)
 			V.addEventListener('fullscreenchange',()=>{
 				if(!$O.fullscreenElement){
-					UP.dev_sp_set('SO');
+					UP.dev_sp_st('SO');
 					if(V.fsn)V.fsn=false
 					return
 				}
 				if(!V.fsn){
-					UP.dev_sp_set('H');
+					UP.dev_sp_st('H');
 					V.fsn=true
 					return
 				}
-				UP.dev_sp_set('SO');
+				UP.dev_sp_st('SO');
 				V.fsn=false
 			},false)
 			V.ondurationchange=()=>{

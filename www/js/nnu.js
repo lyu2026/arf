@@ -3,11 +3,7 @@
 WI=window.I=crypto.randomUUID()
 
 window.IX={
-	name:'nnu',
-
-	// 所有监听对象
-	observer:{},
-	O:cordova.plugin.orient,
+	name:'nnu',observer:{},
 
 	// 视频名称过滤正则
 	name_reg:/(抢先|陈翔六点半|大电影|羊羊|没事|燃烧吧|拜托了|热恋|行不通|吃饭|差评女友|不好惹|怎敌她|永不放弃|鹊刀门|量产型|乡村爱情|扑通扑通|二龙湖|小财迷|武侠世界|别怕)/,
@@ -29,7 +25,7 @@ window.IX={
 			IX.sm={}
 			IX.page=0
 			IX.modal_close()
-			UP.dev.sp.set('SO')
+			UP.dev_sp_st('SO')
 			key=me.parentElement.ga('T');val=me.ga('V')
 			log(`手动筛选，点击 ${key}: ${val}`)
 			gbox.da('a').sa({_:key=='category'&&val=='?'?'💡 请输入关键字 . . ':'🥏 正在搜索，请稍等 . . .'}).html('')
@@ -178,16 +174,16 @@ window.IX={
 			IX.hls.attachMedia(V)
 			V.addEventListener('fullscreenchange',()=>{
 				if(!$O.fullscreenElement){
-					UP.dev.sp.set('SO')
+					UP.dev_sp_st('SO')
 					if(V.fsn)V.fsn=false
 					return
 				}
 				if(!V.fsn){
-					UP.dev.sp.set('H')
+					UP.dev_sp_st('H')
 					V.fsn=true
 					return
 				}
-				UP.dev.sp.set('SO')
+				UP.dev_sp_st('SO')
 				V.fsn=false
 			},false)
 			V.ondurationchange=()=>{

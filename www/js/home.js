@@ -8,10 +8,7 @@ window.ICVR=`data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwcHgnIHZpZXdCb3g9Jy0yM
 WI=window.I=crypto.randomUUID()
 
 window.IX={
-	name:'home',
-
-	// 所有监听对象
-	observer:{},
+	name:'home',observer:{},
 
 	cards:[ // 所有页面
 		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in'},
@@ -83,13 +80,6 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		for(let {key,name,title,brief} of IX.cards)o.push(`<card${(i++)%2<1?' v':''} onclick='run("IX","goto",WI)(this)' K='${key}'><div class='front' style='--u:url(./img/${key}.webp)'><h1>${name}</h1></div><div class='back'><h2>${title}</h2><p>${brief}</p></div></card>`)
 		log('渲染页面，构建 DOM 树')
 		$O.body.html(o.join('')+($O.$('#w_logs')?.html(true)||''))
-		
-		await UP.fss_prv([
-			'/tyan/files/o.jpeg',
-			'https://cdn.pixabay.com/photo/2023/05/17/10/26/woman-7999748_1280.jpg',
-			'https://cdn.pixabay.com/photo/2024/12/10/20/52/ballerina-9258598_1280.jpg'
-		],0,{share:true,down:true,loader:'dots',lcolor:'#ff6600',bg:'#000',alpha:0.6})
-	
 	},
 
 }

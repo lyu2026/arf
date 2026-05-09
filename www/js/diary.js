@@ -97,7 +97,7 @@ window.IX={
 			if(x.ha('my'))x.remove()
 			IX.wait=false
 			$p.remove()
-		},5000)
+		},1000)
 	},
 
 	calendar:async(me)=>{ // 日历
@@ -117,7 +117,7 @@ window.IX={
 		$O.body.sa('ns')
 		$O.$('grid').da('a')
 		$O.$('modal').da('hide').$('modal-t>title').html((id>0?'编辑':'添加')+'日记')
-		const {title,content,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
+		const {title,content,weather,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
 		<div x='title'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
@@ -128,7 +128,7 @@ window.IX={
 		<div xx><div x='lng'><input readonly placeholder=' ' value='${lng||''}'/><label>当前经度</label></div><div x='lat'><input readonly placeholder=' ' value='${lat||''}'/><label>当前纬度</label></div></div>
 		<div x='weather'><input readonly placeholder=' ' value='${weather||''}'/><label>当前天气</label></div>
 		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map((_,i)=>`<img onclick='run("IX","preview",WI)(this,${i})' ondblclick='this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
-		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img ondblclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","ufile",WI)(this,"file")'>╋</div></div>
+		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img ondblclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")'>╋</div></div>
 		<button onclick='run("IX","save",WI)(this)'>保存</button>`)
 	},
 	save:async(me)=>{
@@ -188,10 +188,11 @@ window.IX={
 		$O.$(`modal-c [x='weather']>input`)?.sa({value:w||''})
 		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
 	},
-	upload:async(me,tp='img')=>{
-		const s=await UP.fss_fs((t=='img'?'image':'file')+'/*',true),c=$O.$$(`modal-c [x='${t=='img'?'img':'file'}s']>*:not(div)`).length
+	upload:async(me,t='img')=>{
+		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true),c=$O.$$(`modal-c [x='${t=='img'?'img':'file'}s']>*:not(div)`).length
+		log(s)
 		s.forEach((_,i)=>{
-			const n=$O.node('img',{v:_.uri,src:t=='img'?_.uri:IX.FM.replace('?',_.mime.split('/'.pop())),onclick=`run("IX","preview",WI)(this,${c+i})`,ondblclick='this.remove()'})
+			const n=$O.node('img',{v:_.uri,src:t=='img'?_.uri:IX.FM.replace('?',_.mime.split('/'.pop())),onclick:`run("IX","preview",WI)(this,${c+i})`,ondblclick:'this.remove()'})
 			me.parentNode.insertBefore(n,me)
 		})
 	},

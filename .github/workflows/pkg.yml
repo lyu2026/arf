@@ -62,7 +62,6 @@ jobs:
           fi
 
   build:
-    needs: clear
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -199,7 +198,6 @@ jobs:
             
             if grep -E "FAILURE|BUILD FAILED|error:" "$CURRENT_LOG" | grep -q .; then
               HAS_ERROR=true
-              echo "[$ABI] 打包失败" > "$ERROR_LOG"
               cat "$CURRENT_LOG" >> "$ERROR_LOG"
               echo ">>> $ABI 打包失败"
             elif [ -f platforms/android/app/build/outputs/apk/release/app-release.apk ]; then

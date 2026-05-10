@@ -45,11 +45,6 @@
 	<platform name='android'>
 		<hook type='after_platform_add' src='hook.js' />
 
-		<!-- 适配TV -->
-		<config-file target='AndroidManifest.xml' parent='/manifest/application/activity/intent-filter'>
-			<category android:name='android.intent.category.LEANBACK_LAUNCHER' />
-		</config-file>
-
 		<!-- SDK -->
 		<preference name='android-minSdkVersion' value='24' />
 		<preference name='android-targetSdkVersion' value='34' />

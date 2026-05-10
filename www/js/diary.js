@@ -5,6 +5,7 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',observer:{},
 
+	CT:null,
 	FM:'data:image/svg+xml,%3Csvg%20fill%3D%22%23fff%22%20width%3D%22500px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-153.6%20-153.6%20819.20%20819.20%22%3E%3Cpath%20d%3D%22M256%2C0C114.842%2C0%2C0%2C114.842%2C0%2C256s114.842%2C256%2C256%2C256s256-114.842%2C256-256S397.158%2C0%2C256%2C0z%20M256%2C474.537%20c-120.501%2C0-218.537-98.036-218.537-218.537S135.499%2C37.463%2C256%2C37.463S474.537%2C135.499%2C474.537%2C256S376.501%2C474.537%2C256%2C474.537z%22%2F%3E%3Ctext%20x%3D%22256%22%20y%3D%22256%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20font-size%3D%22140%22%20font-weight%3D%22bold%22%20font-family%3D%22Arial%2C%20sans-serif%22%3E?%3C%2Ftext%3E%3C%2Fsvg%3E',
 	IH:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDBweCIgdmlld0JveD0iLTggLTggNDguMDAgNDguMDAiPgo8Y2lyY2xlIGZpbGw9IiM1RjVCNUJDRiIgY3g9IjE2IiBjeT0iMTYiIHI9IjE2Ii8+PGcgZmlsbD0iI2ZmZiI+CjxwYXRoIGQ9Ik0xNi4wOTIgMjMuMTk2QzEwLjUxOCAyMy4xOTYgNiAyMS41ODYgNiAxOS40MjhjMC0xLjEyNiAxLjIzLTIuMTQgMy4yLTIuODU2IDEuNTM4Ljk4NyA0LjExNyAxLjQ5MyA3LjA0MiAxLjQ5MyAyLjg1NiAwIDUuMzgtLjYxNyA2LjkzLTEuNTYyIDEuODU5LjcwNyAzLjAxMyAxLjY5NCAzLjAxMyAyLjc4MiAwIDIuMTYxLTQuNTE4IDMuOTExLTEwLjA5MyAzLjkxMXoiLz4KPHBhdGggZD0iTTE2LjE1MiAxNy41OGMtNC4yMjYgMC03LjY1Mi0xLjMyNS03LjY1Mi0yLjk2IDAtLjkwNiAxLjA1Ni0xLjcxOCAyLjcxMi0yLjI1OSAxLjE4Mi42MTcgMi45NTMgMS4wMTEgNC45NCAxLjAxMSAxLjk4NyAwIDMuNzU4LS4zOTQgNC45NC0xLjAxIDEuNjU5LjU0MyAyLjcxMiAxLjM1MiAyLjcxMiAyLjI1OC4wMDMgMS42MzUtMy40MjQgMi45Ni03LjY1MiAyLjk2eiIvPgo8cGF0aCBkPSJNMTYuMTI0IDEyLjg4Yy0zLjI2NyAwLTUuOTE2LTEuMDk0LTUuOTE2LTIuNDQgMC0xLjM0NSAyLjY1LTIuNDQgNS45MTYtMi40NCAzLjI2NiAwIDUuOTE2IDEuMDk1IDUuOTE2IDIuNDQgMCAxLjM0Ni0yLjY1IDIuNDQtNS45MTYgMi40NHoiLz4KPC9nPjwvc3ZnPg==',
 	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
@@ -104,15 +105,36 @@ window.IX={
 	calendar:async(me)=>{ // 日历
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
-		
-		await UP.ntf_st({t:'看考场',m:'刚刚好的方法媳妇儿',num:4,page:'hj'})
-		log('设置成功')
-
+		const {o,y,m}=IX.ocalendar()
+		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
+	},
+	month:(y,m)=>{
+		if(m<1){y--;m=12}
+		if(m>12){y++;m=1}
+		const {o}=IX.ocalendar(y,m)
+		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
+	},
+	ocalendar:async(y=new Date().getFullYear(),m=(new Date().getMonth())+1)=>{
+		const a=new Date(y,m-1,1).getDay(),b=new Date(y,m,0).getDate()
+		const c=new Date(y,m-1,0).getDate(),d=new Date()
+		const e=`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+		const mx=['','正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月']
+		let o=`<grid-c my>${mx[m]} ${y}年</grid-c><grid-c ws><div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div>周六</div><div>周日</div></grid-c><grid-c ds>`
+		const g=a===0?6:a-1,cm={},cs=await UP.sql_gt('diary',{cs:["strftime('%Y-%m-%d',at/1000,'unixepoch') AS x","COUNT(*) AS o"],w:"strftime('%Y-%m',at/1000,'unixepoch')='2026-05'",gb:"x",oy:"x ASC"})
+		for(let _ of cs)cm[_.x]=_.o
+		for(let h=g;h>0;h--)o+=`<div></div>`
+		for(let i=1;i<=b;i++){
+			const j=new Date(y,m-1,i).getDay()
+			const k=j===0||j===6,x=`${y}-${m}-${i}`
+			o+=`<div${e===x?' c':''}${cm[x]&&cm[x].o>0?` x='${cm[x].o}'`:''}>${i}</div>`
+		}
+		if(42-g-b<7)for(let l=1;l<=42-(g+b);l++)o+=`<div></div>`
+		o+='</grid-c>'
+		return {o,y,m}
 	},
 
 	add:async(me)=>{ // 新增
 		if(IX.wait)return
-		const K=IX.key=crypto.randomUUID()
 		const mbox=$O.$('modal-c').html(''),id=IX.id=parseInt(me?.ga('I')||0)
 		if(id>0)mbox.html(`<sk pt30 f fv g12><sk f g12 h80></sk><sk f g12 h180></sk><sk f h60><sk q w60 h60></sk><sk q w60 h60></sk><sk q w60 h60></sk></sk><sk q h40></sk><sk q h30></sk></sk>`)
 		$O.body.sa('ns')
@@ -128,8 +150,8 @@ window.IX={
 		<div x='address'><input placeholder=' ' value='${address||''}'/><label>当前地址，手动输入/自动定位</label><span onclick='run("IX","location",WI)(this)'>🎯</span></div>
 		<div xx><div x='lng'><input readonly placeholder=' ' value='${lng||''}'/><label>当前经度</label></div><div x='lat'><input readonly placeholder=' ' value='${lat||''}'/><label>当前纬度</label></div></div>
 		<div x='weather'><input readonly placeholder=' ' value='${weather||''}'/><label>当前天气</label></div>
-		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img onclick='run("IX","preview",WI)(this)' ondblclick='this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
-		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img ondblclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")'>╋</div></div>
+		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img onclick='run("IX","preview",WI)(this)' ondblclick='clearTimeout(IX.CT);this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
+		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img onclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")'>╋</div></div>
 		<button onclick='run("IX","save",WI)(this)'>保存</button>`)
 	},
 	save:async(me)=>{
@@ -159,17 +181,19 @@ window.IX={
 		const files=$O.$$(`modal-c [x='files']>*:not(div)`).map(_=>_.ga('v'))
 		const ox={title,content,address,weather,location,mood,tags,imgs,files}
 		if(id>0)ox.id=id
-		const o=await UP.sql_sv('diary',ox,true).catch(_=>{
-			log('操作失败',_,'error')
-			me.html('保存').da('wait')
-			IX.wait=false
-			return {}
-		})
-		if(!o||!o.id||o.id<1)return
-		log(`已${id>0?'改':'添'}记录`,o)
-		IX.modal_close()
-		const tk='diary_tab'.gc('statistics')
-		if(tk)$O.$(`tab>[v='${tk}']`)?.click()
+		setTimeout(async()=>{
+			const o=await UP.sql_sv('diary',ox,true).catch(_=>{
+				log('操作失败',_,'error')
+				me.html('保存').da('wait')
+				IX.wait=false
+				return {}
+			})
+			if(!o||!o.id||o.id<1)return
+			log(`已${id>0?'改':'添'}记录`,o)
+			IX.modal_close()
+			const tk='diary_tab'.gc('statistics')
+			if(tk)$O.$(`tab>[v='${tk}']`)?.click()
+		},200)
 	},
 	mood:me=>{
 		$O.$$(`[x='mood']>*`).forEach(_=>_.da('c'))
@@ -180,7 +204,6 @@ window.IX={
 			log('定位失败',_,'error')
 			return {}
 		})
-		log('定位信息',o)
 		if(!o)return
 		let {lat,lng,lines,w}=await UP.gps_ag(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
 			log('解析失败',_,'error')
@@ -193,21 +216,19 @@ window.IX={
 		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
 	},
 	upload:async(me,t='img')=>{
-		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true)
+		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true).catch(_=>{})
 		s.forEach(_=>{
 			const x=_.mime.startsWith('image/'),$=$O.$(`modal-c [x='${x?'imgs':'files'}']>div`)
-			const o=$O.node('img',{v:_.uri,src:x?_.base64:IX.FM.replace('?',IX.ME[_.mime]||'未知'),onclick:`run("IX","preview",WI)(this)`,ondblclick:'this.remove()'})
+			const o=$O.node('img',{v:_.uri,src:x?_.base64:IX.FM.replace('?',IX.ME[_.mime]||'未知'),onclick:`run("IX","preview",WI)(this)`,ondblclick:'clearTimeout(IX.CT);this.remove()'})
 			$.parentNode.insertBefore(o,$)
 		})
 	},
 	preview:async(me)=>{
-		const p=me.parentElement,s=p.$$('img').map(_=>{
-			const v=_.ga('v'),z=_.ga('src')
-			log(v.startsWith('/'),v,z)
-			if(v.startsWith('/'))return v
-			return z
-		}),i=Array.from(p.children).indexOf(me)
-		await UP.fss_pv(s,i,{alpha:0.5,loader:'dots'})
+		clearTimeout(IX.CT)
+		IX.CT=setTimeout(async()=>{
+			const p=me.parentElement,s=p.$$('img').map(_=>_.ga('v')),i=Array.from(p.children).indexOf(me)
+			await UP.fss_pv(s,i,{alpha:0.5,loader:'dots'})
+		},500)
 	},
 
 	modal_close:()=>{ // 关闭详情弹层
@@ -308,9 +329,30 @@ body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:#fff}
 body[dark] grid-c[dr]>[I]>[R]>[F]>*:nth-child(2){color:rgba(255,255,255,.8)}
 body[dark] grid-c[dr]>[I]>[R]>[F]>*:last-child{color:rgba(255,255,255,.5)}
 
+grid-c[ws]{background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;gap:2px;border-radius:2px;margin-top:10px;margin-bottom:6px}
+body[dark] grid-c[ws]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
+grid-c[ws]>*{background:rgba(0,0,0,.08);color:black;border:1px solid rgba(0,0,0,0);line-height:34px;flex:1;display:flex;align-items:center;justify-content:center;border-radius:1px;font-size:16px;transition:all 0.2s}
+body[dark] grid-c[ws]>*{background:rgba(255,255,255,.08);color:white}
+
+grid-c[ds]{height:calc(100vh - 250px);background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:grid;grid-template-columns:repeat(7,1fr);gap:2px;border-radius:2px}
+body[dark] grid-c[ds]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
+grid-c[ds]>*{background:rgba(0,0,0,.04);color:black;border:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;border-radius:2px;font-size:16px;transition:all 0.2s}
+body[dark] grid-c[ds]>*{background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.05)}
+grid-c[ds]>*:hover{background:rgba(0,0,0,.1);transform:scale(0.98)}
+body[dark] grid-c[ds]>*:hover{background:rgba(255,255,255,.1)}
+grid-c[ds]>*[x]::before{content:attr(x);color;black;display:block;position:absolute;top:4px;left:4px;font-size:12px}
+body[dark] grid-c[ds]>*[x]::before{color:white}
+grid-c[ds]>*:empty{background:rgba(0,0,0,0)}
+grid-c[ds]>[c]{background:rgba(0,0,0,.2);border:none}
+body[dark] grid-c[ds]>[c]{background:rgba(255,255,255,.2)}
+
+grid-c[bt]{margin:6px 0;display:flex;gap:2px}
+grid-c[bt]>*{background:rgba(0,0,0,.09);color:black;font-size:16px;flex:1;line-height:50px;text-align:center;border-radius:2px}
+body[dark] grid-c[bt]>*{background:rgba(255,255,255,.09);color:white}
+
 modal-c>*,modal-c *{margin:0;padding:0}
-modal-c textarea,modal-c input{width:100%;resize:none;border-radius:2px;box-shadow:inset 0 0 5px rgba(0,0,0,.2);padding:16px 8px 8px;outline:0;margin:0;font-size:14px;color:black;background:rgba(0,0,0,0)}
-body[dark] modal-c textarea,body[dark] modal-c input{box-shadow:inset 0 0 5px rgba(255,255,255,.2);color:white}
+modal-c textarea,modal-c input{width:100%;resize:none;border-radius:4px;box-shadow:inset 0 0 8px rgba(0,0,0,.2);padding:16px 8px 8px;border:0;outline:0;margin:0;font-size:14px;color:black;background:rgba(0,0,0,0)}
+body[dark] modal-c textarea,body[dark] modal-c input{box-shadow:inset 0 0 8px rgba(255,255,255,.2);color:white}
 modal-c [x]>label{font-size:18px;height:auto;position:absolute;left:8px;top:50%;transform:translateY(-50%);transition:.2s}
 modal-c [x]>textarea:focus+label,modal-c [x]>textarea:not(:placeholder-shown)+label,modal-c [x]>input:focus+label,modal-c [x]>input:not(:placeholder-shown)+label{top:10px;font-size:10px;color:#007bff}
 modal-c [x][ph]::before{content:attr(ph);display:block;font-size:10px;position:absolute;height:auto;left:0;top:-2px;z-index:10;color:#007bff}

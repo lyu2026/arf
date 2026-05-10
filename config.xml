@@ -46,10 +46,6 @@
 		<hook type='after_platform_add' src='hook.js' />
 
 		<!-- 适配TV -->
-		<config-file target='AndroidManifest.xml' parent='/manifest'>
-			<uses-feature android:name='android.software.leanback' android:required='false' />
-			<uses-feature android:name='android.hardware.touchscreen' android:required='false' />
-		</config-file>
 		<config-file target='AndroidManifest.xml' parent='/manifest/application/activity/intent-filter'>
 			<category android:name='android.intent.category.LEANBACK_LAUNCHER' />
 		</config-file>

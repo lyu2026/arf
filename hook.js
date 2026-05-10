@@ -15,6 +15,7 @@ module.exports=function(ctx){
 	// 注入manifest
 	const s=fs.readFileSync(m,'utf8')
 	if(!s.includes('networkSecurityConfig'))fs.writeFileSync(m,s.replace('<application','<application android:networkSecurityConfig="@xml/cors"'))
+	if(!s.includes('android.software.leanback'))fs.writeFileSync(m,s.replace('<application','<uses-feature android:name="android.software.leanback" android:required="false"/>\n<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>\n<application'))
 
 	// Kotlin版本 + ABI过滤
 	fs.writeFileSync(p.join(b,'build-extras.gradle'),`configurations.all {

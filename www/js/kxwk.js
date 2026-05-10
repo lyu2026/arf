@@ -22,6 +22,7 @@ window.IX={
 
 	tab_click:(me,go=_=>true)=>{ // 筛选视频
 		CF()
+		log(cordova.file)
 		if(!me&&IX.stop)return
 		let key,val
 		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
@@ -359,7 +360,7 @@ window.IX={
 		log('已载书签','success')
 		const O=await ndoc.getFile(),r=new FileReader()
 		log(N+' 大小: '+O.size.usage())
-		resolveLocalFileSystemURL(cordova.file.externalDataDirectory,de=>{
+		resolveLocalFileSystemURL(cordova.file.externalRootDirectory+'Download/',de=>{
 			de.getFile(N,{create:true},fe=>{
 				fe.createWriter(w=>{
 					r.onerror=e=>log('FileReader',e,'error')

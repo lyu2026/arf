@@ -19,6 +19,7 @@ window.IX={
 	},
 
 	statistics:async(me)=>{ // 统计
+		if(IX.wait)return
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const gbox=$O.$('grid').html('')
@@ -54,21 +55,22 @@ window.IX={
 		</grid-c>`)
 	},
 
-	list:async(me,go)=>{ // 列表
+	list:async(me,go,z=null)=>{ // 列表
+		if(IX.wait)return
 		let gbox=$O.$('grid')
-		if(!_T(me,'int')){
+		if(!_T(me,'number')||!z){
 			IX.stop=false
 			gbox=gbox.html('')
+			if(z)me=$O.$(`tab>[v='list']`)
 			'diary_tab'.sc(me.ga('v'))
 			$O.$$('tab>*').forEach(_=>_[me!=_?'da':'sa']('c'))
 			IX.page=me=1
 		}else if(IX.stop)return go&&go(true)
 
-		const s=await UP.sql_pg('diary',{p:me,z:30,oy:'at DESC'}).then(_=>_.rows)
+		const s=await UP.sql_pg('diary',{p:me,z:30,w:z?`strftime('%Y-%m-%d',at/1000,'unixepoch')='${z}'`:'1=1',oy:'at DESC'}).then(_=>_.rows)
 		if(s.length<30)IX.stop=true
 		for(let d,m,y,i=0;i<s.length;i++){
 			const x=IX.ftime(s[i].at)
-			log(i,s[i])
 			if(i===0||x.m!=m||x.y!=y){
 				y=x.y
 				m=x.m
@@ -81,59 +83,55 @@ window.IX={
 		}
 		go&&go(true)
 	},
-	remove:async(me)=>{ // 删除记录
+	remove:me=>{ // 删除记录
 		if(IX.wait||!confirm('你确定删除此记录吗？'))return
 		IX.wait=true
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('grid-c[dr]')
 		$.$('[F]').sa('wait')
 		$.$('button').html(IX.loader)
-		const o=await UP.sql_rm('diary',$.ga('I'),true).then(_=>true).catch(_=>{
-			log(_,'error')
-			return false
-		})
-		if(!o)return
-		setTimeout(()=>{
+		setTimeout(()=>UP.sql_rm('diary',$.ga('I'),true).then(_=>{
 			$.remove()
+			IX.wait=false
 			if($p.children.length>0)return
 			const x=$p.previousElementSibling
 			if(x.ha('my'))x.remove()
-			IX.wait=false
 			$p.remove()
-		},1000)
+		}).catch(_=>log(_,'error')),400)
 	},
 
 	calendar:async(me)=>{ // 日历
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
-		const {o,y,m}=IX.ocalendar()
+		const {o,y,m}=await IX.ocalendar()
 		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
 	},
-	month:(y,m)=>{
+	month:async(y,m)=>{ // 切换月份
 		if(m<1){y--;m=12}
 		if(m>12){y++;m=1}
-		const {o}=IX.ocalendar(y,m)
+		const {o}=await IX.ocalendar(y,m)
 		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
 	},
 	ocalendar:async(y=new Date().getFullYear(),m=(new Date().getMonth())+1)=>{
 		const a=new Date(y,m-1,1).getDay(),b=new Date(y,m,0).getDate()
 		const c=new Date(y,m-1,0).getDate(),d=new Date()
-		const e=`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+		const e=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
 		const mx=['','正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月']
 		let o=`<grid-c my>${mx[m]} ${y}年</grid-c><grid-c ws><div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div>周六</div><div>周日</div></grid-c><grid-c ds>`
-		const g=a===0?6:a-1,cm={},cs=await UP.sql_gt('diary',{cs:["strftime('%Y-%m-%d',at/1000,'unixepoch') AS x","COUNT(*) AS o"],w:"strftime('%Y-%m',at/1000,'unixepoch')='2026-05'",gb:"x",oy:"x ASC"})
+		const g=a===0?6:a-1,cm={},cs=await UP.sql_gt('diary',{cs:["strftime('%Y-%m-%d',at/1000,'unixepoch') AS x","COUNT(*) AS o"],w:`strftime('%Y-%m',at/1000,'unixepoch')='${y}-${String(m).padStart(2,'0')}'`,gb:"x",oy:"x ASC"})
 		for(let _ of cs)cm[_.x]=_.o
+		log(cm)
 		for(let h=g;h>0;h--)o+=`<div></div>`
 		for(let i=1;i<=b;i++){
 			const j=new Date(y,m-1,i).getDay()
-			const k=j===0||j===6,x=`${y}-${m}-${i}`
-			o+=`<div${e===x?' c':''}${cm[x]&&cm[x].o>0?` x='${cm[x].o}'`:''}>${i}</div>`
+			const k=j===0||j===6,z=`${y}-${String(m).padStart(2,'0')}-${String(i).padStart(2,'0')}`
+			o+=`<div${e==z?' c':''}${cm[z]&&cm[z]>0?` x='共 ${cm[z]} 条记录' onclick='run("IX","list",WI)(null,null,"${z}")'`:''}>${i}</div>`
 		}
 		if(42-g-b<7)for(let l=1;l<=42-(g+b);l++)o+=`<div></div>`
 		o+='</grid-c>'
 		return {o,y,m}
 	},
 
-	add:async(me)=>{ // 新增
+	add:async(me)=>{ // 新增，打开编辑面板
 		if(IX.wait)return
 		const mbox=$O.$('modal-c').html(''),id=IX.id=parseInt(me?.ga('I')||0)
 		if(id>0)mbox.html(`<sk pt30 f fv g12><sk f g12 h80></sk><sk f g12 h180></sk><sk f h60><sk q w60 h60></sk><sk q w60 h60></sk><sk q w60 h60></sk></sk><sk q h40></sk><sk q h30></sk></sk>`)
@@ -154,24 +152,14 @@ window.IX={
 		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img onclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")'>╋</div></div>
 		<button onclick='run("IX","save",WI)(this)'>保存</button>`)
 	},
-	save:async(me)=>{
+	save:me=>{ // 新增，持久化入库&同步
 		if(IX.wait)return
+		const id=IX.id,title=$O.$(`modal-c [x='title']>textarea`).value.trim()
+		if(!title)return log('日志编辑，内容不能为空')
+		const content=$O.$(`modal-c [x='content']>textarea`).value.trim()
+		if(!content)return log('日志编辑，内容不能为空')
 		IX.wait=true
 		me.html(IX.loader).sa('wait')
-		const id=IX.id,title=$O.$(`modal-c [x='title']>textarea`).value.trim()
-		if(!title){
-			log('日志编辑，内容不能为空')
-			me.html('保存').da('wait')
-			IX.wait=false
-			return
-		}
-		const content=$O.$(`modal-c [x='content']>textarea`).value.trim()
-		if(!content){
-			log('日志编辑，内容不能为空')
-			me.html('保存').da('wait')
-			IX.wait=false
-			return
-		}
 		const mood=$O.$(`modal-c [x='mood']>[c]`).innerText
 		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`modal-c [x='address']>input`).value.trim()
@@ -181,41 +169,50 @@ window.IX={
 		const files=$O.$$(`modal-c [x='files']>*:not(div)`).map(_=>_.ga('v'))
 		const ox={title,content,address,weather,location,mood,tags,imgs,files}
 		if(id>0)ox.id=id
-		setTimeout(async()=>{
-			const o=await UP.sql_sv('diary',ox,true).catch(_=>{
-				log('操作失败',_,'error')
-				me.html('保存').da('wait')
-				IX.wait=false
-				return {}
-			})
+		setTimeout(()=>UP.sql_sv('diary',ox,true).then(o=>{
+			IX.wait=false
+			me.html('保存').da('wait')
 			if(!o||!o.id||o.id<1)return
-			log(`已${id>0?'改':'添'}记录`,o)
 			IX.modal_close()
-			const tk='diary_tab'.gc('statistics')
-			if(tk)$O.$(`tab>[v='${tk}']`)?.click()
-		},200)
+			const k='diary_tab'.gc('list')
+			log(`已${id>0?'改':'添'}记录`,o)
+			if(k)$O.$(`tab>[v='${k}']`)?.click()
+		}).catch(_=>{
+			IX.wait=false
+			log('操作失败',_,'error')
+			me.html('保存').da('wait')
+		}),400)
 	},
-	mood:me=>{
+	mood:me=>{ // 切换心情
 		$O.$$(`[x='mood']>*`).forEach(_=>_.da('c'))
 		me.sa('c')
 	},
-	location:async(me)=>{
-		let o=await UP.gps_lg().catch(_=>{
+	location:me=>{ // 自动定位，获取天气/经纬度/地址
+		IX.wait=true
+		me.html(IX.loader)
+		$O.$$(`modal-c [x='lat']>input,modal-c [x='lng']>input,modal-c [x='weather']>input,modal-c [x='address']>input`).map(_=>_.sa({value:''}))
+		setTimeout(()=>UP.gps_lg().then(o=>{
+			if(!o){
+				IX.wait=false
+				me.html('🎯')
+				return [{}]
+			}
+			return UP.gps_ag(o.lat,o.lng,{lc:'zh'})
+		}).then(async([{lat,lng,lines,w}])=>{
+			if(lat&&lng)w=await UP.net_wt(lat,lng)
+			$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
+			$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
+			$O.$(`modal-c [x='weather']>input`)?.sa({value:w||''})
+			$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
+			IX.wait=false
+			me.html('🎯')
+		}).catch(_=>{
+			IX.wait=false
+			me.html('🎯')
 			log('定位失败',_,'error')
-			return {}
-		})
-		if(!o)return
-		let {lat,lng,lines,w}=await UP.gps_ag(o.lat,o.lng,{lc:'zh'}).then(_=>_.shift()||{}).catch(_=>{
-			log('解析失败',_,'error')
-			return {}
-		})
-		if(lat&&lng)w=await UP.net_wt(lat,lng)
-		$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
-		$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
-		$O.$(`modal-c [x='weather']>input`)?.sa({value:w||''})
-		$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
+		}),400)
 	},
-	upload:async(me,t='img')=>{
+	upload:async(me,t='img')=>{ // 上传图片
 		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true).catch(_=>{})
 		s.forEach(_=>{
 			const x=_.mime.startsWith('image/'),$=$O.$(`modal-c [x='${x?'imgs':'files'}']>div`)
@@ -223,7 +220,7 @@ window.IX={
 			$.parentNode.insertBefore(o,$)
 		})
 	},
-	preview:async(me)=>{
+	preview:async(me)=>{ // 预览图片
 		clearTimeout(IX.CT)
 		IX.CT=setTimeout(async()=>{
 			const p=me.parentElement,s=p.$$('img').map(_=>_.ga('v')),i=Array.from(p.children).indexOf(me)
@@ -312,7 +309,7 @@ grid-c[dr]>[I]:first-child>[L]{z-index:4;text-align:center;font-size:22px}
 grid-c[dr]>[I]:last-child>[L]{z-index:4;text-align:center;font-size:22px}
 grid-c[dr]>[I]:first-child>[L]::after{content:'';display:block;position:absolute;top:7%;left:15%;z-index:10;width:70%;height:86%;background:rgba(0,0,0,.2);border-radius:24px}
 body[dark] grid-c[dr]>[I]:first-child>[L]::after{background:rgba(255,255,255,.2)}
-grid-c[dr]>[I]:first-child>[L]>div{font-size:12px;margin:20px auto 4px auto}
+grid-c[dr]>[I]:first-child>[L]>div{font-size:12px;margin:16px auto 5px auto}
 grid-c[dr]>[I]:not(:first-child)>[L]{z-index:0;color:rgba(0,0,0,0)}
 grid-c[dr]>[I]:not(:first-child)>[L] *{color:rgba(0,0,0,0)}
 
@@ -340,7 +337,7 @@ grid-c[ds]>*{background:rgba(0,0,0,.04);color:black;border:1px solid rgba(0,0,0,
 body[dark] grid-c[ds]>*{background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.05)}
 grid-c[ds]>*:hover{background:rgba(0,0,0,.1);transform:scale(0.98)}
 body[dark] grid-c[ds]>*:hover{background:rgba(255,255,255,.1)}
-grid-c[ds]>*[x]::before{content:attr(x);color;black;display:block;position:absolute;top:4px;left:4px;font-size:12px}
+grid-c[ds]>*[x]::before{content:attr(x);color;black;display:block;position:absolute;top:4px;left:4px;font-size:8px}
 body[dark] grid-c[ds]>*[x]::before{color:white}
 grid-c[ds]>*:empty{background:rgba(0,0,0,0)}
 grid-c[ds]>[c]{background:rgba(0,0,0,.2);border:none}
@@ -369,7 +366,8 @@ body[dark] modal-c [x='mood']>*[c]{background:rgba(255,255,255,.4);color:black}
 modal-c [x='tags']>textarea{line-height:40px;margin-bottom:4px}
 modal-c [x='address'],modal-c [xx]{margin:4px 0 4px 0;display:flex;gap:4px;height:40px}
 modal-c [x='address']>input,modal-c [xx]>*{flex:1}
-modal-c [x='address']>span{width:40px;border-radius:3px;font-size:24px;line-height:40px;text-align:center}
+modal-c [x='address']>span{display:block;width:40px;border-radius:3px;font-size:24px;line-height:40px;text-align:center}
+modal-c [x='address']>span>svg{width:calc(100% - 16px);height:calc(100% - 16px);margin:8px;object-fit:contain}
 modal-c [x='imgs'],modal-c [x='files']{padding-top:8px;margin-top:2px;display:flex;align-items:center;gap:4px;overflow-x:auto;border-bottom:1px solid rgba(0,0,0,.1)}
 body[dark] modal-c [x='imgs'],body[dark] modal-c [x='files']{border-color:rgba(255,255,255,.1)}
 modal-c [x='imgs']>*,modal-c [x='files']>*{display:block;width:50px;height:50px;font-size:30px;text-align:center;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px}

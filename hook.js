@@ -1,4 +1,4 @@
-// const fs=require('fs'),p=require('path')
+const fs=require('fs'),p=require('path')
 
 module.exports=function(ctx){
 	const b=p.join(ctx.opts.projectRoot,'platforms','android','app')

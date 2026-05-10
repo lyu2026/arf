@@ -11,6 +11,7 @@ window.IX={
 	name:'home',observer:{},
 
 	cards:[ // 所有页面
+		{key:'config',name:'系统配置',title:'',brief:''},
 		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in',tv:true},
 		{key:'ole',name:'欧乐视频',title:'数据来源',brief:'www.olehdtv.com',tv:true},
 		{key:'ayf',name:'爱壹帆',title:'数据来源',brief:'m.yfsp.tv',tv:true},

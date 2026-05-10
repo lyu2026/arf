@@ -83,11 +83,10 @@ window.IX={
 	card_click:me=>{ // 打开详情弹层
 		CF()
 		const K=IX.key=crypto.randomUUID(),N=me.ga('N'),U=me.ga('I'),W=me.ga('W')
-		const mbox=$O.$('[MC]').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
+		const mbox=$O.$('[MC]').html(`<sk pt30 f fv g12><sk q h40></sk><sk q h40></sk><sk q h40></sk><sk q r219></sk><sk q r219></sk></sk>`)
 		$O.body.sa('ns')
 		$O.$('[G]').da('a')
 		$O.$('[M]').da('hide').$('[MT]>div').da('s10','s12','s14').html(IX.tmap[W]?.name||'未知来源');
-
 		U.get(_=>{
 			if(IX.key!=K)return
 			if(_===null)return
@@ -213,12 +212,12 @@ window.IX={
 body{display:flex!important;flex-direction:column!important}
 
 [GC]{float:unset;display:flex;width:100%;height:auto;margin-bottom:3px;background:rgba(0,0,0,.1)}
-[GC]>img{display:block;width:114px;aspect-ratio:5/3;object-fit:cover;margin-right:3px}
+[GC]>img{display:block;width:114px;aspect-ratio:5/3;object-fit:cover}
 [GC]>div{flex:1;display:flex;flex-direction:column}
-[GC]>div>*:first-child{color:darkorange;font-size:13px;font-weight:700;line-height:1.2;border-top:1px solid rgba(0,0,0,.3);border-bottom:1px solid rgba(0,0,0,.1);padding:2px}
-[GC]>div>*:nth-child(2){color:darkgreen;font-size:10px;padding:4px;background:rgba(0,0,0,.06);line-height:1.2}
+[GC]>div>*:first-child{color:darkorange;padding-left:3px;font-size:13px;font-weight:700;line-height:1.2;border-top:1px solid rgba(0,0,0,.3);border-bottom:1px solid rgba(0,0,0,.1);padding:2px}
+[GC]>div>*:nth-child(2){color:darkgreen;padding-left:3px;font-size:10px;padding:4px;background:rgba(0,0,0,.06);line-height:1.2}
 body[dark] [GC]>div>*:nth-child(2){color:lightgreen}
-[GC]>div>*:nth-child(3){color:grey;font-size:11px;padding:4px;line-height:1.1}
+[GC]>div>*:nth-child(3){color:grey;padding-left:3px;font-size:11px;padding:4px;line-height:1.1}
 body[dark] [GC]>div>*:nth-child(3){color:cyan}
 body[dark] [GC]>div>*:first-child{border-top:1px solid rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.1)}
 body[dark] [GC]{background:rgba(255,255,255,.1)}

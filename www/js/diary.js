@@ -5,7 +5,7 @@ WI=window.I=crypto.randomUUID()
 window.IX={
 	name:'diary',observer:{},
 
-	CT:null,
+	ready:false,CT:null,
 	FM:'data:image/svg+xml,%3Csvg%20fill%3D%22%23fff%22%20width%3D%22500px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-153.6%20-153.6%20819.20%20819.20%22%3E%3Cpath%20d%3D%22M256%2C0C114.842%2C0%2C0%2C114.842%2C0%2C256s114.842%2C256%2C256%2C256s256-114.842%2C256-256S397.158%2C0%2C256%2C0z%20M256%2C474.537%20c-120.501%2C0-218.537-98.036-218.537-218.537S135.499%2C37.463%2C256%2C37.463S474.537%2C135.499%2C474.537%2C256S376.501%2C474.537%2C256%2C474.537z%22%2F%3E%3Ctext%20x%3D%22256%22%20y%3D%22256%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20font-size%3D%22140%22%20font-weight%3D%22bold%22%20font-family%3D%22Arial%2C%20sans-serif%22%3E?%3C%2Ftext%3E%3C%2Fsvg%3E',
 	IH:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDBweCIgdmlld0JveD0iLTggLTggNDguMDAgNDguMDAiPgo8Y2lyY2xlIGZpbGw9IiM1RjVCNUJDRiIgY3g9IjE2IiBjeT0iMTYiIHI9IjE2Ii8+PGcgZmlsbD0iI2ZmZiI+CjxwYXRoIGQ9Ik0xNi4wOTIgMjMuMTk2QzEwLjUxOCAyMy4xOTYgNiAyMS41ODYgNiAxOS40MjhjMC0xLjEyNiAxLjIzLTIuMTQgMy4yLTIuODU2IDEuNTM4Ljk4NyA0LjExNyAxLjQ5MyA3LjA0MiAxLjQ5MyAyLjg1NiAwIDUuMzgtLjYxNyA2LjkzLTEuNTYyIDEuODU5LjcwNyAzLjAxMyAxLjY5NCAzLjAxMyAyLjc4MiAwIDIuMTYxLTQuNTE4IDMuOTExLTEwLjA5MyAzLjkxMXoiLz4KPHBhdGggZD0iTTE2LjE1MiAxNy41OGMtNC4yMjYgMC03LjY1Mi0xLjMyNS03LjY1Mi0yLjk2IDAtLjkwNiAxLjA1Ni0xLjcxOCAyLjcxMi0yLjI1OSAxLjE4Mi42MTcgMi45NTMgMS4wMTEgNC45NCAxLjAxMSAxLjk4NyAwIDMuNzU4LS4zOTQgNC45NC0xLjAxIDEuNjU5LjU0MyAyLjcxMiAxLjM1MiAyLjcxMiAyLjI1OC4wMDMgMS42MzUtMy40MjQgMi45Ni03LjY1MiAyLjk2eiIvPgo8cGF0aCBkPSJNMTYuMTI0IDEyLjg4Yy0zLjI2NyAwLTUuOTE2LTEuMDk0LTUuOTE2LTIuNDQgMC0xLjM0NSAyLjY1LTIuNDQgNS45MTYtMi40NCAzLjI2NiAwIDUuOTE2IDEuMDk1IDUuOTE2IDIuNDQgMCAxLjM0Ni0yLjY1IDIuNDQtNS45MTYgMi40NHoiLz4KPC9nPjwvc3ZnPg==',
 	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
@@ -19,7 +19,7 @@ window.IX={
 	},
 
 	statistics:async(me)=>{ // 统计
-		if(IX.wait)return
+		if(!IX.ready||IX.wait)return
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const gbox=$O.$('[G]').html('')
@@ -56,7 +56,7 @@ window.IX={
 	},
 
 	list:async(me,go,z=null)=>{ // 列表
-		if(IX.wait)return
+		if(!IX.ready||IX.wait)return
 		let gbox=$O.$('[G]')
 		if(!_T(me,'number')||!z){
 			IX.stop=false
@@ -84,7 +84,7 @@ window.IX={
 		go&&go(true)
 	},
 	remove:me=>{ // 删除记录
-		if(IX.wait||!confirm('你确定删除此记录吗？'))return
+		if(!IX.ready||IX.wait||!confirm('你确定删除此记录吗？'))return
 		IX.wait=true
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('[GC][dr]')
 		$.$('[F]').sa('wait')
@@ -100,6 +100,7 @@ window.IX={
 	},
 
 	calendar:async(me)=>{ // 日历
+		if(!IX.ready||IX.wait)return
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const {o,y,m}=await IX.ocalendar()
@@ -119,7 +120,6 @@ window.IX={
 		let o=`<div GC my>${mx[m]} ${y}年</div><div GC ws><div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div>周六</div><div>周日</div></div><div GC ds>`
 		const g=a===0?6:a-1,cm={},cs=await UP.sql_gt('diary',{cs:["strftime('%Y-%m-%d',at/1000,'unixepoch') AS x","COUNT(*) AS o"],w:`strftime('%Y-%m',at/1000,'unixepoch')='${y}-${String(m).padStart(2,'0')}'`,gb:"x",oy:"x ASC"})
 		for(let _ of cs)cm[_.x]=_.o
-		log(cm)
 		for(let h=g;h>0;h--)o+=`<div></div>`
 		for(let i=1;i<=b;i++){
 			const j=new Date(y,m-1,i).getDay()
@@ -132,7 +132,7 @@ window.IX={
 	},
 
 	add:async(me)=>{ // 新增，打开编辑面板
-		if(IX.wait)return
+		if(!IX.ready||IX.wait)return
 		const mbox=$O.$('[MC]').html(''),id=IX.id=parseInt(me?.ga('I')||0)
 		if(id>0)mbox.html(`<sk pt30 f fv g12><sk f g12 h80></sk><sk f g12 h180></sk><sk f h60><sk q w60 h60></sk><sk q w60 h60></sk><sk q w60 h60></sk></sk><sk q h40></sk><sk q h30></sk></sk>`)
 		$O.body.sa('ns')
@@ -153,7 +153,7 @@ window.IX={
 		<button onclick='run("IX","save",WI)(this)' tabindex='0'>保存</button>`)
 	},
 	save:me=>{ // 新增，持久化入库&同步
-		if(IX.wait)return
+		if(!IX.ready||IX.wait)return
 		const id=IX.id,title=$O.$(`[MC] [x='title']>textarea`).value.trim()
 		if(!title)return log('日志编辑，内容不能为空')
 		const content=$O.$(`[MC] [x='content']>textarea`).value.trim()
@@ -391,10 +391,18 @@ body[dark] [MC] [x='imgs']>*:hover,body[dark] [MC] [x='files']>*:hover{border-co
 		<icc onclick='run("IX","modal_close",WI)()' tabindex='0'>╳</icc>
 		</div><div MC></div></div></div>`+($O.$('#w_logs')?.html(true)||''))
 
-		let e=await UP.sql_xt('diary')
-		if(!e){
-			// await UP.sql_dt('diary')
-			await UP.sql_ct('diary',[
+		const exec=()=>{
+			log('绑定事件，节点监听')
+			IX.watch()
+			log('获取缓存，点击 TAB')
+			let tab=$O.$(`tab>[v='${'diary_tab'.gc('statistics')}']`)
+			if(!tab)tab=$O.$(`tab>[v='statistics']`)
+			tab.click()
+		}
+		UP.sql_xt('diary').then(_=>{
+			IX.ready=_=='true'
+			if(IX.ready)return exec()
+			UP.sql_ct('diary',[
 				{n:'title',tp:'TEXT',nn:true},
 				{n:'content',tp:'TEXT'},
 				{n:'imgs',tp:'TEXT',df:'[]'},
@@ -404,14 +412,10 @@ body[dark] [MC] [x='imgs']>*:hover,body[dark] [MC] [x='files']>*:hover{border-co
 				{n:'weather',tp:'TEXT'},
 				{n:'address',tp:'TEXT'},
 				{n:'location',tp:'TEXT'}
-			],['title','mood','tags','address','location','weather'])
-			await UP.sql_sy(true,'diary')
-		}
-		log('绑定事件，节点监听')
-		IX.watch()
-		log('获取缓存，点击 TAB')
-		let tab=$O.$(`tab>[v='${'diary_tab'.gc('statistics')}']`)
-		if(!tab)tab=$O.$(`tab>[v='statistics']`)
-		tab.click()
+			],['title','mood','tags','address','location','weather']).then(_=>UP.sql_sy(true,'diary')).then(_=>{
+				IX.ready=true
+				exec()
+			})
+		})
 	},
 }

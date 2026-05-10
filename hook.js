@@ -21,10 +21,18 @@ module.exports=function(ctx){
 	// 注入 uses-feature (TV适配)
 	if(!s.includes('android.software.leanback'))s=s.replace('<application','<uses-feature android:name="android.software.leanback" android:required="false"/>\n<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>\n<application')
 
-	// 注入 LEANBACK_LAUNCHER（追加，不替换）
-	if(!s.includes('LEANBACK_LAUNCHER'))s=s.replace(/<category android:name="android.intent.category.LAUNCHER" \/>/,'<category android:name="android.intent.category.LAUNCHER" />\n                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />')
+	// 注入 LEANBACK_LAUNCHER
+	if(!s.includes('LEANBACK_LAUNCHER'))s=s.replace('android.intent.category.LAUNCHER','android.intent.category.LAUNCHER"/>\n                <category android:name="android.intent.category.LEANBACK_LAUNCHER')
+
+	// 注入 TV banner
+	if(!s.includes('android:banner'))s=s.replace('<application','<application android:banner="@drawable/ic_banner"')
 
 	fs.writeFileSync(m,s)
+
+	// 拷贝 banner 图标
+	const bn=p.join(ctx.opts.projectRoot,'res','banner.png')
+	const bd=p.join(b,'src','main','res','drawable-xhdpi')
+	if(fs.existsSync(bn)){fs.mkdirSync(bd,{recursive:true});fs.copyFileSync(bn,p.join(bd,'ic_banner.png'))}
 
 	// Kotlin版本 + ABI过滤
 	fs.writeFileSync(p.join(b,'build-extras.gradle'),`configurations.all {

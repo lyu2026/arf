@@ -40,7 +40,7 @@ tab:not(tab:first-of-type):not(tab:last-of-type)>div:first-child{margin-bottom:-
 body[dark] tab:not(tab:first-of-type):not(tab:last-of-type)>div:first-child{background:black;border-right-color:rgba(255,255,255,.05)}
 
 /* 空格组件 */
-[G]{flex:1;display:block;padding:2px 10px 0 8px;overflow:hidden auto;transform:translateZ(0);will-change:transform}
+[G]{flex:1;display:block;padding:2px 10px 0 8px;overflow:hidden auto;contain:paint layout}
 [G]:empty{min-height:34vh}
 [G]:empty::before{content:attr(_,'————  🫧 数据为空！  ————');display:block;line-height:24vh;color:#444;font-size:16px;text-align:center}
 [G][a]::after{clear:both;content:'加载中，请稍后 . . .';display:block;width:calc(100vw - 20px)!important;height:30px;line-height:30px;text-align:center;color:#444;font-size:12px;font-weight:blod}
@@ -56,7 +56,7 @@ body[dark] [GC][X='ok']{background:rgba(255,255,255,.3)}
 
 /* 模态框组件 */
 [M]{touch-action:none;display:block;width:100vw.height:100vh;position:fixed;left:0;right:0;top:0;bottom:0;z-index:100}
-[M]>[MB]{display:block;width:100vw;height:100vh;background:rgba(255,255,255,.95);overflow:hidden auto;transform:translateZ(0);will-change:transform}
+[M]>[MB]{display:block;width:100vw;height:100vh;background:rgba(255,255,255,.95);overflow:hidden auto;contain:paint layout}
 body[dark] [M]>[MB]{background:rgba(0,0,0,.95)}
 [MT]{display:flex;width:100%;height:40px;padding:10px 4px 0 4px;overflow:hidden;background:rgba(255,255,255,.8);position:sticky;top:0;z-index:20}
 body[dark] [MT]{background:rgba(0,0,0,.8)}
@@ -110,8 +110,8 @@ sk[n],sk[c],sk[q],sk[b]{
 	background-size:300% 100%;
 	animation:sk var(--d) var(--o) infinite linear;
 	-webkit-animation:sk var(--d) var(--o) infinite linear;
-	transform:translateZ(0);-webkit-transform:translateZ(0);
 	will-change:background-position;
+	contain:paint layout;
 	border-radius:2px
 }
 /* 暗色模式 */

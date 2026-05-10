@@ -195,7 +195,7 @@ jobs:
               | sed "s|$PWD/||g" \
               | sed "s|/home/runner/work/tyan/tyan/||g" \
               | sed "s|platforms/android/app/src/main/java/com/plugin/tyan||g" > "$CURRENT_LOG" || true
-            
+            ls platforms/android/app/build/outputs/apk/release/
             if grep -E "FAILURE|BUILD FAILED|error:" "$CURRENT_LOG" | grep -q .; then
               HAS_ERROR=true
               cat "$CURRENT_LOG" >> "$ERROR_LOG"

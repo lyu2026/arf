@@ -1,10 +1,22 @@
 (function(W){
 	'use strict';
 
+	(()=>{ // 判断是否是TV模式，调整屏幕方向
+		let a=navigator.userAgent.toLowerCase(),o=false
+		if(/android tv|androidtv|smarttv|smart-tv|smart_tv|googletv|google tv|tvos|apple tv|roku|fire tv|amazon tv|vidaa|webos|lg tv|tizen|samsung tv|bravia|sony tv|hisense|sharp tv|tcl tv|philips tv|xiaomi tv|mitv|huawei tv|honor tv|letv|乐视/i.test(a))o=true
+		else if(!/mobile|tablet|iphone|ipad|ipod|android(?!.*tv)/i.test(a)){
+			let b='ontouchstart' in window||(navigator.maxTouchPoints>0)||(navigator.msMaxTouchPoints>0)
+			let c=Math.max(screen.width,screen.height),d=c>=1280
+			let e=c/Math.min(screen.width,screen.height),f=e>=1.6&&e<=2.4
+			if(!b&&d&&f)o=true
+		}
+		UP.dev_sp_st((window.TV=o)?'H':'SO')
+	})()
+
 	document.addEventListener('backbutton',()=>{
 		if(!W.IX||W.IX.name=='home')return navigator.app.exitApp()
-		const modal=$O.$('modal')
-		if(modal&&!modal.ha('hide')){
+		const m=$O.$('[M]')
+		if(m&&!m.ha('hide')){
 			if(typeof W.IX.modal_close=='function')return W.IX.modal_close()
 			return navigator.app.exitApp()
 		}

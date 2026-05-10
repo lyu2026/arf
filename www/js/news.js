@@ -3,10 +3,7 @@
 WI=window.I=crypto.randomUUID()
 
 window.IX={
-	name:'news',
-
-	// 所有监听对象
-	observer:{},
+	name:'news',observer:{},
 
 	// 筛选设置
 	filters:{category:'',type:''},
@@ -21,7 +18,7 @@ window.IX={
 	tab_click:(me,go=_=>true)=>{ // 筛选视频
 		CF()
 		let key,val
-		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
+		const K=IX.key=crypto.randomUUID(),gbox=$O.$('[G]').da('_').sa('a')
 		if(me){
 			IX.page=0
 			IX.modal_close()
@@ -39,7 +36,7 @@ window.IX={
 			'news_filters'.sc(IX.filters)
 			if(key=='category'){
 				const X=IX.tmap[IX.filters.category]
-				const tt=X.types.map(_=>{let x=_.split(':');return `<div${x[0]==IX.filters.type?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)'>${x[1]}</div>`}).join('')
+				const tt=X.types.map(_=>{let x=_.split(':');return `<div${x[0]==IX.filters.type?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${x[1]}</div>`}).join('')
 				gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'type'},tt))
 				if(!$O.$(`tab[T='type']>[c]`))IX.filters.type=$O.$(`tab[T='type']>div`).sa('c').ga('V')
 			}
@@ -78,7 +75,7 @@ window.IX={
 			}).filter(Boolean)
 			else o=[]
 			log('列表数据',o)
-			o&&gbox.append(...o.map(({I,N,brief,time,cover})=>$O.node('grid-c',{I,N,W:IX.filters.category,onclick:'run("IX","card_click",WI)(this)'},`${cover?`<img crossorigin='anonymous' src='${NCVR}' s='${cover}'/>`:''}<div><div>${N}</div><div>${brief}</div>${time?`<div>${time}</div>`:''}</div>`)))
+			o&&gbox.append(...o.map(({I,N,brief,time,cover})=>$O.node('div',{GC:'',I,N,W:IX.filters.category,onclick:'run("IX","card_click",WI)(this)',tabindex:'0'},`${cover?`<img crossorigin='anonymous' src='${NCVR}' s='${cover}'/>`:''}<div><div>${N}</div><div>${brief}</div>${time?`<div>${time}</div>`:''}</div>`)))
 			go(true)
 		},{},'html')
 	},
@@ -86,10 +83,10 @@ window.IX={
 	card_click:me=>{ // 打开详情弹层
 		CF()
 		const K=IX.key=crypto.randomUUID(),N=me.ga('N'),U=me.ga('I'),W=me.ga('W')
-		const mbox=$O.$('modal-c').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
+		const mbox=$O.$('[MC]').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
 		$O.body.sa('ns')
-		$O.$('grid').da('a')
-		$O.$('modal').da('hide').$('modal-t>title').da('s10','s12','s14').html(IX.tmap[W]?.name||'未知来源');
+		$O.$('[G]').da('a')
+		$O.$('[M]').da('hide').$('[MT]>div').da('s10','s12','s14').html(IX.tmap[W]?.name||'未知来源');
 
 		U.get(_=>{
 			if(IX.key!=K)return
@@ -168,21 +165,21 @@ window.IX={
 				if(_.startsWith('<b>'))return `<div p>&emsp;${_}</div>`
 				return `<div p>&emsp;${_}</div>`
 			}).filter(Boolean).join('').split(/(\s|\n|&nbsp;)*延伸阅读(\s|\n|&nbsp;)*|\-\-\- END \-\-\-|了解更多请搜索/).shift().replace(/\[菲龙网专讯\]|本报讯\:/g,'').trim()
-			mbox.html(`<div>${N}</div><div>发布时间:&emsp;${time}</div><br>${o}`)
+			mbox.html(`<div tabindex='0'>${N}</div><div tabindex='0'>发布时间:&emsp;${time}</div><br>${o}`)
 		},{},'html')
 	},
 
 	modal_close:async()=>{ // 关闭详情弹层
 		CF()
-		$O.$('modal').sa('hide','_I').$('modal-t>title').html('')
-		$O.$('modal-c').html('')
+		$O.$('[M]').sa('hide','_I').$('[MT]>div').html('')
+		$O.$('[MC]').html('')
 		$O.body.da('ns')
 	},
 
 	watch:()=>{ // 监听节点
 		IX.observer.load_more=new IntersectionObserver((s,o)=>{
 			let card=null
-			s.forEach(e=>(e.target.nodeName=='GRID-C')&&(e.intersectionRatio>=0.7)&&(card=e.target))
+			s.forEach(e=>e.target.ha('GC')&&(e.intersectionRatio>=0.7)&&(card=e.target))
 			if(!card||card.ha('wait')||IX.filters.category==='')return
 			card.sa('wait')
 			IX.tab_click(null,_=>{
@@ -200,11 +197,10 @@ window.IX={
 		IX.observer.get_nodes=new MutationObserver(s=>{
 			let last_card=null
 			s.forEach(e=>{
-				const t=e.target,tag=t.nodeName
-				const is_gbox=tag=='GRID',cards=Array.from(e.addedNodes)
-				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>_.nodeName!='GRID-C')))return
+				const t=e.target,is_gbox=t.ha('G'),cards=Array.from(e.addedNodes)
+				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>!_.ha('GC'))))return
 				is_gbox&&!last_card&&(last_card=cards[cards.length-1])
-				cards.filter(_=>_.nodeName=='GRID-C'&&_.$('img')).forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
+				cards.filter(_=>_.ha('GC')&&_.$('img')).forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
 			})
 			last_card&&IX.observer.load_more?.observe(last_card)
 		})
@@ -216,33 +212,33 @@ window.IX={
 		$O.$('head>style[ix]').innerHTML=`
 body{display:flex!important;flex-direction:column!important}
 
-grid-c{float:unset;display:flex;width:100%;height:auto;margin-bottom:3px;background:rgba(0,0,0,.1)}
-grid-c>img{display:block;width:114px;aspect-ratio:5/3;object-fit:cover;margin-right:3px}
-grid-c>div{flex:1;display:flex;flex-direction:column}
-grid-c>div>*:first-child{color:darkorange;font-size:13px;font-weight:700;line-height:1.2;border-top:1px solid rgba(0,0,0,.3);border-bottom:1px solid rgba(0,0,0,.1);padding:2px}
-grid-c>div>*:nth-child(2){color:darkgreen;font-size:10px;padding:4px;background:rgba(0,0,0,.06);line-height:1.2}
-body[dark] grid-c>div>*:nth-child(2){color:lightgreen}
-grid-c>div>*:nth-child(3){color:grey;font-size:11px;padding:4px;line-height:1.1}
-body[dark] grid-c>div>*:nth-child(3){color:cyan}
-body[dark] grid-c>div>*:first-child{border-top:1px solid rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.1)}
-body[dark] grid-c{background:rgba(255,255,255,.1)}
-body[dark] grid-c>div>*:nth-child(2){background:rgba(255,255,255,.1)}
+[GC]{float:unset;display:flex;width:100%;height:auto;margin-bottom:3px;background:rgba(0,0,0,.1)}
+[GC]>img{display:block;width:114px;aspect-ratio:5/3;object-fit:cover;margin-right:3px}
+[GC]>div{flex:1;display:flex;flex-direction:column}
+[GC]>div>*:first-child{color:darkorange;font-size:13px;font-weight:700;line-height:1.2;border-top:1px solid rgba(0,0,0,.3);border-bottom:1px solid rgba(0,0,0,.1);padding:2px}
+[GC]>div>*:nth-child(2){color:darkgreen;font-size:10px;padding:4px;background:rgba(0,0,0,.06);line-height:1.2}
+body[dark] [GC]>div>*:nth-child(2){color:lightgreen}
+[GC]>div>*:nth-child(3){color:grey;font-size:11px;padding:4px;line-height:1.1}
+body[dark] [GC]>div>*:nth-child(3){color:cyan}
+body[dark] [GC]>div>*:first-child{border-top:1px solid rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.1)}
+body[dark] [GC]{background:rgba(255,255,255,.1)}
+body[dark] [GC]>div>*:nth-child(2){background:rgba(255,255,255,.1)}
 
-modal-c{display:flex;flex-direction:column;line-height:1.3;font-size:12px;padding:10px 12px 50px 12px;min-height:calc(100vh - 40px)}
-modal-c>*{display:block;line-height:1.4;font-size:16px}
-modal-c>div:first-child{font-size:18px;line-height:1.2;color:darkorange!important}
-modal-c>div:nth-child(2){font-size:14px;line-height:1.2;color:grey!important}
-body[dark] modal-c>div:nth-child(2){color:cyan!important}
-modal-c>div[c]{line-height:1.5;margin-bottom:10px;text-align:center}
-modal-c>div[p]{color:black!important;font-size:15px!important;line-height:1.5!important;margin-bottom:5px}
-body[dark] modal-c>div[p]{color:white!important}
-modal-c>img{display:block;width:100%;margin:0 0 5px 0}
+[MC]{display:flex;flex-direction:column;line-height:1.3;font-size:12px;padding:10px 12px 50px 12px;min-height:calc(100vh - 40px)}
+[MC]>*{display:block;line-height:1.4;font-size:16px}
+[MC]>div:first-child{font-size:18px;line-height:1.2;color:darkorange!important}
+[MC]>div:nth-child(2){font-size:14px;line-height:1.2;color:grey!important}
+body[dark] [MC]>div:nth-child(2){color:cyan!important}
+[MC]>div[c]{line-height:1.5;margin-bottom:10px;text-align:center}
+[MC]>div[p]{color:black!important;font-size:15px!important;line-height:1.5!important;margin-bottom:5px}
+body[dark] [MC]>div[p]{color:white!important}
+[MC]>img{display:block;width:100%;margin:0 0 5px 0}
 `
 		log('渲染页面，构建 DOM 树')
-		let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
-		o+=`<grid></grid><modal hide><mbox><modal-t><title></title>`
-		o+=`<icc onclick='run("IX","modal_close",WI)()'>╳</icc>`
-		o+=`</modal-t><modal-c></modal-c></mbox></modal>`
+		let o=`<tab T='category'>${Object.keys(IX.tmap).map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${IX.tmap[_].name}</div>`).join('')}</tab>`
+		o+=`<div G></div><div M hide><div MB><div MT><div></div>`
+		o+=`<icc onclick='run("IX","modal_close",WI)()' tabindex='0'>╳</icc>`
+		o+=`</div><div MC></div></div></div>`
 		$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 		$O.body.html(o+($O.$('#w_logs')?.html(true)||''))
 		log('绑定事件，节点监听')

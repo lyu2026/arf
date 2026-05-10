@@ -22,7 +22,7 @@ window.IX={
 		if(IX.wait)return
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
-		const gbox=$O.$('grid').html('')
+		const gbox=$O.$('[G]').html('')
 
 		// 总条数和平均字数
 		let s=await UP.sql_gt('diary',{cs:['content','at'],oy:'id DESC'}),count=s.length
@@ -48,16 +48,16 @@ window.IX={
 			else break
 		}
 		gbox.html(`
-		<grid-c summary>
-			<div streak x='当前持续天数：'>${streak}</div><div days x='记录总天数：'>${days}</div><div count x='记录总数：'>${count}</div>
-			<div icount x='图片总数：'>${si.size}</div><div fcount x='附件总数：'>${sf.size}</div>
-			<div lavg x='平均字数：'>${lavg}</div><div peak x='最活跃时段：'>${peak}点</div>
-		</grid-c>`)
+		<div GC summary>
+			<div streak x='当前持续天数：' tabindex='0'>${streak}</div><div days x='记录总天数：' tabindex='0'>${days}</div><div count x='记录总数：'>${count}</div>
+			<div icount x='图片总数：' tabindex='0'>${si.size}</div><div fcount x='附件总数：' tabindex='0'>${sf.size}</div>
+			<div lavg x='平均字数：' tabindex='0'>${lavg}</div><div peak x='最活跃时段：' tabindex='0'>${peak}点</div>
+		</div>`)
 	},
 
 	list:async(me,go,z=null)=>{ // 列表
 		if(IX.wait)return
-		let gbox=$O.$('grid')
+		let gbox=$O.$('[G]')
 		if(!_T(me,'number')||!z){
 			IX.stop=false
 			gbox=gbox.html('')
@@ -75,18 +75,18 @@ window.IX={
 				y=x.y
 				m=x.m
 				if(i===0)d=x.d
-				gbox.append($O.node('grid-c',{my:''},`${m} ${y}`))
-				gbox.append($O.node('grid-c',{dr:''},`<div I='${s[i].id}' onclick='run("IX","add",WI)(this)'><div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div></div>`))
+				gbox.append($O.node('div',{GC:'',tabindex:'0',my:''},`${m} ${y}`))
+				gbox.append($O.node('div',{GC:'',dr:''},`<div I='${s[i].id}' onclick='run("IX","add",WI)(this)' tabindex='0'><div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)' tabindex='0'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div></div>`))
 				continue
 			}
-			gbox.$(':scope>grid-c[dr]:last-child').append($O.node('div',{I:s[i].id,onclick:'run("IX","add",WI)(this)'},`<div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div>`))
+			gbox.$(':scope>[GC][dr]:last-child').append($O.node('div',{I:s[i].id,onclick:'run("IX","add",WI)(this)',tabindex:'0'},`<div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div>`))
 		}
 		go&&go(true)
 	},
 	remove:me=>{ // 删除记录
 		if(IX.wait||!confirm('你确定删除此记录吗？'))return
 		IX.wait=true
-		const $=me.sa('wait').closest('div[I]'),$p=$.closest('grid-c[dr]')
+		const $=me.sa('wait').closest('div[I]'),$p=$.closest('[GC][dr]')
 		$.$('[F]').sa('wait')
 		$.$('button').html(IX.loader)
 		setTimeout(()=>UP.sql_rm('diary',$.ga('I'),true).then(_=>{
@@ -103,20 +103,20 @@ window.IX={
 		'diary_tab'.sc(me.ga('v'))
 		$O.$$('tab>*').forEach(_=>_[_!=me?'da':'sa']('c'))
 		const {o,y,m}=await IX.ocalendar()
-		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
+		$O.$('[G]').html(o+`<div GC bt><div onclick='run("IX","month",WI)(${y},${m-1})' tabindex='0'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})' tabindex='0'>下个月</div></div>`)
 	},
 	month:async(y,m)=>{ // 切换月份
 		if(m<1){y--;m=12}
 		if(m>12){y++;m=1}
 		const {o}=await IX.ocalendar(y,m)
-		$O.$('grid').html(o+`<grid-c bt><div onclick='run("IX","month",WI)(${y},${m-1})'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})'>下个月</div></grid-c>`)
+		$O.$('[G]').html(o+`<div GC bt><div onclick='run("IX","month",WI)(${y},${m-1})' tabindex='0'>上个月</div><div onclick='run("IX","month",WI)(${y},${m+1})' tabindex='0'>下个月</div></div>`)
 	},
 	ocalendar:async(y=new Date().getFullYear(),m=(new Date().getMonth())+1)=>{
 		const a=new Date(y,m-1,1).getDay(),b=new Date(y,m,0).getDate()
 		const c=new Date(y,m-1,0).getDate(),d=new Date()
 		const e=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
 		const mx=['','正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月']
-		let o=`<grid-c my>${mx[m]} ${y}年</grid-c><grid-c ws><div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div>周六</div><div>周日</div></grid-c><grid-c ds>`
+		let o=`<div GC my>${mx[m]} ${y}年</div><div GC ws><div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div>周六</div><div>周日</div></div><div GC ds>`
 		const g=a===0?6:a-1,cm={},cs=await UP.sql_gt('diary',{cs:["strftime('%Y-%m-%d',at/1000,'unixepoch') AS x","COUNT(*) AS o"],w:`strftime('%Y-%m',at/1000,'unixepoch')='${y}-${String(m).padStart(2,'0')}'`,gb:"x",oy:"x ASC"})
 		for(let _ of cs)cm[_.x]=_.o
 		log(cm)
@@ -124,49 +124,49 @@ window.IX={
 		for(let i=1;i<=b;i++){
 			const j=new Date(y,m-1,i).getDay()
 			const k=j===0||j===6,z=`${y}-${String(m).padStart(2,'0')}-${String(i).padStart(2,'0')}`
-			o+=`<div${e==z?' c':''}${cm[z]&&cm[z]>0?` x='共 ${cm[z]} 条记录' onclick='run("IX","list",WI)(null,null,"${z}")'`:''}>${i}</div>`
+			o+=`<div${e==z?' c':''}${cm[z]&&cm[z]>0?` x='共 ${cm[z]} 条记录' onclick='run("IX","list",WI)(null,null,"${z}")'`:''} tabindex='0'>${i}</div>`
 		}
 		if(42-g-b<7)for(let l=1;l<=42-(g+b);l++)o+=`<div></div>`
-		o+='</grid-c>'
+		o+='</div>'
 		return {o,y,m}
 	},
 
 	add:async(me)=>{ // 新增，打开编辑面板
 		if(IX.wait)return
-		const mbox=$O.$('modal-c').html(''),id=IX.id=parseInt(me?.ga('I')||0)
+		const mbox=$O.$('[MC]').html(''),id=IX.id=parseInt(me?.ga('I')||0)
 		if(id>0)mbox.html(`<sk pt30 f fv g12><sk f g12 h80></sk><sk f g12 h180></sk><sk f h60><sk q w60 h60></sk><sk q w60 h60></sk><sk q w60 h60></sk></sk><sk q h40></sk><sk q h30></sk></sk>`)
 		$O.body.sa('ns')
-		$O.$('grid').da('a')
-		$O.$('modal').da('hide').$('modal-t>title').html((id>0?'编辑':'添加')+'日记')
+		$O.$('[G]').da('a')
+		$O.$('[M]').da('hide').$('[MT]>div').html((id>0?'编辑':'添加')+'日记')
 		const {title,content,weather,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
-		<div x='title'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
-		<div x='content'><textarea placeholder=' '>${content||''}</textarea><label>日志内容</label></div>
-		<div x='mood' ph='当前心情'>${IX.MS.map(_=>`<span${!mood&&_=='普通'||mood==_?' c':''} onclick='run("IX","mood",WI)(this)'>${_}</span>`).join('')}</div>
-		<div x='tags'><input placeholder=' ' value='${(tags||[]).join(' ')}'/><label>日志标签，空格分割</label></div>
-		<div x='address'><input placeholder=' ' value='${address||''}'/><label>当前地址，手动输入/自动定位</label><span onclick='run("IX","location",WI)(this)'>🎯</span></div>
+		<div x='title' tabindex='0'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
+		<div x='content' tabindex='0'><textarea placeholder=' '>${content||''}</textarea><label>日志内容</label></div>
+		<div x='mood' ph='当前心情'>${IX.MS.map(_=>`<span${!mood&&_=='普通'||mood==_?' c':''} onclick='run("IX","mood",WI)(this)' tabindex='0'>${_}</span>`).join('')}</div>
+		<div x='tags' tabindex='0'><input placeholder=' ' value='${(tags||[]).join(' ')}'/><label>日志标签，空格分割</label></div>
+		<div x='address'><input placeholder=' ' value='${address||''}'/><label>当前地址，手动输入/自动定位</label><span onclick='run("IX","location",WI)(this)' tabindex='0'>🎯</span></div>
 		<div xx><div x='lng'><input readonly placeholder=' ' value='${lng||''}'/><label>当前经度</label></div><div x='lat'><input readonly placeholder=' ' value='${lat||''}'/><label>当前纬度</label></div></div>
 		<div x='weather'><input readonly placeholder=' ' value='${weather||''}'/><label>当前天气</label></div>
-		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img onclick='run("IX","preview",WI)(this)' ondblclick='clearTimeout(IX.CT);this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)'>╋</div></div>
-		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img onclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")'>╋</div></div>
-		<button onclick='run("IX","save",WI)(this)'>保存</button>`)
+		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img onclick='run("IX","preview",WI)(this)' ondblclick='clearTimeout(IX.CT);this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}' tabindex='0'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)' tabindex='0'>╋</div></div>
+		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img onclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}' tabindex='0'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")' tabindex='0'>╋</div></div>
+		<button onclick='run("IX","save",WI)(this)' tabindex='0'>保存</button>`)
 	},
 	save:me=>{ // 新增，持久化入库&同步
 		if(IX.wait)return
-		const id=IX.id,title=$O.$(`modal-c [x='title']>textarea`).value.trim()
+		const id=IX.id,title=$O.$(`[MC] [x='title']>textarea`).value.trim()
 		if(!title)return log('日志编辑，内容不能为空')
-		const content=$O.$(`modal-c [x='content']>textarea`).value.trim()
+		const content=$O.$(`[MC] [x='content']>textarea`).value.trim()
 		if(!content)return log('日志编辑，内容不能为空')
 		IX.wait=true
 		me.html(IX.loader).sa('wait')
-		const mood=$O.$(`modal-c [x='mood']>[c]`).innerText
-		const tags=$O.$(`modal-c [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
-		const address=$O.$(`modal-c [x='address']>input`).value.trim()
-		const weather=$O.$(`modal-c [x='weather']>input`).value.trim()
-		const location=`${$O.$(`modal-c [x='lng']>input`).value.trim()||'0'},${$O.$(`modal-c [x='lat']>input`).value.trim()||'0'}`
-		const imgs=$O.$$(`modal-c [x='imgs']>*:not(div)`).map(_=>_.ga('v'))
-		const files=$O.$$(`modal-c [x='files']>*:not(div)`).map(_=>_.ga('v'))
+		const mood=$O.$(`[MC] [x='mood']>[c]`).innerText
+		const tags=$O.$(`[MC] [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
+		const address=$O.$(`[MC] [x='address']>input`).value.trim()
+		const weather=$O.$(`[MC] [x='weather']>input`).value.trim()
+		const location=`${$O.$(`[MC] [x='lng']>input`).value.trim()||'0'},${$O.$(`[MC] [x='lat']>input`).value.trim()||'0'}`
+		const imgs=$O.$$(`[MC] [x='imgs']>*:not(div)`).map(_=>_.ga('v'))
+		const files=$O.$$(`[MC] [x='files']>*:not(div)`).map(_=>_.ga('v'))
 		const ox={title,content,address,weather,location,mood,tags,imgs,files}
 		if(id>0)ox.id=id
 		setTimeout(()=>UP.sql_sv('diary',ox,true).then(o=>{
@@ -190,7 +190,7 @@ window.IX={
 	location:me=>{ // 自动定位，获取天气/经纬度/地址
 		IX.wait=true
 		me.html(IX.loader)
-		$O.$$(`modal-c [x='lat']>input,modal-c [x='lng']>input,modal-c [x='weather']>input,modal-c [x='address']>input`).map(_=>_.sa({value:''}))
+		$O.$$(`[MC] [x='lat']>input,[MC] [x='lng']>input,[MC] [x='weather']>input,[MC] [x='address']>input`).map(_=>_.sa({value:''}))
 		setTimeout(()=>UP.gps_lg().then(o=>{
 			if(!o){
 				IX.wait=false
@@ -200,10 +200,10 @@ window.IX={
 			return UP.gps_ag(o.lat,o.lng,{lc:'zh'})
 		}).then(async([{lat,lng,lines,w}])=>{
 			if(lat&&lng)w=await UP.net_wt(lat,lng)
-			$O.$(`modal-c [x='lat']>input`)?.sa({value:lat||''})
-			$O.$(`modal-c [x='lng']>input`)?.sa({value:lng||''})
-			$O.$(`modal-c [x='weather']>input`)?.sa({value:w||''})
-			$O.$(`modal-c [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
+			$O.$(`[MC] [x='lat']>input`)?.sa({value:lat||''})
+			$O.$(`[MC] [x='lng']>input`)?.sa({value:lng||''})
+			$O.$(`[MC] [x='weather']>input`)?.sa({value:w||''})
+			$O.$(`[MC] [x='address']>input`)?.sa({value:(lines||[]).shift()||'未知地址'})
 			IX.wait=false
 			me.html('🎯')
 		}).catch(_=>{
@@ -213,10 +213,10 @@ window.IX={
 		}),400)
 	},
 	upload:async(me,t='img')=>{ // 上传图片
-		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true).catch(_=>{})
+		const s=await UP.fss_fs((t=='img'?'image':'*')+'/*',true).catch(_=>[])
 		s.forEach(_=>{
-			const x=_.mime.startsWith('image/'),$=$O.$(`modal-c [x='${x?'imgs':'files'}']>div`)
-			const o=$O.node('img',{v:_.uri,src:x?_.base64:IX.FM.replace('?',IX.ME[_.mime]||'未知'),onclick:`run("IX","preview",WI)(this)`,ondblclick:'clearTimeout(IX.CT);this.remove()'})
+			const x=_.mime.startsWith('image/'),$=$O.$(`[MC] [x='${x?'imgs':'files'}']>div`)
+			const o=$O.node('img',{v:_.uri,src:x?_.base64:IX.FM.replace('?',IX.ME[_.mime]||'未知'),onclick:`run("IX","preview",WI)(this)`,ondblclick:'clearTimeout(IX.CT);this.remove()',tabindex:'0'})
 			$.parentNode.insertBefore(o,$)
 		})
 	},
@@ -231,8 +231,8 @@ window.IX={
 	modal_close:()=>{ // 关闭详情弹层
 		IX.id=null
 		IX.wait=false
-		$O.$('modal').sa('hide','_I').$('modal-t>title').html('')
-		$O.$('modal-c').html('')
+		$O.$('[M]').sa('hide','_I').$('[MT]>div').html('')
+		$O.$('[MC]').html('')
 		$O.body.da('ns')
 	},
 
@@ -255,12 +255,12 @@ window.IX={
 		}
 		$O.addEventListener('click',e=>{
 			if(!opened||opened.ha('wait'))return
-			if(e.target.closest('grid-c[dr]>[I]>[R]>[F]'))return
+			if(e.target.closest('[GC][dr]>[I]>[R]>[F]'))return
 			opened.da('S')
 		},false)
 		IX.observer.load_more=new IntersectionObserver((s,o)=>{
 			let last=null
-			s.forEach(e=>{if(e.target.nodeName==='GRID-C'&&e.intersectionRatio>=0.7)last=e.target})
+			s.forEach(e=>{if(e.target.ha('GC')&&e.intersectionRatio>=0.7)last=e.target})
 			if(!last||last.ha('wait'))return
 			last.sa('wait')
 			IX.list(++IX.page,_=>{if(_)o?.unobserve(last);last.da('wait')})
@@ -268,8 +268,8 @@ window.IX={
 		IX.observer.get_nodes=new MutationObserver(s=>{
 			s.forEach(e=>e.addedNodes.forEach(n=>{
 				if(n.nodeType!==1)return
-				if(n.nodeName==='GRID-C'){n.$$('[F]').forEach(f=>bind(f));const l=n.lastElementChild;if(l)IX.observer.load_more?.observe(l)}
-				if(n.ha('I')&&n.closest('grid-c[dr]'))bind(n.$('[F]'))
+				if(n.ha('GC')){n.$$('[F]').forEach(f=>bind(f));const l=n.lastElementChild;if(l)IX.observer.load_more?.observe(l)}
+				if(n.ha('I')&&n.closest('[GC][dr]'))bind(n.$('[F]'))
 			}))
 		})
 		IX.observer.get_nodes.observe($O.body,{subtree:true,childList:true})
@@ -280,116 +280,116 @@ window.IX={
 		$O.$('head>style[ix]').innerHTML=`
 body{display:flex!important;flex-direction:column!important}
 body>tab> *:last-child{margin-left:auto}
-grid-c{float:left;display:block;width:calc(100vw - 20px);height:auto}
+[GC]{float:left;display:block;width:calc(100vw - 20px);height:auto}
 
-grid-c[summary]{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr 1fr;height:600px;color:rgba(0,0,0,.6);font-size:40px;font-weight:800;gap:10px}
-body[dark] grid-c[summary]{color:rgba(255,255,255,.6)}
-grid-c[summary]>*{display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.06);border-radius:6px}
-body[dark] grid-c[summary]>*{background:rgba(255,255,255,.06)}
-grid-c[summary]>*::before{content:attr(x);display:block;position:absolute;top:12px;left:10px;font-size:20px}
-grid-c[summary]>[streak]{grid-column:1;grid-row:1/3}
-grid-c[summary]>[days]{grid-column:2;grid-row:1}
-grid-c[summary]>[const]{grid-column:2;grid-row:2}
-grid-c[summary]>[icount]{grid-column:1;grid-row:3}
-grid-c[summary]>[fcount]{grid-column:2;grid-row:3}
-grid-c[summary]>[lavg]{grid-column:1;grid-row:4}
-grid-c[summary]>[peak]{grid-column:2;grid-row:4}
+[GC][summary]{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr 1fr;height:600px;color:rgba(0,0,0,.6);font-size:40px;font-weight:800;gap:10px}
+body[dark] [GC][summary]{color:rgba(255,255,255,.6)}
+[GC][summary]>*{display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.06);border-radius:6px}
+body[dark] [GC][summary]>*{background:rgba(255,255,255,.06)}
+[GC][summary]>*::before{content:attr(x);display:block;position:absolute;top:12px;left:10px;font-size:20px}
+[GC][summary]>[streak]{grid-column:1;grid-row:1/3}
+[GC][summary]>[days]{grid-column:2;grid-row:1}
+[GC][summary]>[const]{grid-column:2;grid-row:2}
+[GC][summary]>[icount]{grid-column:1;grid-row:3}
+[GC][summary]>[fcount]{grid-column:2;grid-row:3}
+[GC][summary]>[lavg]{grid-column:1;grid-row:4}
+[GC][summary]>[peak]{grid-column:2;grid-row:4}
 
-grid-c[my]{background:rgba(0,0,0,0);color:black;font-size:26px;line-height:40px;color:black;padding:0}
-body[dark] grid-c[my]{color:white}
+[GC][my]{background:rgba(0,0,0,0);color:black;font-size:26px;line-height:40px;color:black;padding:0}
+body[dark] [GC][my]{color:white}
 
-grid-c[dr]{border-radius:12px;display:flex;flex-direction:column;background:rgba(0,0,0,.04);overflow:hidden;margin-bottom:5px}
-body[dark] grid-c[dr]{background:rgba(255,255,255,.04)}
-grid-c[dr]:last-child{margin-bottom:36px}
-grid-c[dr]>[I]{display:flex;margin-bottom:1px;overflow:hidden}
-grid-c[dr]>[I]:last-child{margin-bottom:0}
-grid-c[dr]>[I]>[L]{flex-shrink:0;width:14.5%;aspect-ratio:7/8;padding:0 4px;background:#f9f9f9;transition:background .2s}
-body[dark] grid-c[dr]>[I]>[L]{background:#2a2a2a}
-grid-c[dr]>[I]:first-child>[L]{z-index:4;text-align:center;font-size:22px}
-grid-c[dr]>[I]:last-child>[L]{z-index:4;text-align:center;font-size:22px}
-grid-c[dr]>[I]:first-child>[L]::after{content:'';display:block;position:absolute;top:7%;left:15%;z-index:10;width:70%;height:86%;background:rgba(0,0,0,.2);border-radius:24px}
-body[dark] grid-c[dr]>[I]:first-child>[L]::after{background:rgba(255,255,255,.2)}
-grid-c[dr]>[I]:first-child>[L]>div{font-size:12px;margin:16px auto 5px auto}
-grid-c[dr]>[I]:not(:first-child)>[L]{z-index:0;color:rgba(0,0,0,0)}
-grid-c[dr]>[I]:not(:first-child)>[L] *{color:rgba(0,0,0,0)}
+[GC][dr]{border-radius:12px;display:flex;flex-direction:column;background:rgba(0,0,0,.04);overflow:hidden;margin-bottom:5px}
+body[dark] [GC][dr]{background:rgba(255,255,255,.04)}
+[GC][dr]:last-child{margin-bottom:36px}
+[GC][dr]>[I]{display:flex;margin-bottom:1px;overflow:hidden}
+[GC][dr]>[I]:last-child{margin-bottom:0}
+[GC][dr]>[I]>[L]{flex-shrink:0;width:14.5%;aspect-ratio:7/8;padding:0 4px;background:#f9f9f9;transition:background .2s}
+body[dark] [GC][dr]>[I]>[L]{background:#2a2a2a}
+[GC][dr]>[I]:first-child>[L]{z-index:4;text-align:center;font-size:22px}
+[GC][dr]>[I]:last-child>[L]{z-index:4;text-align:center;font-size:22px}
+[GC][dr]>[I]:first-child>[L]::after{content:'';display:block;position:absolute;top:7%;left:15%;z-index:10;width:70%;height:86%;background:rgba(0,0,0,.2);border-radius:24px}
+body[dark] [GC][dr]>[I]:first-child>[L]::after{background:rgba(255,255,255,.2)}
+[GC][dr]>[I]:first-child>[L]>div{font-size:12px;margin:16px auto 5px auto}
+[GC][dr]>[I]:not(:first-child)>[L]{z-index:0;color:rgba(0,0,0,0)}
+[GC][dr]>[I]:not(:first-child)>[L] *{color:rgba(0,0,0,0)}
 
-grid-c[dr]>[I]>[R]{flex:1;min-width:0}
-grid-c[dr]>[I]>[R]>button{position:absolute;right:0;top:0;width:15%;height:100%;background:#e74c3c;color:#fff;border:none;font-size:18px;font-weight:500;display:flex;align-items:center;justify-content:center;z-index:1}
-grid-c[dr]>[I]>[R]>button[wait]{background:#e74c3cae}
-grid-c[dr]>[I]>[R]>[F]{width:100%;height:100%;overflow:hidden;z-index:2;background:#f9f9f9;display:flex;flex-direction:column;padding:6px 4px 6px 0;transition:transform .25s}
-body[dark] grid-c[dr]>[I]>[R]>[F]{background:#2a2a2a}
-grid-c[dr]>[I]>[R]>[F][S]{transform:translateX(-15%)}
-grid-c[dr]>[I]>[R]>[F]>*:first-child{font-size:16px;color:#222;padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-grid-c[dr]>[I]>[R]>[F]>*:nth-child(2){flex:1;font-size:13px;line-height:1.4;color:rgba(0,0,0,.8);margin-bottom:3px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all}
-grid-c[dr]>[I]>[R]>[F]>*:last-child{font-size:10px;color:rgba(0,0,0,.6)}
-body[dark] grid-c[dr]>[I]>[R]>[F]>*:first-child{color:#fff}
-body[dark] grid-c[dr]>[I]>[R]>[F]>*:nth-child(2){color:rgba(255,255,255,.8)}
-body[dark] grid-c[dr]>[I]>[R]>[F]>*:last-child{color:rgba(255,255,255,.5)}
+[GC][dr]>[I]>[R]{flex:1;min-width:0}
+[GC][dr]>[I]>[R]>button{position:absolute;right:0;top:0;width:15%;height:100%;background:#e74c3c;color:#fff;border:none;font-size:18px;font-weight:500;display:flex;align-items:center;justify-content:center;z-index:1}
+[GC][dr]>[I]>[R]>button[wait]{background:#e74c3cae}
+[GC][dr]>[I]>[R]>[F]{width:100%;height:100%;overflow:hidden;z-index:2;background:#f9f9f9;display:flex;flex-direction:column;padding:6px 4px 6px 0;transition:transform .25s}
+body[dark] [GC][dr]>[I]>[R]>[F]{background:#2a2a2a}
+[GC][dr]>[I]>[R]>[F][S]{transform:translateX(-15%)}
+[GC][dr]>[I]>[R]>[F]>*:first-child{font-size:16px;color:#222;padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+[GC][dr]>[I]>[R]>[F]>*:nth-child(2){flex:1;font-size:13px;line-height:1.4;color:rgba(0,0,0,.8);margin-bottom:3px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all}
+[GC][dr]>[I]>[R]>[F]>*:last-child{font-size:10px;color:rgba(0,0,0,.6)}
+body[dark] [GC][dr]>[I]>[R]>[F]>*:first-child{color:#fff}
+body[dark] [GC][dr]>[I]>[R]>[F]>*:nth-child(2){color:rgba(255,255,255,.8)}
+body[dark] [GC][dr]>[I]>[R]>[F]>*:last-child{color:rgba(255,255,255,.5)}
 
-grid-c[ws]{background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;gap:2px;border-radius:2px;margin-top:10px;margin-bottom:6px}
-body[dark] grid-c[ws]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
-grid-c[ws]>*{background:rgba(0,0,0,.08);color:black;border:1px solid rgba(0,0,0,0);line-height:34px;flex:1;display:flex;align-items:center;justify-content:center;border-radius:1px;font-size:16px;transition:all 0.2s}
-body[dark] grid-c[ws]>*{background:rgba(255,255,255,.08);color:white}
+[GC][ws]{background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;gap:2px;border-radius:2px;margin-top:10px;margin-bottom:6px}
+body[dark] [GC][ws]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
+[GC][ws]>*{background:rgba(0,0,0,.08);color:black;border:1px solid rgba(0,0,0,0);line-height:34px;flex:1;display:flex;align-items:center;justify-content:center;border-radius:1px;font-size:16px;transition:all 0.2s}
+body[dark] [GC][ws]>*{background:rgba(255,255,255,.08);color:white}
 
-grid-c[ds]{height:calc(100vh - 250px);background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:grid;grid-template-columns:repeat(7,1fr);gap:2px;border-radius:2px}
-body[dark] grid-c[ds]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
-grid-c[ds]>*{background:rgba(0,0,0,.04);color:black;border:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;border-radius:2px;font-size:16px;transition:all 0.2s}
-body[dark] grid-c[ds]>*{background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.05)}
-grid-c[ds]>*:hover{background:rgba(0,0,0,.1);transform:scale(0.98)}
-body[dark] grid-c[ds]>*:hover{background:rgba(255,255,255,.1)}
-grid-c[ds]>*[x]::before{content:attr(x);color;black;display:block;position:absolute;top:4px;left:4px;font-size:8px}
-body[dark] grid-c[ds]>*[x]::before{color:white}
-grid-c[ds]>*:empty{background:rgba(0,0,0,0)}
-grid-c[ds]>[c]{background:rgba(0,0,0,.2);border:none}
-body[dark] grid-c[ds]>[c]{background:rgba(255,255,255,.2)}
+[GC][ds]{height:calc(100vh - 250px);background:rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.1);display:grid;grid-template-columns:repeat(7,1fr);gap:2px;border-radius:2px}
+body[dark] [GC][ds]{background:rgba(255,255,255,.04);box-shadow:0 2px 8px rgba(255,255,255,.1)}
+[GC][ds]>*{background:rgba(0,0,0,.04);color:black;border:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;border-radius:2px;font-size:16px;transition:all 0.2s}
+body[dark] [GC][ds]>*{background:rgba(255,255,255,.04);color:white;border:1px solid rgba(255,255,255,.05)}
+[GC][ds]>*:hover{background:rgba(0,0,0,.1);transform:scale(0.98)}
+body[dark] [GC][ds]>*:hover{background:rgba(255,255,255,.1)}
+[GC][ds]>*[x]::before{content:attr(x);color;black;display:block;position:absolute;top:4px;left:4px;font-size:8px}
+body[dark] [GC][ds]>*[x]::before{color:white}
+[GC][ds]>*:empty{background:rgba(0,0,0,0)}
+[GC][ds]>[c]{background:rgba(0,0,0,.2);border:none}
+body[dark] [GC][ds]>[c]{background:rgba(255,255,255,.2)}
 
-grid-c[bt]{margin:6px 0;display:flex;gap:2px}
-grid-c[bt]>*{background:rgba(0,0,0,.09);color:black;font-size:16px;flex:1;line-height:50px;text-align:center;border-radius:2px}
-body[dark] grid-c[bt]>*{background:rgba(255,255,255,.09);color:white}
+[GC][bt]{margin:6px 0;display:flex;gap:2px}
+[GC][bt]>*{background:rgba(0,0,0,.09);color:black;font-size:16px;flex:1;line-height:50px;text-align:center;border-radius:2px}
+body[dark] [GC][bt]>*{background:rgba(255,255,255,.09);color:white}
 
-modal-c>*,modal-c *{margin:0;padding:0}
-modal-c textarea,modal-c input{width:100%;resize:none;border-radius:4px;box-shadow:inset 0 0 8px rgba(0,0,0,.2);padding:16px 8px 8px;border:0;outline:0;margin:0;font-size:14px;color:black;background:rgba(0,0,0,0)}
-body[dark] modal-c textarea,body[dark] modal-c input{box-shadow:inset 0 0 8px rgba(255,255,255,.2);color:white}
-modal-c [x]>label{font-size:18px;height:auto;position:absolute;left:8px;top:50%;transform:translateY(-50%);transition:.2s}
-modal-c [x]>textarea:focus+label,modal-c [x]>textarea:not(:placeholder-shown)+label,modal-c [x]>input:focus+label,modal-c [x]>input:not(:placeholder-shown)+label{top:10px;font-size:10px;color:#007bff}
-modal-c [x][ph]::before{content:attr(ph);display:block;font-size:10px;position:absolute;height:auto;left:0;top:-2px;z-index:10;color:#007bff}
-modal-c [x='mood'][ph]::before{font-size:14px;top:-12px}
-modal-c [x='title']>textarea{height:60px;line-height:1.3;font-size:20px;margin-bottom:4px}
-modal-c [x='content']>textarea{font-size:18px;min-height:34vh;line-height:1.6;margin-bottom:4px}
-modal-c [x='mood']{margin:8px 0 4px 0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-modal-c [x='mood']>*,modal-c [x='address']>span{border-radius:4px;box-shadow:inset 0 0 5px rgba(0,0,0,.2);text-align:center;line-height:34px;color:black;font-size:14px}
-modal-c [x='mood']>*:hover,modal-c [x='address']>span:hover{box-shadow:inset 0 0 5px rgba(0,0,0,.4)}
-modal-c [x='mood']>*[c]{background:rgba(0,0,0,.4);color:white}
-body[dark] modal-c [x='mood']>*,body[dark] modal-c [x='address']>span{box-shadow:inset 0 0 5px rgba(255,255,255,.2);color:white}
-body[dark] modal-c [x='mood']>*:hover,body[dark] modal-c [x='address']>span:hover{box-shadow:inset 0 0 5px rgba(255,255,255,.4)}
-body[dark] modal-c [x='mood']>*[c]{background:rgba(255,255,255,.4);color:black}
-modal-c [x='tags']>textarea{line-height:40px;margin-bottom:4px}
-modal-c [x='address'],modal-c [xx]{margin:4px 0 4px 0;display:flex;gap:4px;height:40px}
-modal-c [x='address']>input,modal-c [xx]>*{flex:1}
-modal-c [x='address']>span{display:block;width:40px;border-radius:3px;font-size:24px;line-height:40px;text-align:center}
-modal-c [x='address']>span>svg{width:calc(100% - 16px);height:calc(100% - 16px);margin:8px;object-fit:contain}
-modal-c [x='imgs'],modal-c [x='files']{padding-top:8px;margin-top:2px;display:flex;align-items:center;gap:4px;overflow-x:auto;border-bottom:1px solid rgba(0,0,0,.1)}
-body[dark] modal-c [x='imgs'],body[dark] modal-c [x='files']{border-color:rgba(255,255,255,.1)}
-modal-c [x='imgs']>*,modal-c [x='files']>*{display:block;width:50px;height:50px;font-size:30px;text-align:center;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px}
-modal-c [x='imgs']>*:hover,modal-c [x='files']>*:hover{border-color:rgba(0,0,0,.5)}
-body[dark] modal-c [x='imgs']>*,body[dark] modal-c [x='files']>*{border-color:rgba(255,255,255,.2)}
-body[dark] modal-c [x='imgs']>*:hover,body[dark] modal-c [x='files']>*:hover{border-color:rgba(255,255,255,.5)}
-modal-c>button{margin:8px 0 20px 0;line-height:60px;border:0;border-radius:6px;background:#831BF2EC;color:white;text-align:center;font-size:18px}
-modal-c>button[wait]{background:#831BF2AE}
-modal-c>button:not([wait]):hover{background:#7009E0FF}
-modal-c>button>svg{margin:6px auto;display:block;object-fit:contain}
+[MC]>*,[MC] *{margin:0;padding:0}
+[MC] textarea,[MC] input{width:100%;resize:none;border-radius:4px;box-shadow:inset 0 0 8px rgba(0,0,0,.2);padding:16px 8px 8px;border:0;outline:0;margin:0;font-size:14px;color:black;background:rgba(0,0,0,0)}
+body[dark] [MC] textarea,body[dark] [MC] input{box-shadow:inset 0 0 8px rgba(255,255,255,.2);color:white}
+[MC] [x]>label{font-size:18px;height:auto;position:absolute;left:8px;top:50%;transform:translateY(-50%);transition:.2s}
+[MC] [x]>textarea:focus+label,[MC] [x]>textarea:not(:placeholder-shown)+label,[MC] [x]>input:focus+label,[MC] [x]>input:not(:placeholder-shown)+label{top:10px;font-size:10px;color:#007bff}
+[MC] [x][ph]::before{content:attr(ph);display:block;font-size:10px;position:absolute;height:auto;left:0;top:-2px;z-index:10;color:#007bff}
+[MC] [x='mood'][ph]::before{font-size:14px;top:-12px}
+[MC] [x='title']>textarea{height:60px;line-height:1.3;font-size:20px;margin-bottom:4px}
+[MC] [x='content']>textarea{font-size:18px;min-height:34vh;line-height:1.6;margin-bottom:4px}
+[MC] [x='mood']{margin:8px 0 4px 0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+[MC] [x='mood']>*,[MC] [x='address']>span{border-radius:4px;box-shadow:inset 0 0 5px rgba(0,0,0,.2);text-align:center;line-height:34px;color:black;font-size:14px}
+[MC] [x='mood']>*:hover,[MC] [x='address']>span:hover{box-shadow:inset 0 0 5px rgba(0,0,0,.4)}
+[MC] [x='mood']>*[c]{background:rgba(0,0,0,.4);color:white}
+body[dark] [MC] [x='mood']>*,body[dark] [MC] [x='address']>span{box-shadow:inset 0 0 5px rgba(255,255,255,.2);color:white}
+body[dark] [MC] [x='mood']>*:hover,body[dark] [MC] [x='address']>span:hover{box-shadow:inset 0 0 5px rgba(255,255,255,.4)}
+body[dark] [MC] [x='mood']>*[c]{background:rgba(255,255,255,.4);color:black}
+[MC] [x='tags']>textarea{line-height:40px;margin-bottom:4px}
+[MC] [x='address'],[MC] [xx]{margin:4px 0 4px 0;display:flex;gap:4px;height:40px}
+[MC] [x='address']>input,[MC] [xx]>*{flex:1}
+[MC] [x='address']>span{display:block;width:40px;border-radius:3px;font-size:24px;line-height:40px;text-align:center}
+[MC] [x='address']>span>svg{width:calc(100% - 16px);height:calc(100% - 16px);margin:8px;object-fit:contain}
+[MC] [x='imgs'],[MC] [x='files']{padding-top:8px;margin-top:2px;display:flex;align-items:center;gap:4px;overflow-x:auto;border-bottom:1px solid rgba(0,0,0,.1)}
+body[dark] [MC] [x='imgs'],body[dark] [MC] [x='files']{border-color:rgba(255,255,255,.1)}
+[MC] [x='imgs']>*,[MC] [x='files']>*{display:block;width:50px;height:50px;font-size:30px;text-align:center;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px}
+[MC] [x='imgs']>*:hover,[MC] [x='files']>*:hover{border-color:rgba(0,0,0,.5)}
+body[dark] [MC] [x='imgs']>*,body[dark] [MC] [x='files']>*{border-color:rgba(255,255,255,.2)}
+body[dark] [MC] [x='imgs']>*:hover,body[dark] [MC] [x='files']>*:hover{border-color:rgba(255,255,255,.5)}
+[MC]>button{margin:8px 0 20px 0;line-height:60px;border:0;border-radius:6px;background:#831BF2EC;color:white;text-align:center;font-size:18px}
+[MC]>button[wait]{background:#831BF2AE}
+[MC]>button:not([wait]):hover{background:#7009E0FF}
+[MC]>button>svg{margin:6px auto;display:block;object-fit:contain}
 `
 		log('渲染页面，构建 DOM 树')
 		$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 		$O.body.html(`
 		<tab>
-			<div v='statistics' onclick='run("IX","statistics",WI)(this)'>🟡🟢</div>
-			<div v='list' onclick='run("IX","list",WI)(this)'>列表</div>
-			<div v='calendar' onclick='run("IX","calendar",WI)(this)'>日历</div>
-			<div onclick='run("IX","add",WI)(this)'>╋ 新条目</div>
-		</tab><grid></grid><modal hide><mbox><modal-t><title></title>
-		<icc onclick='run("IX","modal_close",WI)()'>╳</icc>
-		</modal-t><modal-c><textarea IT></textarea><textarea IC></textarea></modal-c></mbox></modal>`+($O.$('#w_logs')?.html(true)||''))
+			<div v='statistics' onclick='run("IX","statistics",WI)(this)' tabindex='0'>🟡🟢</div>
+			<div v='list' onclick='run("IX","list",WI)(this)' tabindex='0'>列表</div>
+			<div v='calendar' onclick='run("IX","calendar",WI)(this)' tabindex='0'>日历</div>
+			<div onclick='run("IX","add",WI)(this)' tabindex='0'>╋ 新条目</div>
+		</tab><div G></div><div M hide><div MB><div MT><div></div>
+		<icc onclick='run("IX","modal_close",WI)()' tabindex='0'>╳</icc>
+		</div><div MC></div></div></div>`+($O.$('#w_logs')?.html(true)||''))
 
 		let e=await UP.sql_xt('diary')
 		if(!e){

@@ -3,10 +3,7 @@
 WI=window.I=crypto.randomUUID()
 
 window.IX={
-	name:'img',
-
-	// 所有监听对象
-	observer:{},
+	name:'img',observer:{},
 
 	// 筛选设置
 	filters:{orientation:'',size:''},search:null,
@@ -19,9 +16,9 @@ window.IX={
 
 	a:'qaJeh5r2ipJFU8WiaDLgoabIqpOyqDZaVB7T5cItvyzGh4ynhSpkVKDe',
 
-	tab_click:async(me,go=_=>true)=>{ // 筛选视频
+	tab_click:async(me,go=_=>true)=>{ // 筛选
 		CF()
-		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
+		const K=IX.key=crypto.randomUUID(),gbox=$O.$('[G]').da('_').sa('a')
 		if(me){
 			IX.page=0
 			IX.stop=false
@@ -52,7 +49,7 @@ window.IX={
 			if(o===null)return go(false)
 			if(TS!=JSON.stringify({filters:IX.filters,search:IX.search}))return go(true)
 			if(!o.next_page||o.next_page==='')IX.stop=true
-			o=o.photos.map(({id,alt,src:{large:s}})=>$O.node('grid-c',{},`<img crossorigin='anonymous' src='${ICVR}' s='${s}' ondblclick='run("IX","download",WI)(this)'/><title>${alt}</title>`))
+			o=o.photos.map(({id,alt,src:{large:s}})=>$O.node('div',{GC:'',tabindex:'0'},`<img crossorigin='anonymous' src='${ICVR}' s='${s}' ondblclick='run("IX","download",WI)(this)'/><title>${alt}</title>`))
 			o&&gbox.append(...o)
 			go(true)
 		},{
@@ -78,7 +75,7 @@ window.IX={
 	watch:()=>{ // 监听节点
 		IX.observer.load_more=new IntersectionObserver((s,o)=>{
 			let card=null
-			s.forEach(e=>(e.target.nodeName=='GRID-C')&&(e.intersectionRatio>=0.7)&&(card=e.target))
+			s.forEach(e=>(e.target.ha('GC'))&&(e.intersectionRatio>=0.7)&&(card=e.target))
 			if(!card||card.ha('wait'))return
 			card.sa('wait')
 			IX.tab_click(null,_=>{
@@ -96,11 +93,10 @@ window.IX={
 		IX.observer.get_nodes=new MutationObserver(s=>{
 			let last_card=null
 			s.forEach(e=>{
-				const t=e.target,tag=t.nodeName
-				const is_gbox=tag=='GRID',cards=Array.from(e.addedNodes)
-				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>_.nodeName!='GRID-C')))return
+				const t=e.target,is_gbox=t.ha('G'),cards=Array.from(e.addedNodes)
+				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>!_.ha('GC'))))return
 				is_gbox&&!last_card&&(last_card=cards[cards.length-1])
-				cards.filter(_=>_.nodeName=='GRID-C').forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
+				cards.filter(_=>_.ha('GC')).forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
 			})
 			last_card&&IX.observer.load_more?.observe(last_card)
 		})
@@ -113,16 +109,16 @@ window.IX={
 body{display:flex!important;flex-direction:column!important}
 body>input{background:rgba(0,0,0,.1);color:black;display:block;margin:26px 0 5px 0;outline:0;border:1px solid rgba(255,255,255,.2);border-radius:20px;line-height:38px;padding:0 12px}
 body[dark]>input{background:rgba(255,255,255,.1);color:white}
-grid-c{float:left;display:block;width:calc(100vw - 20px);height:auto}
+[GC]{float:left;display:block;width:calc(100vw - 20px);height:auto}
 `
 		log('渲染页面，构建 DOM 树')
 		$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
-		$O.body.html(`<input id='search' type='search' placeholder='请输入查询关键字' onsearch='run("IX","tab_click",WI)(this)'/><grid></grid>`+($O.$('#w_logs')?.html(true)||''))
+		$O.body.html(`<input id='search' type='search' placeholder='请输入查询关键字' onsearch='run("IX","tab_click",WI)(this)' tabindex='0'/><div G></div>`+($O.$('#w_logs')?.html(true)||''))
 		for(let k in IX.tmap){
 			const tab=`<div>${IX.tmap[k].name}</div>`+IX.tmap[k]._.map(_=>{
-				let x=_.split(':');return `<div${x[0]==IX.filters[k]?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)'>${x[1]}</div>`
+				let x=_.split(':');return `<div${x[0]==IX.filters[k]?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${x[1]}</div>`
 			}).join('')
-			$O.$('grid').insertAdjacentElement('beforebegin',$O.node('tab',{T:k},tab))
+			$O.$('[G]').insertAdjacentElement('beforebegin',$O.node('tab',{T:k},tab))
 		}
 		log('绑定事件，节点监听')
 		IX.watch()

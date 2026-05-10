@@ -26,17 +26,16 @@ window.IX={
 	},hls:null,page:0,mk:null,curr:null,wait:true,key:null,
 
 	// 域名
-	mh:'https://api.yfsp.tv/api/',
-	wh:'https://api.wyav.tv/api/',
+	mh:'https://api.yfsp.tv/api/',wh:'https://api.wyav.tv/api/',
 
 	tab_click:(me,go=_=>true)=>{ // 筛选视频
 		CF()
 		let key,val
-		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
+		const K=IX.key=crypto.randomUUID(),gbox=$O.$('[G]').da('_').sa('a')
 		if(me){
 			IX.page=0
 			IX.modal_close()
-			UP.dev_sp_st('SO')
+			if(!TV)UP.dev_sp_st('SO')
 			key=me.parentElement.ga('T');val=me.ga('V')
 			gbox.da('a').sa({_:key=='category'&&val=='?'?'💡 请输入关键字 . . ':'🥏 正在搜索，请稍等 . . .'}).html('')
 			if(key=='category'&&val=='?'){
@@ -65,16 +64,16 @@ window.IX={
 				if(IX.filters.category==''){
 					gbox.da('_')
 					const videos='ayf_favorite_videos'.gc({})
-					gbox.append(...Object.keys(videos).map(_=>$O.node('grid-c',{I:_,N:videos[_].N,onclick:'run("IX","card_click",WI)(this)'},`<img crossorigin='anonymous' src='${VCVR}' s='${videos[_].C}'/><score>${videos[_].S}</score><title>${videos[_].N}</title>`)))
+					gbox.append(...Object.keys(videos).map(_=>$O.node('div',{GC:'',I:_,N:videos[_].N,onclick:'run("IX","card_click",WI)(this)',tabindex:'0'},`<img crossorigin='anonymous' src='${VCVR}' s='${videos[_].C}'/><score>${videos[_].S}</score><title>${videos[_].N}</title>`)))
 					return
 				}
 				if(IX.filters.category!='?'){
 					const X=IX.tmap[IX.filters.category]
-					const tt=X.types.map(({id,name})=>`<div${id==IX.filters.type?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)'>${name}</div>`).join('')
-					const ta=X.areas.map(({id,name})=>`<div${id==IX.filters.area?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)'>${name}</div>`).join('')
-					const tl=X.langs.map(({id,name})=>`<div${id==IX.filters.lang?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)'>${name}</div>`).join('')
-					const ty=X.years.map(({id,name})=>`<div${id==IX.filters.year?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)'>${name}</div>`).join('')
-					const ts=X.sorts.map(({id,name})=>`<div${id==IX.filters.sort?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)'>${name}</div>`).join('')
+					const tt=X.types.map(({id,name})=>`<div${id==IX.filters.type?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${name}</div>`).join('')
+					const ta=X.areas.map(({id,name})=>`<div${id==IX.filters.area?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${name}</div>`).join('')
+					const tl=X.langs.map(({id,name})=>`<div${id==IX.filters.lang?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${name}</div>`).join('')
+					const ty=X.years.map(({id,name})=>`<div${id==IX.filters.year?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${name}</div>`).join('')
+					const ts=X.sorts.map(({id,name})=>`<div${id==IX.filters.sort?' c':''} V='${id}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${name}</div>`).join('')
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'type'},tt))
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'area'},ta))
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'lang'},tl))
@@ -115,7 +114,7 @@ window.IX={
 				let {mediaKey,title,coverImgUrl,score,updateStatus,date}=_,tip=updateStatus||(new Date(_.date).toLocaleString())
 				let N=title.replace(/\s*[】]\s*/g,'').replace(/(\s*[【】:：·。～]\s*|\-+|—+)/g,'.').replace(/，/g,',').replace(/！/g,'!').replace(/\s\s/g,' ').replace(/\.{2,}/g,'.').trim().replace(/\s/g,'.').replace(/(\s*\.+$|\.?(剧场|真人)版)/g,'')
 				if(IX.filters.category=='movie')N=N.replace(/\.?电影版/g,'')
-				return IX.name_reg.test(N)?null:$O.node('grid-c',{I:mediaKey,N:title,onclick:'run("IX","card_click",WI)(this)'},`<img crossorigin='anonymous' src='${VCVR}' s='${coverImgUrl}'/><score>${score||''}</score><tip>${tip}</tip><title>${N}</title>`)
+				return IX.name_reg.test(N)?null:$O.node('div',{GC:'',I:mediaKey,N:title,onclick:'run("IX","card_click",WI)(this)',tabindex:'0'},`<img crossorigin='anonymous' src='${VCVR}' s='${coverImgUrl}'/><score>${score||''}</score><tip>${tip}</tip><title>${N}</title>`)
 			}).filter(Boolean))
 			go(true)
 		},{},'json')
@@ -124,35 +123,35 @@ window.IX={
 	fold_toggle:me=>{ // 视频源展开/折叠
 		const x=me.html()=='💦'
 		me.innerText=x?'🌀':'💦'
-		$O.$('modal-c [VS]')[x?'sa':'da']('x')
+		$O.$('[MC] [VS]')[x?'sa':'da']('x')
 	},
 
 	card_click:me=>{ // 打开详情弹层
 		CF()
 		const K=IX.key=crypto.randomUUID(),mk=me.ga('I')
-		const videos='ayf_favorite_videos'.gc({}),mbox=$O.$('modal-c').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
+		const videos='ayf_favorite_videos'.gc({}),mbox=$O.$('[MC]').html(`<sk pt30 f fv g12><sk f g12><sk q w20 h40></sk><sk q w10 h40></sk><sk q w33 h40></sk><sk q f1 h40></sk></sk><sk f g12><sk q w20 h40></sk><sk q f1 h40></sk></sk><sk x6 g16>${'<sk b h20></sk>'.repeat(6)}</sk><sk q r169></sk><sk f g20><sk b w40 h12></sk><sk f1></sk><sk b w h12></sk></sk><sk q r219></sk></sk>`)
 		IX.mk=mk
 		IX.curr={N:me.ga('N'),C:me.$('img').ga('s'),S:me.$('score').innerText}
-		$O.$('modal-t [SC]').innerText=mk in videos?'♡':'⊕'
+		$O.$('[MT] [SC]').innerText=mk in videos?'♡':'⊕'
 		$O.body.sa('ns')
-		$O.$('grid').da('a')
-		$O.$('modal').da('hide').$('modal-t>title').da('s10','s12','s14').html(IX.curr.N.length>14?(IX.curr.N.substring(0,14)+'\n'+IX.curr.N.substring(14)):IX.curr.N)
-		if(IX.curr.N.length>14)$O.$('modal-t>title').sa('s14')
-		else if(IX.curr.N.length>12)$O.$('modal-t>title').sa('s12')
-		else if(IX.curr.N.length>10)$O.$('modal-t>title').sa('s10');
+		$O.$('[G]').da('a')
+		$O.$('[M]').da('hide').$('[MT]>div').da('s10','s12','s14').html(IX.curr.N.length>14?(IX.curr.N.substring(0,14)+'\n'+IX.curr.N.substring(14)):IX.curr.N)
+		if(IX.curr.N.length>14)$O.$('[MT]>div').sa('s14')
+		else if(IX.curr.N.length>12)$O.$('[MT]>div').sa('s12')
+		else if(IX.curr.N.length>10)$O.$('[MT]>div').sa('s10');
 
 		`${['japan','european','domestic'].includes(IX.filters.category)?IX.wh:IX.mh}video/videodetails?mediaKey=${mk}`.get(async _=>{
 			if(IX.key!=K||_===null)return
 
 			const {cidMapper,regional,lang,postTime,date,director,starring,episodes,introduce}=_.data.detailInfo
 			const [trim_start,trim_end]=(mk+'_ayf_trim_config').gc('0:0').split(':').map(_=>parseFloat(_)),o=[]
-			o.push(`<div><div><b>类型:</b>&emsp;<em>${cidMapper}</em>&emsp;&emsp;<b>地区:</b>&emsp;<em>${regional}</em>&emsp;&emsp;<b>年份:</b>&emsp;<em>${new Date(postTime||date).toLocaleString().split('/').shift()}</em></div></div>`)
-			o.push(`<div T='director'${director!=''?'':' hide'}><div b>导演:</div>${(director||'').split(/[\/,]/).filter(_=>_.trim()!='').map(_=>`<div V='${_.trim()}' onclick='run("IX","tab_click",WI)(this)'><em>${_.trim()}</em></div>`).join('')}</div>`)
-			o.push(`<div T='actor'${starring!=''?'':' hide'}><div b>主演:</div>${(starring||'').split(',').filter(_=>_.trim()!='').map(_=>`<div V='${_.trim()}' onclick='run("IX","tab_click",WI)(this)'><em>${_.trim()}</em></div>`).join('')}</div>`)
-			o.push(`${episodes.length>14?`<div tg><div onclick='run("IX","fold_toggle",WI)(this)'>🌀</div></div>`:''}<div VS${episodes.length>14?' x':''}>${episodes.map((_,i)=>`<div mk='${mk}' vid='${_.episodeId}' onclick='run("IX","part_click",WI)(this)'>${_.episodeTitle}</div>`).join('')}</div>`)
-			o.push(`<video preload autoplay crossorigin='anonymous' controls poster='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" style="background:%23${$O.body.ha('dark')?'001':'eff'}"%3E%3C/svg%3E'></video>`)
-			o.push(`<div VL><div VL S onclick='run("IX","trim_click",WI)(false)'>╟ ${Number(trim_start).dt()}</div><div VL W onclick='run("IX","trim_click",WI)(true)'>${Number(-trim_end).dt()} ╢</div></div>`)
-			o.push(`<div BF>${introduce}</div>`)
+			o.push(`<div><div><b>类型:</b>&emsp;<em tabindex='0'>${cidMapper}</em>&emsp;&emsp;<b>地区:</b>&emsp;<em tabindex='0'>${regional}</em>&emsp;&emsp;<b>年份:</b>&emsp;<em tabindex='0'>${new Date(postTime||date).toLocaleString().split('/').shift()}</em></div></div>`)
+			o.push(`<div T='director'${director!=''?'':' hide'}><div b>导演:</div>${(director||'').split(/[\/,]/).filter(_=>_.trim()!='').map(_=>`<div V='${_.trim()}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'><em>${_.trim()}</em></div>`).join('')}</div>`)
+			o.push(`<div T='actor'${starring!=''?'':' hide'}><div b>主演:</div>${(starring||'').split(',').filter(_=>_.trim()!='').map(_=>`<div V='${_.trim()}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'><em>${_.trim()}</em></div>`).join('')}</div>`)
+			o.push(`${episodes.length>14?`<div tg><div onclick='run("IX","fold_toggle",WI)(this)' tabindex='0'>🌀</div></div>`:''}<div VS${episodes.length>14?' x':''}>${episodes.map((_,i)=>`<div mk='${mk}' vid='${_.episodeId}' onclick='run("IX","part_click",WI)(this)' tabindex='0'>${_.episodeTitle}</div>`).join('')}</div>`)
+			o.push(`<video tabindex='0' preload autoplay crossorigin='anonymous' controls poster='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" style="background:%23${$O.body.ha('dark')?'001':'eff'}"%3E%3C/svg%3E'></video>`)
+			o.push(`<div VL><div VL S onclick='run("IX","trim_click",WI)(false)' tabindex='0'>╟ ${Number(trim_start).dt()}</div><div VL W onclick='run("IX","trim_click",WI)(true)' tabindex='0'>${Number(-trim_end).dt()} ╢</div></div>`)
+			o.push(`<div BF tabindex='0'>${introduce}</div>`)
 			mbox.html(o.join(''))
 
 			if(!window.Hls){
@@ -172,20 +171,20 @@ window.IX={
 			IX.hls.attachMedia(V)
 			V.addEventListener('fullscreenchange',()=>{
 				if(!$O.fullscreenElement){
-					UP.dev_sp_st('SO')
+					if(!TV)UP.dev_sp_st('SO')
 					if(V.fsn)V.fsn=false
 					return
 				}
 				if(!V.fsn){
-					UP.dev_sp_st('H')
+					if(!TV)UP.dev_sp_st('H')
 					V.fsn=true
 					return
 				}
-				UP.dev_sp_st('SO')
+				if(!TV)UP.dev_sp_st('SO')
 				V.fsn=false
 			},false)
 			V.ondurationchange=()=>{
-				const m=$O.$('modal-c')
+				const m=$O.$('[MC]')
 				if(V.duration<250||!m||m.ha('hide'))return
 				IX.wait=false
 				V.playbackRate=1.25
@@ -198,7 +197,7 @@ window.IX={
 				if(had_play&&!seek_already)pt_key.dc()
 			}
 			V.ontimeupdate=()=>{
-				const m=$O.$('modal-c')
+				const m=$O.$('[MC]')
 				if(V.duration<250||IX.wait||!m||m.ha('hide'))return
 				if(V.duration-V.currentTime>(mk+'_ayf_trim_config').gc('0:0').split(':').map(_=>parseFloat(_))[1])return
 				const x=$O.$('[VS]>[c]'),$=x?x.nextElementSibling:null
@@ -240,7 +239,7 @@ window.IX={
 		if(uncollected)videos[IX.mk]=IX.curr
 		else if(IX.mk in videos){
 			delete videos[IX.mk]
-			if(IX.filters.category=='')$O.$(`grid-c[I='${IX.mk}']`).remove()
+			if(IX.filters.category=='')$O.$(`[GC][I='${IX.mk}']`).remove()
 		}
 		'ayf_favorite_videos'.sc(videos)
 	},
@@ -252,21 +251,21 @@ window.IX={
 		IX.wait=false
 		IX.mk=IX.curr=null
 		IX.hls&&(await IX.hls.destroy())
-		$O.$('modal').sa('hide','_I').$('modal-t>title').html('')
-		$O.$('modal-c').html('')
+		$O.$('[M]').sa('hide','_I').$('[MT]>div').html('')
+		$O.$('[MC]').html('')
 		$O.body.da('ns')
 	},
 
 	dark_toggle:me=>{ // 深色模式切换
 		const is_light=me.innerText=='⊙'
-		$O.$('modal')[is_light?'sa':'da']('DK')
+		$O.$('[M]')[is_light?'sa':'da']('DK')
 		me.innerText=is_light?'◎':'⊙'
 	},
 
 	watch:()=>{ // 监听节点
 		IX.observer.load_more=new IntersectionObserver((s,o)=>{
 			let card=null
-			s.forEach(e=>(e.target.nodeName=='GRID-C')&&(e.intersectionRatio>=0.7)&&(card=e.target))
+			s.forEach(e=>(e.target.ha('GC'))&&(e.intersectionRatio>=0.7)&&(card=e.target))
 			if(!card||card.ha('wait')||IX.filters.category==='')return
 			card.sa('wait')
 			IX.tab_click(null,_=>{
@@ -284,11 +283,10 @@ window.IX={
 		IX.observer.get_nodes=new MutationObserver(s=>{
 			let last_card=null
 			s.forEach(e=>{
-				const t=e.target,tag=t.nodeName
-				const is_gbox=tag=='GRID',cards=Array.from(e.addedNodes)
-				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>_.nodeName!='GRID-C')))return
+				const t=e.target,is_gbox=t.ha('G'),cards=Array.from(e.addedNodes)
+				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>!_.ha('GC'))))return
 				is_gbox&&!last_card&&(last_card=cards[cards.length-1])
-				cards.filter(_=>_.nodeName=='GRID-C').forEach(_=>IX.observer.img_lazy?.observe(_.$('img')))
+				cards.filter(_=>_.ha('GC')).forEach(_=>IX.observer.img_lazy?.observe(_.$('img')))
 			})
 			last_card&&IX.observer.load_more?.observe(last_card)
 		})
@@ -302,13 +300,13 @@ body{display:flex!important;flex-direction:column!important}
 tab:not(tab:first-of-type):not(tab:last-of-type){padding-left:60px}`
 		const render=()=>{
 			log('渲染页面，构建 DOM 树')
-			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!=''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
-			o+=`<grid></grid>`
-			o+=`<modal hide><mbox><modal-t><title></title>`
-			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px'>⊕</icc>`
-			o+=`<icc onclick='run("IX","dark_toggle",WI)(this)' style='line-height:33px'>⊙</icc>`
-			o+=`<icc onclick='run("IX","modal_close",WI)()'>╳</icc>`
-			o+=`</modal-t><modal-c></modal-c></mbox></modal>`
+			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!=''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${IX.tmap[_].name}</div>`).join('')}</tab>`
+			o+=`<div G></div>`
+			o+=`<div M hide><div MB><div MT><div></div>`
+			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px' tabindex='0'>⊕</icc>`
+			o+=`<icc onclick='run("IX","dark_toggle",WI)(this)' style='line-height:33px' tabindex='0'>⊙</icc>`
+			o+=`<icc onclick='run("IX","modal_close",WI)()' tabindex='0'>╳</icc>`
+			o+=`</div><div MC></div></div></div>`
 			$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 			$O.body.html(o+($O.$('#w_logs')?.html(true)||''))
 			log('绑定事件，节点监听')

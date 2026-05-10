@@ -11,10 +11,10 @@ window.IX={
 	name:'home',observer:{},
 
 	cards:[ // 所有页面
-		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in'},
-		{key:'ole',name:'欧乐视频',title:'数据来源',brief:'www.olehdtv.com'},
-		{key:'ayf',name:'爱一帆',title:'数据来源',brief:'m.yfsp.tv'},
-		{key:'news',name:'实时资讯',title:'数据来源',brief:'flw.ph phhua.com shangbao.com.ph'},
+		{key:'nnu',name:'努努影院',title:'数据来源',brief:'nnyy.in',tv:true},
+		{key:'ole',name:'欧乐视频',title:'数据来源',brief:'www.olehdtv.com',tv:true},
+		{key:'ayf',name:'爱壹帆',title:'数据来源',brief:'m.yfsp.tv',tv:true},
+		{key:'news',name:'实时资讯',title:'数据来源',brief:'flw.ph phhua.com shangbao.com.ph',tv:true},
 		{key:'kxwk',name:'科学文库',title:'数据来源',brief:'book.sciencereading.cn'},
 		{key:'img',name:'图片仓库',title:'数据来源',brief:'www.pexels.com'},
 		{key:'diary',name:'私人日记',title:'数据来源',brief:'——'},
@@ -58,11 +58,12 @@ window.IX={
 	run:async()=>{ // 启动执行
 		log('进入页面，自定义样式')
 		$O.$('head>style[ix]').innerHTML=`
-body{display:flex;flex-direction:column;padding:60px 20px!important;overflow:hidden auto!important;height:auto!important}
-nav{flex:1;display:block;width:100%;line-height:60px;margin-bottom:26px;user-select:none}
+body{display:block;padding:60px 20px!important;overflow:hidden auto!important;height:auto!important}
+nav{display:block;width:100%;line-height:60px;margin-bottom:26px;user-select:none}
 nav>*{display:inline-block;width:auto;margin-left:20px;float:right;font-size:18px!important}
-card{flex:1;display:block;text-align:center;margin-bottom:14px;user-select:none}
-card>.front,card>.back{width:inherit;transition:.5s cubic-bezier(.175,.885,.32,1.275);color:white;aspect-ratio:58/10;padding:14px 0;border-radius:4px;background-size:cover;background-position:center}
+card{float:left;width:calc((2 - var(--tv)) * (50vw - 20px - var(--tv)*7px));display:block;text-align:center;margin-bottom:14px;user-select:none}
+card:nth-child(2n){margin-right:calc(var(--tv) * 14px)}
+card>.front,card>.back{width:inherit;transition:.5s cubic-bezier(.175,.885,.32,1.275);color:white;aspect-ratio:calc(9 / ((var(--tv)*0.5 + 1) * 1.8));padding:14px 0;border-radius:2px;background-size:cover;background-position:center}
 card>.front{background-image:var(--u)}
 card>.back{position:absolute!important;opacity:0;top:0;left:0;width:100%;height:100%;color:black;background-color:#eee;transform:rotateY(-180deg)}
 body[dark] card>.back{color:white;background:#111}
@@ -76,8 +77,8 @@ body[dark] card>.back p{color:#ddd}card h1,card h2{margin:0}card h2{font-size:18
 card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),4px 4px rgba(255,255,255,.14),6px 6px rgba(255,255,255,.1),8px 8px rgba(255,255,255,.06),10px 10px rgba(255,255,255,.02)}
 `
 		let i=0
-		const o=[`<nav><div k='debug' onclick='run("IX","toggle",WI)(this)'>日志打印: ${'debug'.gc(null)=='yes'?'🟢':'🔴'}</div><div k='dark' onclick='run("IX","toggle",WI)(this)'>深色模式: ${'dark'.gc(null)=='yes'?'🟢':'🔴'}</div></nav>`]
-		for(let {key,name,title,brief} of IX.cards)o.push(`<card${(i++)%2<1?' v':''} onclick='run("IX","goto",WI)(this)' K='${key}'><div class='front' style='--u:url(./img/${key}.webp)'><h1>${name}</h1></div><div class='back'><h2>${title}</h2><p>${brief}</p></div></card>`)
+		const o=[`<nav><div k='debug' onclick='run("IX","toggle",WI)(this)' tabindex='0'>日志打印: ${'debug'.gc(null)=='yes'?'🟢':'🔴'}</div><div k='dark' onclick='run("IX","toggle",WI)(this)' tabindex='0'>深色模式: ${'dark'.gc(null)=='yes'?'🟢':'🔴'}</div></nav>`]
+		for(let {key,name,title,brief,tv} of IX.cards)if(!TV||tv)o.push(`<card${(i++)%2<1?' v':''} onclick='run("IX","goto",WI)(this)' K='${key}' tabindex='0'><div class='front' style='--u:url(./img/${key}.webp)'><h1>${name}</h1></div><div class='back'><h2>${title}</h2><p>${brief}</p></div></card>`)
 		log('渲染页面，构建 DOM 树')
 		$O.body.html(o.join('')+($O.$('#w_logs')?.html(true)||''))
 	},

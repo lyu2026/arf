@@ -25,7 +25,7 @@ window.IX={
 		log(cordova.file)
 		if(!me&&IX.stop)return
 		let key,val
-		const K=IX.key=crypto.randomUUID(),gbox=$O.$('grid').da('_').sa('a')
+		const K=IX.key=crypto.randomUUID(),gbox=$O.$('[G]').da('_').sa('a')
 		if(me){
 			IX.sm={}
 			IX.page=0
@@ -57,25 +57,25 @@ window.IX={
 					log(`获取收藏`)
 					gbox.da('_')
 					const books='kxwk_favorite'.gc({})
-					gbox.append(...Object.keys(books).map(_=>$O.node('grid-c',{I:_,N:books[_].N,onclick:'run("IX","card_click",WI)(this)'},`<img crossorigin='anonymous' src='${VCVR}' s='${books[_].C}'/><title>${books[_].N}</title>`)))
+					gbox.append(...Object.keys(books).map(_=>$O.node('div',{GC:'',I:_,N:books[_].N,onclick:'run("IX","card_click",WI)(this)',tabindex:'0'},`<img crossorigin='anonymous' src='${VCVR}' s='${books[_].C}'/><title>${books[_].N}</title>`)))
 					return
 				}
 				if(IX.filters.category!='?'){
 					const X=IX.tmap[IX.filters.category]
-					const tx=`<div${''==IX.filters.xueke?' c':''} V='' onclick='run("IX","tab_click",WI)(this)'>全部</div>`+X.xueks.map(_=>{
-						let x=_.split(':');return `<div${x[0]==IX.filters.xueke?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)'>${x[1]}</div>`
+					const tx=`<div${''==IX.filters.xueke?' c':''} V='' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>全部</div>`+X.xueks.map(_=>{
+						let x=_.split(':');return `<div${x[0]==IX.filters.xueke?' c':''} V='${x[0]}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${x[1]}</div>`
 					}).join('')
-					const tt=`<div${''==IX.filters.type?' c':''} V='' onclick='run("IX","tab_click",WI)(this)'>全部</div>`+X.types.map(_=>{
-						return `<div${_==IX.filters.type?' c':''} V='${_}' onclick='run("IX","tab_click",WI)(this)'>${_}</div>`
+					const tt=`<div${''==IX.filters.type?' c':''} V='' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>全部</div>`+X.types.map(_=>{
+						return `<div${_==IX.filters.type?' c':''} V='${_}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${_}</div>`
 					}).join('')
-					const ty=`<div${''==IX.filters.year?' c':''} V='' onclick='run("IX","tab_click",WI)(this)'>全部</div>`+X.years.map(_=>{
-						return `<div${_==IX.filters.year?' c':''} V='${_}' onclick='run("IX","tab_click",WI)(this)'>${_}</div>`
+					const ty=`<div${''==IX.filters.year?' c':''} V='' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>全部</div>`+X.years.map(_=>{
+						return `<div${_==IX.filters.year?' c':''} V='${_}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${_}</div>`
 					}).join('')
 					const ts=[
 						{k:'-1',v:'默认排序'},{k:'booksimple.publishDate+desc',v:'出版日期降序'},
 						{k:'booksimple.publishDate',v:'出版日期升序'},
 						{k:'booksimple.name',v:'图书名称'},{k:'booksimple.author',v:'作者'}
-					].map(_=>`<div${_.k==(IX.filters.sort||'-1')?' c':''} V='${_.k}' onclick='run("IX","tab_click",WI)(this)'>${_.v}</div>`).join('')
+					].map(_=>`<div${_.k==(IX.filters.sort||'-1')?' c':''} V='${_.k}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${_.v}</div>`).join('')
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'xueke'},tx))
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'type'},tt))
 					gbox.insertAdjacentElement('beforebegin',$O.node('tab',{T:'year'},ty))
@@ -126,7 +126,7 @@ window.IX={
 				return {I,N,cover:`https://book.sciencereading.cn${cover}`}
 			}).filter(Boolean)
 			log('列表数据',o)
-			o&&gbox.append(...o.map(({I,N,cover})=>$O.node('grid-c',{I,N,onclick:'run("IX","card_click",WI)(this)'},`<img crossorigin='anonymous' src='${BCVR}' s='${cover}'/><title>${N}</title>`)))
+			o&&gbox.append(...o.map(({I,N,cover})=>$O.node('div',{GC:'',I,N,onclick:'run("IX","card_click",WI)(this)',tabindex:'0'},`<img crossorigin='anonymous' src='${BCVR}' s='${cover}'/><title>${N}</title>`)))
 			if(o.length<30)IX.stop=true
 			go(true)
 		},{},'html')
@@ -137,15 +137,15 @@ window.IX={
 		const K=IX.key=crypto.randomUUID()
 		const id=IX.id=me.ga('I'),books='kxwk_favorite'.gc({})
 		const sk=`<br><sk w100 p10 f fv g4><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h130></sk><sk n h20></sk><sk n h8></sk><sk n h50></sk></sk>`
-		const mbox=$O.$('modal-c').html(`${sk}<iframe hide crossorigin='anonymous' sandbox='allow-scripts allow-same-origin allow-storage-access-by-user-activation' allow='storage-access' onload='run("IX","iframe_show",WI)(this)' src='https://book.sciencereading.cn/!'></iframe>`)
+		const mbox=$O.$('[MC]').html(`${sk}<iframe hide crossorigin='anonymous' sandbox='allow-scripts allow-same-origin allow-storage-access-by-user-activation' allow='storage-access' onload='run("IX","iframe_show",WI)(this)' src='https://book.sciencereading.cn/!'></iframe>`)
 		IX.curr={N:me.ga('N'),C:me.$('img').ga('s')}
-		$O.$('modal-t [SC]').innerText=id in books?'♡':'⊕'
+		$O.$('[MT] [SC]').innerText=id in books?'♡':'⊕'
 		$O.body.sa('ns')
-		$O.$('grid').da('a')
-		$O.$('modal').da('hide').$('modal-t>title').da('s10','s12','s14').html(IX.curr.N.length>14?(IX.curr.N.substring(0,14)+'\n'+IX.curr.N.substring(14)):IX.curr.N)
-		if(IX.curr.N.length>14)$O.$('modal-t>title').sa('s14')
-		else if(IX.curr.N.length>12)$O.$('modal-t>title').sa('s12')
-		else if(IX.curr.N.length>10)$O.$('modal-t>title').sa('s10');
+		$O.$('[G]').da('a')
+		$O.$('[M]').da('hide').$('[MT]>div').da('s10','s12','s14').html(IX.curr.N.length>14?(IX.curr.N.substring(0,14)+'\n'+IX.curr.N.substring(14)):IX.curr.N)
+		if(IX.curr.N.length>14)$O.$('[MT]>div').sa('s14')
+		else if(IX.curr.N.length>12)$O.$('[MT]>div').sa('s12')
+		else if(IX.curr.N.length>10)$O.$('[MT]>div').sa('s10');
 	},
 
  iframe_show:async me=>{ // iframe初始化
@@ -290,7 +290,7 @@ window.IX={
 		if(uncollected)books[IX.id]=IX.curr
 		else if(IX.id in books){
 			delete books[IX.id]
-			if(IX.filters.category=='')$O.$(`grid-c[I='${IX.id}']`).remove()
+			if(IX.filters.category=='')$O.$(`[GC][I='${IX.id}']`).remove()
 		}
 		'kxwk_favorite'.sc(books)
 	},
@@ -382,15 +382,15 @@ window.IX={
 		if(o)(IX.id+'_index').sc(parseInt(o.innerText))
 		IX.ready=false
 		IX.id=IX.curr=null
-		$O.$('modal').sa('hide','_I').$('modal-t>title').html('')
-		$O.$('modal-c').html('')
+		$O.$('[M]').sa('hide','_I').$('[MT]>div').html('')
+		$O.$('[MC]').html('')
 		$O.body.da('ns')
 	},
 
 	watch:()=>{ // 监听节点
 		IX.observer.load_more=new IntersectionObserver((s,o)=>{
 			let card=null
-			s.forEach(e=>(e.target.nodeName=='GRID-C')&&(e.intersectionRatio>=0.7)&&(card=e.target))
+			s.forEach(e=>(e.target.ha('GC'))&&(e.intersectionRatio>=0.7)&&(card=e.target))
 			if(!card||card.ha('wait')||IX.filters.category==='')return
 			card.sa('wait')
 			IX.tab_click(null,_=>{
@@ -408,11 +408,10 @@ window.IX={
 		IX.observer.get_nodes=new MutationObserver(s=>{
 			let last_card=null
 			s.forEach(e=>{
-				const t=e.target,tag=t.nodeName
-				const is_gbox=tag=='GRID',cards=Array.from(e.addedNodes)
-				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>_.nodeName!='GRID-C')))return
+				const t=e.target,is_gbox=t.ha('G'),cards=Array.from(e.addedNodes)
+				if(!is_gbox||cards.length<1||(is_gbox&&cards.some(_=>!_.ha('GC'))))return
 				is_gbox&&!last_card&&(last_card=cards[cards.length-1])
-				cards.filter(_=>_.nodeName=='GRID-C').forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
+				cards.filter(_=>_.ha('GC')).forEach(_=>IX.observer.lazy_img?.observe(_.$('img')))
 			})
 			last_card&&IX.observer.load_more?.observe(last_card)
 		})
@@ -424,12 +423,12 @@ window.IX={
 		$O.$('head>style[ix]').innerHTML=`body{display:flex!important;flex-direction:column!important}`
 		const render=()=>{
 			log('渲染页面，构建 DOM 树')
-			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!==''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)'>${IX.tmap[_].name}</div>`).join('')}</tab>`
-			o+=`<grid></grid><modal hide><mbox><modal-t><title></title>`
-			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px'>⊕</icc>`
-			o+=`<icc SC onclick='run("IX","download",WI)(this)' style='line-height:33px'>〶</icc>`
-			o+=`<icc onclick='run("IX","modal_close",WI)()'>╳</icc>`
-			o+=`</modal-t><modal-c></modal-c></mbox></modal>`
+			let o=`<tab T='category'>${['','?',...Object.keys(IX.tmap).filter(_=>_!==''&&_!='?')].map(_=>`<div V='${_}' onclick='run("IX","tab_click",WI)(this)' tabindex='0'>${IX.tmap[_].name}</div>`).join('')}</tab>`
+			o+=`<div G></div><div M hide><div MB><div MT><div></div>`
+			o+=`<icc SC onclick='run("IX","collect_toggle",WI)(this)' style='line-height:33px' tabindex='0'>⊕</icc>`
+			o+=`<icc SC onclick='run("IX","download",WI)(this)' style='line-height:33px' tabindex='0'>〶</icc>`
+			o+=`<icc onclick='run("IX","modal_close",WI)()' tabindex='0'>╳</icc>`
+			o+=`</div><div MC></div></div></div>`
 			$O.$$('body>*:not(#w_logs)').forEach(_=>_.remove())
 			$O.body.html(o+($O.$('#w_logs')?.html(true)||''))
 			log('绑定事件，节点监听')

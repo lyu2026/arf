@@ -80,8 +80,10 @@
 		let WI=crypto.randomUUID()
 		document.addEventListener('deviceready',()=>{
 			document.head.appendChild(document.node('script',{src:`./js/core.js?_=${crypto.randomUUID()}`,onload:async _=>{
-				const o=await UP.dev_auh('指纹认证','','取消').then(_=>null).catch(_=>_||'deny')
-				if(null!==o)return
+				if(!TV){
+					const o=await UP.dev_auh('指纹认证','','取消').then(_=>null).catch(_=>_||'deny')
+					if(null!==o)return
+				}
 				log('载入 HOME.JS')
 				$O.head.appendChild($O.node('script',{ix:'',src:`./js/home.js?_=${crypto.randomUUID()}`}))
 			}}))

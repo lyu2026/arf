@@ -48,12 +48,18 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		
 		
 		
-		// UP.dev_sd_op()
-		let o=await UP.net_me_gt()
-		log(o)
-		o=await UP.spk_run('#o','IX.af',{left:80,right:80,bottom:80,height:80,opacity:0.6,radius:30,color:'#000000'})
-		log(o)
+		let o=await UP.spc_gl()
+		if(!o.includes('cn'))await UP.spc_dl('cn').then(_=>log(_))
+		await UP.spc_en('cn')
+		UP.spc_st(_=>{
+			if(res.partial)log('实时: '+_.partial)
+			if(res.text)log('最终: '+_.text)
+		})
+		await UP.spc_sp().then(_=>log(_))
 		return
+		
+		o=await UP.net_me_gt()
+		log(o)
 		o=await UP.net_jm_cs()
 		log(o)
 		o=await UP.net_pr_ls()

@@ -51,9 +51,10 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		// UP.dev_sd_op()
 		let o=await UP.net_me_gt()
 		log(o)
-		o=await UP.net_jm_cs()
-		log(o)
 		o=await UP.spk_op('#o','IX.af')
+		log(o)
+		return
+		o=await UP.net_jm_cs()
 		log(o)
 		o=await UP.net_pr_ls()
 		log(o)

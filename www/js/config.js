@@ -44,11 +44,22 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 `
 		let i=0
 		log('渲染页面，构建 DOM 树')
-		$O.body.html(  ($O.$('#w_logs')?.html(true)||''))
+		$O.body.html(`<div id='o'></div>`+($O.$('#w_logs')?.html(true)||''))
 		
 		
+		
+		// UP.dev_sd_op()
+		let o=await UP.net_me_gt()
+		log(o)
+		o=await UP.net_jm_cs()
+		log(o)
+		o=await UP.spk_op('#o','IX.af')
+		log(o)
+		o=await UP.net_pr_ls()
+		log(o)
 	},
+	af:_=>{
+		log(_)
+	}
 
 }
-
-IX.run()

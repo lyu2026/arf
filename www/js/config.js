@@ -54,8 +54,7 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		await UP.spc_en('cn')
 		
 		UP.spc_st().then(_=>{
-			if(_.partial)$O.$('#o').html(_.partial) // 实时显示
-			if(_.text)$O.$('#o').html(_.text) // 最终结果
+			log(_)
 		})
 		
 		setTimeout(async()=>{

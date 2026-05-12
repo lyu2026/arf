@@ -44,18 +44,24 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 `
 		let i=0
 		log('渲染页面，构建 DOM 树')
-		$O.body.html(`<div id='o'></div>`+($O.$('#w_logs')?.html(true)||''))
+		$O.body.html(`<div id='o' style='color:yellow;font-size:16px;padding:30px></div>`+($O.$('#w_logs')?.html(true)||''))
+		
+		const run=async()=>{
+			await UP.spc_en('cn')
+			UP.spc_st(_=>{
+				log(_)
+			})
+		},o=await UP.spc_gl()
+		if(o.includes('cn'))return run()
+		UP.spc_dl(_=>{
+			if(_.a!='dl')return
+			log(_.o)
+		
+		},'cn')
+		return
 		
 		
 		
-		let o=await UP.spc_gl()
-		if(!o.includes('cn'))await UP.spc_dl('cn').then(_=>log(_))
-		
-		await UP.spc_en('cn')
-		
-		UP.spc_st().then(_=>{
-			log(_)
-		})
 		
 		setTimeout(async()=>{
 			await UP.spc_sp()

@@ -11,11 +11,37 @@ window.IX={
 	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
 	ME:{'image/jpeg':'JPG','image/png':'PNG','image/gif':'GIF','image/svg+xml':'SVG','image/webp':'WEBP','image/bmp':'BMP','video/mp4':'MP4','video/webm':'WEBM','video/3gpp':'3GP','audio/mpeg':'MP3','audio/wav':'WAV','audio/ogg':'OGG','audio/aac':'AAC','application/pdf':'PDF','application/msword':'DOC','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'DOCX','application/vnd.ms-excel':'XLS','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'XLSX','application/vnd.ms-powerpoint':'PPT','application/vnd.openxmlformats-officedocument.presentationml.presentation':'PPTX','text/plain':'TXT','text/html':'HTML','text/css':'CSS','application/javascript':'JS','application/json':'JSON','application/xml':'XML','application/zip':'ZIP','application/vnd.android.package-archive':'APK','text/markdown':'MD','text/csv':'CSV','text/yaml':'YAML'},
 	loader:`<svg viewBox='0 0 100 100' width='40' height='40'><style>path{fill:#fff}path:nth-child(1){animation:r1 2s linear infinite;transform-origin:50px 50px}path:nth-child(2){animation:r2 1s linear infinite;transform-origin:50px 50px}path:nth-child(3){animation:r1 2s linear infinite;transform-origin:50px 50px}@keyframes r1{to{transform:rotate(360deg)}}@keyframes r2{to{transform:rotate(-360deg)}}</style><path d='M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z'/><path d='M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z'/><path d='M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z'/></svg>`,
+	arecord:`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path stroke='#000' stroke-width='2' stroke-linecap='round' d='M3 10v4m4.5-8v12M12 3v18m4.5-15v12M21 10v4'/></svg>`,
+	brecord:`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><style>line{stroke:#000;stroke-width:2;stroke-linecap:round;animation:p 1s ease-in-out infinite;transform-origin:center}.l1{animation-delay:0s}.l2{animation-delay:.15s}.l3{animation-delay:.3s}.l4{animation-delay:.15s}.l5{animation-delay:0s}@keyframes p{50%{transform:scaleY(.4)}}</style><g transform='translate(12,12)'><line class='l1' x1='-9' y1='-7' x2='-9' y2='7'/><line class='l2' x1='-4.5' y1='-9' x2='-4.5' y2='9'/><line class='l3' x1='0' y1='-10.5' x2='0' y2='10.5'/><line class='l4' x1='4.5' y1='-9' x2='4.5' y2='9'/><line class='l5' x1='9' y1='-7' x2='9' y2='7'/></g></svg>`,
 
 	ftime:ts=>{
 		const wd=['日','一','二','三','四','五','六'],mc=['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月']
 		let d=new Date(parseInt(ts)),y=d.getFullYear(),m=d.getMonth(),w=d.getDay(),t=d.toTimeString().slice(0,8)
 		return{w:'星期'+wd[w],y,m:mc[m],d:d.getDate(),t}
+	},
+
+	record:async(me)=>{ // 录音识别
+		me.html(IX.recording?IX.arecord:IX.brecord)
+		if(IX.recording){
+			IX.recording=false
+			await UP.spc_sp()
+			return
+		}
+		IX.recording=true
+		const run=async()=>{
+			await UP.spc_en('cn')
+			UP.spc_st(_=>{
+				if(_.text)me.parentNode.$('textarea,input').value+=_.text.replaceAll(' ','')
+			})
+		},o=await UP.spc_gl()
+		if(o.includes('cn')){
+			await run()
+			return
+		}
+		UP.spc_dl(async _=>{
+			if(_.a!='dl'||_.o!='ok')return
+			await run()
+		},'cn')
 	},
 
 	statistics:async(me)=>{ // 统计
@@ -141,8 +167,8 @@ window.IX={
 		const {title,content,weather,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
-		<div x='title' tabindex='0'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label></div>
-		<div x='content' tabindex='0'><textarea placeholder=' '>${content||''}</textarea><label>日志内容</label></div>
+		<div x='title' tabindex='0'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label><div w onclick='run("IX","record",WI)(this)' tabindex='0'>${IX.arecord}</div></div>
+		<div x='content' tabindex='0'><textarea placeholder=' '>${content||''}</textarea><label>日志内容</label><div w onclick='run("IX","record",WI)(this)' tabindex='0'>${IX.arecord}</div></div>
 		<div x='mood' ph='当前心情'>${IX.MS.map(_=>`<span${!mood&&_=='普通'||mood==_?' c':''} onclick='run("IX","mood",WI)(this)' tabindex='0'>${_}</span>`).join('')}</div>
 		<div x='tags' tabindex='0'><input placeholder=' ' value='${(tags||[]).join(' ')}'/><label>日志标签，空格分割</label></div>
 		<div x='address'><input placeholder=' ' value='${address||''}'/><label>当前地址，手动输入/自动定位</label><span onclick='run("IX","location",WI)(this)' tabindex='0'>🎯</span></div>
@@ -374,6 +400,9 @@ body[dark] [MC] [x='imgs'],body[dark] [MC] [x='files']{border-color:rgba(255,255
 [MC] [x='imgs']>*:hover,[MC] [x='files']>*:hover{border-color:rgba(0,0,0,.5)}
 body[dark] [MC] [x='imgs']>*,body[dark] [MC] [x='files']>*{border-color:rgba(255,255,255,.2)}
 body[dark] [MC] [x='imgs']>*:hover,body[dark] [MC] [x='files']>*:hover{border-color:rgba(255,255,255,.5)}
+[MC] [x]>[w]{background:rgba(0,0,0,.14);height:34px;position:absolute;bottom:12px;right:-8px;z-index:100;aspect-ratio:1;border-radius:100%;padding:6px}
+body[dark] [MC] [x]>[w]{filter:invert(1) hue-rotate(180deg)}
+[MC] [x]>[w]>svg{display:block;object-fit:contain}
 [MC]>button{margin:8px 0 20px 0;line-height:60px;border:0;border-radius:6px;background:#831BF2EC;color:white;text-align:center;font-size:18px}
 [MC]>button[wait]{background:#831BF2AE}
 [MC]>button:not([wait]):hover{background:#7009E0FF}

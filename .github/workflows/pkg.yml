@@ -333,7 +333,7 @@ jobs:
             echo "### 🔧 技术支持"
             echo "| 项目 | 值 |"
             echo "|------|-----|"
-            echo "| 语音识别 | Whisper + TensorFlow 离线引擎 |"
+            echo "| 语音识别 | Vosk 离线引擎 |"
             echo "| 数据库 | SQLite + 云加密同步 |"
             echo "| 云存储 | Koofr 云盘 |"
             echo "| 天气数据 | Open-Meteo 免费 API |"

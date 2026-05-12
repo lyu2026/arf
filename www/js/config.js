@@ -50,11 +50,17 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		
 		let o=await UP.spc_gl()
 		if(!o.includes('cn'))await UP.spc_dl('cn').then(_=>log(_))
+		
 		await UP.spc_en('cn')
-		UP.spc_st(_=>{
-			log(_)
-		}).then(_=>log(_))
-		await UP.spc_sp().then(_=>log(_))
+		
+		UP.spc_st().then(_=>{
+			if(_.partial)$O.$('#o').html(_.partial) // 实时显示
+			if(_.text)$O.$('#o').html(_.text) // 最终结果
+		})
+		
+		setTimeout(async()=>{
+			await UP.spc_sp()
+		},20000)
 		return
 		
 		o=await UP.net_me_gt()

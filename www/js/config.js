@@ -52,9 +52,8 @@ card h1{margin-top:8px;font-size:24px;text-shadow:2px 2px rgba(255,255,255,.18),
 		if(!o.includes('cn'))await UP.spc_dl('cn').then(_=>log(_))
 		await UP.spc_en('cn')
 		UP.spc_st(_=>{
-			if(res.partial)log('实时: '+_.partial)
-			if(res.text)log('最终: '+_.text)
-		})
+			log(_)
+		}).then(_=>log(_))
 		await UP.spc_sp().then(_=>log(_))
 		return
 		

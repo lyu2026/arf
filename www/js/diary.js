@@ -10,7 +10,6 @@ window.IX={
 	IH:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDBweCIgdmlld0JveD0iLTggLTggNDguMDAgNDguMDAiPgo8Y2lyY2xlIGZpbGw9IiM1RjVCNUJDRiIgY3g9IjE2IiBjeT0iMTYiIHI9IjE2Ii8+PGcgZmlsbD0iI2ZmZiI+CjxwYXRoIGQ9Ik0xNi4wOTIgMjMuMTk2QzEwLjUxOCAyMy4xOTYgNiAyMS41ODYgNiAxOS40MjhjMC0xLjEyNiAxLjIzLTIuMTQgMy4yLTIuODU2IDEuNTM4Ljk4NyA0LjExNyAxLjQ5MyA3LjA0MiAxLjQ5MyAyLjg1NiAwIDUuMzgtLjYxNyA2LjkzLTEuNTYyIDEuODU5LjcwNyAzLjAxMyAxLjY5NCAzLjAxMyAyLjc4MiAwIDIuMTYxLTQuNTE4IDMuOTExLTEwLjA5MyAzLjkxMXoiLz4KPHBhdGggZD0iTTE2LjE1MiAxNy41OGMtNC4yMjYgMC03LjY1Mi0xLjMyNS03LjY1Mi0yLjk2IDAtLjkwNiAxLjA1Ni0xLjcxOCAyLjcxMi0yLjI1OSAxLjE4Mi42MTcgMi45NTMgMS4wMTEgNC45NCAxLjAxMSAxLjk4NyAwIDMuNzU4LS4zOTQgNC45NC0xLjAxIDEuNjU5LjU0MyAyLjcxMiAxLjM1MiAyLjcxMiAyLjI1OC4wMDMgMS42MzUtMy40MjQgMi45Ni03LjY1MiAyLjk2eiIvPgo8cGF0aCBkPSJNMTYuMTI0IDEyLjg4Yy0zLjI2NyAwLTUuOTE2LTEuMDk0LTUuOTE2LTIuNDQgMC0xLjM0NSAyLjY1LTIuNDQgNS45MTYtMi40NCAzLjI2NiAwIDUuOTE2IDEuMDk1IDUuOTE2IDIuNDQgMCAxLjM0Ni0yLjY1IDIuNDQtNS45MTYgMi40NHoiLz4KPC9nPjwvc3ZnPg==',
 	MS:['普通','开心','伤心','崩溃','愤怒','压抑','恐惧','惊讶','感动','期待','紧张','抓狂','满足','疲惫','慵懒','绝望'],
 	ME:{'image/jpeg':'JPG','image/png':'PNG','image/gif':'GIF','image/svg+xml':'SVG','image/webp':'WEBP','image/bmp':'BMP','video/mp4':'MP4','video/webm':'WEBM','video/3gpp':'3GP','audio/mpeg':'MP3','audio/wav':'WAV','audio/ogg':'OGG','audio/aac':'AAC','application/pdf':'PDF','application/msword':'DOC','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'DOCX','application/vnd.ms-excel':'XLS','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'XLSX','application/vnd.ms-powerpoint':'PPT','application/vnd.openxmlformats-officedocument.presentationml.presentation':'PPTX','text/plain':'TXT','text/html':'HTML','text/css':'CSS','application/javascript':'JS','application/json':'JSON','application/xml':'XML','application/zip':'ZIP','application/vnd.android.package-archive':'APK','text/markdown':'MD','text/csv':'CSV','text/yaml':'YAML'},
-	loader:`<svg viewBox='0 0 100 100' width='40' height='40'><style>path{fill:#fff}path:nth-child(1){animation:r1 2s linear infinite;transform-origin:50px 50px}path:nth-child(2){animation:r2 1s linear infinite;transform-origin:50px 50px}path:nth-child(3){animation:r1 2s linear infinite;transform-origin:50px 50px}@keyframes r1{to{transform:rotate(360deg)}}@keyframes r2{to{transform:rotate(-360deg)}}</style><path d='M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z'/><path d='M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z'/><path d='M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z'/></svg>`,
 	arecord:`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path stroke='#000' stroke-width='2' stroke-linecap='round' d='M3 10v4m4.5-8v12M12 3v18m4.5-15v12M21 10v4'/></svg>`,
 	brecord:`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><style>line{stroke:#000;stroke-width:2;stroke-linecap:round;animation:p 1s ease-in-out infinite;transform-origin:center}.l1{animation-delay:0s}.l2{animation-delay:.15s}.l3{animation-delay:.3s}.l4{animation-delay:.15s}.l5{animation-delay:0s}@keyframes p{50%{transform:scaleY(.4)}}</style><g transform='translate(12,12)'><line class='l1' x1='-9' y1='-7' x2='-9' y2='7'/><line class='l2' x1='-4.5' y1='-9' x2='-4.5' y2='9'/><line class='l3' x1='0' y1='-10.5' x2='0' y2='10.5'/><line class='l4' x1='4.5' y1='-9' x2='4.5' y2='9'/><line class='l5' x1='9' y1='-7' x2='9' y2='7'/></g></svg>`,
 
@@ -100,12 +99,12 @@ window.IX={
 			if(i===0||x.m!=m||x.y!=y){
 				y=x.y
 				m=x.m
-				if(i===0)d=x.d
 				gbox.append($O.node('div',{GC:'',tabindex:'0',my:''},`${m} ${y}`))
-				gbox.append($O.node('div',{GC:'',dr:''},`<div I='${s[i].id}' onclick='run("IX","add",WI)(this)' tabindex='0'><div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)' tabindex='0'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div></div>`))
+				gbox.append($O.node('div',{GC:'',dr:''},`<div I='${s[i].id}' V='${d!=x.d?'Y':''}' onclick='run("IX","add",WI)(this)' tabindex='0'><div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)' tabindex='0'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div></div>`))
+				if(i===0)d=x.d
 				continue
 			}
-			gbox.$(':scope>[GC][dr]:last-child').append($O.node('div',{I:s[i].id,onclick:'run("IX","add",WI)(this)',tabindex:'0'},`<div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div>`))
+			gbox.$(':scope>[GC][dr]:last-child').append($O.node('div',{I:s[i].id,V:d!=x.d?'Y':'',onclick:'run("IX","add",WI)(this)',tabindex:'0'},`<div L><div>${x.w}</div>${x.d}</div><div R><button onclick='event.stopPropagation();run("IX","remove",WI)(this)'>删除</button><div F><div>${s[i].title}</div><div>${s[i].content}</div><div>${x.t}</div></div></div>`))
 		}
 		go&&go(true)
 	},
@@ -114,11 +113,15 @@ window.IX={
 		IX.wait=true
 		const $=me.sa('wait').closest('div[I]'),$p=$.closest('[GC][dr]')
 		$.$('[F]').sa('wait')
-		$.$('button').html(IX.loader)
+		$.$('button').html(BNSG)
 		setTimeout(()=>UP.sql_rm('diary',$.ga('I'),true).then(_=>{
 			$.remove()
 			IX.wait=false
-			if($p.children.length>0)return
+			if($p.children.length>0){
+				const $a=$p.children[0]
+				if($a.ga('V')!='Y')$a.sa({V:'Y'})
+				return
+			}
 			const x=$p.previousElementSibling
 			if(x.ha('my'))x.remove()
 			$p.remove()
@@ -164,7 +167,7 @@ window.IX={
 		$O.body.sa('ns')
 		$O.$('[G]').da('a')
 		$O.$('[M]').da('hide').$('[MT]>div').html((id>0?'编辑':'添加')+'日记')
-		const {title,content,weather,address,location,mood,tags,imgs,files}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
+		const {title,content,weather,address,location,mood,tags,imgs,files,at}=id>0?await UP.sql_gt('diary',id):{},[lng,lat]=location?.split(',')||['','']
 		if(id>0&&!title)return IX.modal_close()
 		mbox.html(`
 		<div x='title' tabindex='0'><textarea placeholder=' '>${title||''}</textarea><label>日志标题</label><div w onclick='run("IX","record",WI)(this)' tabindex='0'>${IX.arecord}</div></div>
@@ -176,16 +179,16 @@ window.IX={
 		<div x='weather'><input readonly placeholder=' ' value='${weather||''}'/><label>当前天气</label></div>
 		<div x='imgs' ph='日志图片'>${imgs&&imgs.length>0?imgs.map(_=>`<img onclick='run("IX","preview",WI)(this)' ondblclick='clearTimeout(IX.CT);this.remove()' v='${_}' src='${_.startsWith('/')&&_.includes('/files/')?IX.IH:_}' tabindex='0'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this)' tabindex='0'>╋</div></div>
 		<div x='files' ph='日志附件'>${files&&files.length>0?files.map(_=>`<img onclick='this.remove()' v='${_}' src='${IX.FM.replace('?',_.split('.').pop())}' tabindex='0'/>`).join(''):''}<div onclick='run("IX","upload",WI)(this,"file")' tabindex='0'>╋</div></div>
-		<button onclick='run("IX","save",WI)(this)' tabindex='0'>保存</button>`)
+		<button onclick='run("IX","save",WI)(this,${at})' tabindex='0'>保存</button>`)
 	},
-	save:me=>{ // 新增，持久化入库&同步
+	save:(me,at=null)=>{ // 新增，持久化入库&同步
 		if(!IX.ready||IX.wait)return
 		const id=IX.id,title=$O.$(`[MC] [x='title']>textarea`).value.trim()
 		if(!title)return log('日志编辑，内容不能为空')
 		const content=$O.$(`[MC] [x='content']>textarea`).value.trim()
 		if(!content)return log('日志编辑，内容不能为空')
 		IX.wait=true
-		me.html(IX.loader).sa('wait')
+		me.html(BNSG).sa('wait')
 		const mood=$O.$(`[MC] [x='mood']>[c]`).innerText
 		const tags=$O.$(`[MC] [x='tags']>input`).value.trim().split(' ').map(_=>_.trim()).filter(Boolean)
 		const address=$O.$(`[MC] [x='address']>input`).value.trim()
@@ -194,7 +197,7 @@ window.IX={
 		const imgs=$O.$$(`[MC] [x='imgs']>*:not(div)`).map(_=>_.ga('v'))
 		const files=$O.$$(`[MC] [x='files']>*:not(div)`).map(_=>_.ga('v'))
 		const ox={title,content,address,weather,location,mood,tags,imgs,files}
-		if(id>0)ox.id=id
+		if(id>0){ox.id=id;ox.at=at}
 		setTimeout(()=>UP.sql_sv('diary',ox,true).then(o=>{
 			IX.wait=false
 			me.html('保存').da('wait')
@@ -215,7 +218,7 @@ window.IX={
 	},
 	location:me=>{ // 自动定位，获取天气/经纬度/地址
 		IX.wait=true
-		me.html(IX.loader)
+		me.html(BNSG)
 		$O.$$(`[MC] [x='lat']>input,[MC] [x='lng']>input,[MC] [x='weather']>input,[MC] [x='address']>input`).map(_=>_.sa({value:''}))
 		setTimeout(()=>UP.gps_lg().then(o=>{
 			if(!o){
@@ -331,13 +334,13 @@ body[dark] [GC][dr]{background:rgba(255,255,255,.04)}
 [GC][dr]>[I]:last-child{margin-bottom:0}
 [GC][dr]>[I]>[L]{flex-shrink:0;width:14.5%;aspect-ratio:7/8;padding:0 4px;background:#f9f9f9;transition:background .2s}
 body[dark] [GC][dr]>[I]>[L]{background:#2a2a2a}
-[GC][dr]>[I]:first-child>[L]{z-index:4;text-align:center;font-size:22px}
-[GC][dr]>[I]:last-child>[L]{z-index:4;text-align:center;font-size:22px}
-[GC][dr]>[I]:first-child>[L]::after{content:'';display:block;position:absolute;top:7%;left:15%;z-index:10;width:70%;height:86%;background:rgba(0,0,0,.2);border-radius:24px}
-body[dark] [GC][dr]>[I]:first-child>[L]::after{background:rgba(255,255,255,.2)}
-[GC][dr]>[I]:first-child>[L]>div{font-size:12px;margin:16px auto 5px auto}
-[GC][dr]>[I]:not(:first-child)>[L]{z-index:0;color:rgba(0,0,0,0)}
-[GC][dr]>[I]:not(:first-child)>[L] *{color:rgba(0,0,0,0)}
+[GC][dr]>[I][V='Y']>[L]{z-index:4;text-align:center;font-size:22px}
+
+[GC][dr]>[I][V='Y']>[L]::after{content:'';display:block;position:absolute;top:7%;left:15%;z-index:10;width:70%;height:86%;background:rgba(0,0,0,.2);border-radius:24px}
+body[dark] [GC][dr]>[I][V='Y']>[L]::after{background:rgba(255,255,255,.2)}
+[GC][dr]>[I][V='Y']>[L]>div{font-size:12px;margin:16px auto 5px auto}
+[GC][dr]>[I]:not([V='Y'])>[L]{z-index:0;color:rgba(0,0,0,0)}
+[GC][dr]>[I]:not([V='Y'])>[L] *{color:rgba(0,0,0,0)}
 
 [GC][dr]>[I]>[R]{flex:1;min-width:0}
 [GC][dr]>[I]>[R]>button{position:absolute;right:0;top:0;width:15%;height:100%;background:#e74c3c;color:#fff;border:none;font-size:18px;font-weight:500;display:flex;align-items:center;justify-content:center;z-index:1}
@@ -381,7 +384,7 @@ body[dark] [MC] textarea,body[dark] [MC] input{box-shadow:inset 0 0 8px rgba(255
 [MC] [x][ph]::before{content:attr(ph);display:block;font-size:10px;position:absolute;height:auto;left:0;top:-2px;z-index:10;color:#007bff}
 [MC] [x='mood'][ph]::before{font-size:14px;top:-12px}
 [MC] [x='title']>textarea{height:60px;line-height:1.3;font-size:20px;margin-bottom:4px}
-[MC] [x='content']>textarea{font-size:18px;min-height:34vh;line-height:1.6;margin-bottom:4px}
+[MC] [x='content']>textarea{font-size:18px;min-height:20vh;line-height:1.6;margin-bottom:4px}
 [MC] [x='mood']{margin:8px 0 4px 0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
 [MC] [x='mood']>*,[MC] [x='address']>span{border-radius:4px;box-shadow:inset 0 0 5px rgba(0,0,0,.2);text-align:center;line-height:34px;color:black;font-size:14px}
 [MC] [x='mood']>*:hover,[MC] [x='address']>span:hover{box-shadow:inset 0 0 5px rgba(0,0,0,.4)}
@@ -396,7 +399,7 @@ body[dark] [MC] [x='mood']>*[c]{background:rgba(255,255,255,.4);color:black}
 [MC] [x='address']>span>svg{width:calc(100% - 16px);height:calc(100% - 16px);margin:8px;object-fit:contain}
 [MC] [x='imgs'],[MC] [x='files']{padding-top:8px;margin-top:2px;display:flex;align-items:center;gap:4px;overflow-x:auto;border-bottom:1px solid rgba(0,0,0,.1)}
 body[dark] [MC] [x='imgs'],body[dark] [MC] [x='files']{border-color:rgba(255,255,255,.1)}
-[MC] [x='imgs']>*,[MC] [x='files']>*{display:block;width:50px;height:50px;font-size:30px;text-align:center;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px}
+[MC] [x='imgs']>*,[MC] [x='files']>*{display:block;width:50px;height:50px;font-size:30px;text-align:center;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px;aspect-ratio:1}
 [MC] [x='imgs']>*:hover,[MC] [x='files']>*:hover{border-color:rgba(0,0,0,.5)}
 body[dark] [MC] [x='imgs']>*,body[dark] [MC] [x='files']>*{border-color:rgba(255,255,255,.2)}
 body[dark] [MC] [x='imgs']>*:hover,body[dark] [MC] [x='files']>*:hover{border-color:rgba(255,255,255,.5)}

@@ -1,99 +1,142 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset='UTF-8'>
-	<meta name='viewport' content='initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'>
-	<meta http-equiv='Content-Security-Policy' content="
-		default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:;
-		script-src * 'self' 'unsafe-inline' 'unsafe-eval';
-		style-src * 'self' 'unsafe-inline';
-		img-src * 'self' data: blob:;
-		media-src * 'self' data: blob:;
-		font-src * 'self' data:;
-		connect-src * 'self' data: blob:;
-		frame-src * 'self';
-		object-src 'none';
- ">
-	<title>廷琰</title>
-
-	<script src='cordova.js'></script>
-	<script>
-		// 创建节点
-		Document.prototype.node=function(tag='div',attrs={},html=''){
-			const o=this.createElement(tag)
-			for(let k in attrs){
-				if(k.startsWith('on')&&(typeof attrs[k]=='function')){
-					o[k]=()=>attrs[k](o)
-					continue
-				}
-				o.setAttribute(k,attrs[k])
+<!DOCTYPE html><html><head><meta charset='UTF-8'>
+<script src='cordova.js'></script><script>
+	document.addEventListener('deviceready',()=>{
+		UP.o([
+			{
+				id:'home',
+				load:'home',
+				layout:[
+					{
+						type:'container',
+						d:'v',
+						style:{'pt:15,'pb:15,'pl:12,'pr:12,'bc:'111111'},
+						children:[
+							{
+								type:'text',
+								content:'工业级标准 SVG 极限状态机',
+								style:{'fs:18,'tc:'FFFFFF','ts:'b','ta:'c','mb:15},
+								events:{
+									click:'pop',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'vectoricon',
+								paths:[
+									S:4CAF50 W:4 | M10,10L250,10L250,130L10,130L10,10',
+									ANIM pulse 2000'
+								],
+								style:{'w:260,'h:140,'mb:15,'bc:'1A1A1A','br:6},
+								events:{
+									click:'pop',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'vectoricon',
+								paths:[
+									S:FF9800 W:5 | m50.5,50.25l100.55-.25l.45,50.5l-101,0l0-50.25',
+									ANIM rotate 3000'
+								],
+								style:{'w:200,'h:150,'mb:15},
+								events:{
+									click:'pop',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'vectoricon',
+								paths:[
+									F:00BCD4 | M20,20 100,.55 180,20 220,100.5 20,100.5',
+									ANIM fade 1500'
+								],
+								style:{'w:240,'h:140,'mb:15,'bc:'222222'},
+								events:{
+									click:'pop',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'input',
+								placeholder:'全量高频触控拦截阻断区...',
+								style:{'h:45,'bc:'2D2D2D','br:6,'pl:10,'mb:15,'tc:'FFF'},
+								events:{
+									click:'home',
+									longclick:'home',
+									focus:'home',
+									blur:'home',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'button',
+								content:'切流至外部监控沙盒 ⚙️',
+								style:{'h:48,'bc:'2196F3','tc:'FFF','br:24},
+								target:'settings',
+								events:{
+									click:'go',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				id:'settings',
+				load:'set',
+				layout:[
+					{
+						type:'container',
+						d:'v',
+						style:{'pt:15,'pl:12,'pr:12,'bc:'1A1A1A'},
+						children:[
+							{
+								type:'webview',
+								url:'https://html5test.coze.com',
+								style:{'w:340,'h:360,'br:8,'mb:15},
+								events:{
+									click:'home',
+									longclick:'home',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							},
+							{
+								type:'button',
+								content:'⬅️ 安全切断回归主控中心',
+								style:{'h:45,'bc:'333333','tc:'FFF','br:6},
+								target:'home',
+								events:{
+									click:'go',
+									longclick:'pop',
+									touchstart:'home',
+									touchmove:'home',
+									touchend:'home'
+								}
+							}
+						]
+					}
+				]
 			}
-			if(html.trim()!='')o.innerHTML=html.trim()
-			return o
-		}
-
-		// 打印日志
-		window.log=function(){
-			if('yes'!=='debug'.gc(null))return null
-			let $=$O.$('#w_logs'),prx=(window.IX?.name||'...').toUpperCase()
-			if(!$)$O.body.appendChild($=$O.node('div',{id:'w_logs'},`<div onclick='this.parentElement.remove()'>清空日志</div>`))
-			let type=null,fx='',s=Array.from(arguments).map((_,i)=>{
-				if(_===null||_===undefined)return null
-				const t=typeof _=='object',e=t&&(_T(_,'error')||_T(_,'exception'))
-				if(!t)return _
-				if(!e)return '<pre>'+JSON.stringify(_,null,2)+'</pre>'
-				type='error'
-				fx=_.message
-				_=_.stack.split('\n').map(v=>v.replace('file:///android_asset/www/','').replace(/\?_\=[\-0-9a-z]+\:(\d+\:\d+)\)*/,' $1').replace(' (',' ').trim()).filter(Boolean)
-				if(_.length>1)_.shift()
-				return _.join('<br>')
-			}).filter(Boolean)
-			if(!type){
-				type=s.length>0&&['info','success','error','warn','debug'].includes(s[s.length-1])?s[s.length-1]:null
-				if(type)s.length-=1
-			}
-			if(type&&['info','success','error','warn','debug'].includes(s[s.length-1]))s.length-=1
-			if(fx!=='')s[0]+=': '+fx
-			const o=s.length>0&&(!_T(s[0],'array')&&!_T(s[0],'object'))?s.shift():''
-			$.prepend($O.node('div',{type},`<b>${prx}: ${o}</b><br>${s.join('<br>')}`))
-			return null
-		}
-
-		// 系统错误拦截
-		window.onerror=(message,source,lineno,colno,error)=>{
-			if(!error.stack.includes('.js'))error.stack='at '+source+':'+lineno+':'+colno
-			log('捕获 (onerror)',error,'error')
-		}
-		window.addEventListener('unhandledrejection',e=>{
-			if(!e.reason)e.promise.catch(_=>log('捕获 (1:unhandledrejection): UnHandledRejection','error'))
-			else log('捕获 (2:unhandledrejection)',e.reason,'error')
-		})
-
-		// 页面正在加载
-		document.addEventListener('DOMContentLoaded',()=>{
-			const o=localStorage.getItem('dark')
-			if(typeof o=='string'&&o.includes('yes'))document.body.setAttribute('dark','')
-			document.body.innerHTML=`<sk w100 p30 pt60 f fv g30><sk q r73></sk><sk q r73></sk><sk q h110></sk><sk b w80 h12></sk><sk b w50 h12></sk></sk>`
-		})
-
-		let WI=crypto.randomUUID()
-		document.addEventListener('deviceready',()=>{
-			document.head.appendChild(document.node('script',{src:`./js/core.js?_=${crypto.randomUUID()}`,onload:async _=>{
-				if(!TV){
-					const o=await UP.dev_auh('指纹认证','','取消').then(_=>null).catch(_=>_||'deny')
-					if(null!==o)return
-				}
-				log('载入 HOME.JS')
-				$O.head.appendChild($O.node('script',{ix:'',src:`./js/home.js?_=${crypto.randomUUID()}`}))
-			}}))
-		})
-	</script>
-
-	<link rel='stylesheet' href='css/style.css?_=a'>
-	<style ix></style>
-</head>
-
-<body></body>
-
-</html>
+		],()=>{},e=>{})
+	})
+</script></head><body></body></html>

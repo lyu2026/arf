@@ -1,279 +1,782 @@
 <!DOCTYPE html><html><head><meta charset='UTF-8'>
 <meta name='viewport' content='user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,viewport-fit=cover'>
 <script src='cordova.js'></script><script>
-	document.addEventListener('deviceready',()=>{
-		UP([
-	{
-		id:'home',
-		load:'home',
-		layout:[
-			{
-				type:'container',
-				d:'v',
-				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
-				children:[
-					{
-						type:'scrollnav',
-						items:['首页','组件页','沙盒页'], // 现有配置
-						targets:['home','components','sandbox'],
-						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
-					},
-					{
-						type:'text',
-						content:'Tyan Core 渲染看板',
-						style:{'fs':22,'tc':'FFFFFF','ts':'b','ta':'c','mb':5}
-					},
-					{
-						type:'text',
-						content:'模块 A：硬件级基础组件性能测试',
-						style:{'fs':13,'tc':'888888','ta':'c','mb':15}
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 文本与动态硬件矢量',
-								style:{'fs':14,'tc':'00BCD4','ts':'b','mb':10}
-							},
-							{
-								type:'text',
-								content:'工业级标准状态机高频触控响应中。',
-								style:{'fs':15,'tc':'DDDDDD','mb':12}
-							},
-							{
-								type:'vectoricon',
-								paths:[
-									'S:4CAF50 W:4 | M10,10L250,10L250,110L10,110L10,10',
-									'F:FF9800 | M50,50 L150,.55 Q200,-.25,250,50 L50,50',
-									'ANIM pulse 1500'
-								],
-								style:{'w':260,'h':120,'bc':'121212','br':6},
-								events:{'click':'pop','longclick':'pop'}
-							}
-						]
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 交互状态与数据步进',
-								style:{'fs':14,'tc':'FF9800','ts':'b','mb':10}
-							},
-							{
-								type:'progress',
-								value:65,
-								style:{'w':260,'h':8,'mb':12}
-							},
-							{
-								type:'container',
-								d:'h',
-								style:{'mb':10},
-								children:[
-									{type:'switch',checked:true,style:{'mr':15}},
-									{type:'checkbox',content:'允许内核混淆重构',checked:true,style:{'tc':'FFF','fs':14}}
-								]
-							},
-							{
-								type:'radio',
-								options:['标准线程','主线程泵','混淆隔离'],
-								style:{'mb':5}
-							}
-						]
-					},
-					{
-						type:'button',
-						content:'进入下一板：高级多态组件 ➡️',
-						style:{'h':48,'bc':'2196F3','tc':'FFF','br':24},
-						target:'components',
-						events:{'click':'go'}
-					}
-				]
-			}
-		]
-	},
-	{
-		id:'components',
-		load:'set',
-		layout:[
-			{
-				type:'container',
-				d:'v',
-				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
-				children:[
-					{
-						type:'scrollnav',
-						items:['基础组件','⚡ 高级多态','整合沙盒'],
-						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
-					},
-					{
-						type:'text',
-						content:'模块 B：高级多态树结构测试',
-						style:{'fs':14,'tc':'888888','ta':'c','mb':15}
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 折叠风琴与物理文件树',
-								style:{'fs':14,'tc':'E91E63','ts':'b','mb':10}
-							},
-							{
-								type:'accordion',
-								title:'查看混淆映射字典',
-								children:[
-									{type:'text',content:'类名映射: O -> CordovaPlugin\n包结构: com.plugin.tyan',style:{'fs':13,'tc':'AAAAAA','pt':5,'pb':5}}
-								],
-								style:{'mb':12}
-							},
-							{
-								type:'filetree',
-								name:'src_matrix',
-								dir:true,
-								children:[
-									{type:'filetree',name:'O.java',dir:false},
-									{type:'filetree',name:'tyan.js',dir:false}
-								]
-							}
-						]
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 图形缓存与粒子旋转',
-								style:{'fs':14,'tc':'9C27B0','ts':'b','mb':10}
-							},
-							{
-								type:'image',
-								src:'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
-								style:{'w':200,'h':50,'sm':'fit','mb':12,'bc':'121212','br':4}
-							},
-							{
-								type:'vectoricon',
-								paths:[
-									'S:9C27B0 W:5 | M20,20 100,.55 180,20 220,100.5 20,100.5',
-									'ANIM rotate 3000'
-								],
-								style:{'w':240,'h':100}
-							}
-						]
-					},
-					{
-						type:'floatbtn',
-						content:'⚡',
-						bc:'E91E63',
-						events:{'click':'pop'}
-					},
-					{
-						type:'container',
-						d:'h',
-						children:[
-							{
-								type:'button',
-								content:'⬅️ 返回',
-								style:{'w':100,'h':46,'bc':'333333','tc':'FFF','br':23,'mr':10},
-								target:'home',
-								events:{'click':'go'}
-							},
-							{
-								type:'button',
-								content:'前进：外部集成沙盒 ➡️',
-								style:{'w':230,'h':46,'bc':'4CAF50','tc':'FFF','br':23},
-								target:'sandbox',
-								events:{'click':'go'}
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		id:'sandbox',
-		load:'home',
-		layout:[
-			{
-				type:'container',
-				d:'v',
-				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
-				children:[
-					{
-						type:'scrollnav',
-						items:['基础组件','高级多态','⚡ 整合沙盒'],
-						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
-					},
-					{
-						type:'text',
-						content:'模块 C：沙盒穿透与高频阻断',
-						style:{'fs':14,'tc':'888888','ta':'c','mb':15}
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 输入流捕获与网页嵌流',
-								style:{'fs':14,'tc':'FF9800','ts':'b','mb':10}
-							},
-							{
-								type:'input',
-								placeholder:'高频触控轨迹安全校验输入区...',
-								style:{'h':44,'bc':'121212','br':6,'pl':10,'mb':12,'tc':'FFF'},
-								events:{'focus':'home','blur':'home'}
-							},
-							{
-								type:'webview',
-								url:'https://html5test.coze.com',
-								style:{'w':316,'h':260,'br':6}
-							}
-						]
-					},
-					{
-						type:'container',
-						d:'v',
-						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
-						children:[
-							{
-								type:'text',
-								content:'▶ 熔断态矢量标识',
-								style:{'fs':14,'tc':'00E676','ts':'b','mb':10}
-							},
-							{
-								type:'vectoricon',
-								paths:[
-									'F:00E676 | M10,10 L100,80 L200,10 Z',
-									'ANIM fade 1200'
-								],
-								style:{'w':200,'h':50}
-							}
-						]
-					},
-					{
-						type:'button',
-						content:'⏮️ 安全熔断：返回主控中心',
-						style:{'h':48,'bc':'FF3D00','tc':'FFF','br':24},
-						target:'home',
-						events:{'click':'go'}
-					}
-				]
-			}
-		]
-	}
-]
-,()=>{},e=>{})
+	document.addEventListener('deviceready',()=>{alert(UP.o)
+		UP.o([
+    {
+      "id": "home",
+      "load": "home",
+      "layout": [
+        {
+          "type": "txt",
+          "text": "Tyan 完整演示",
+          "style": {
+            "w": -1,
+            "h": -2,
+            "fs": 28,
+            "fw": "b",
+            "ta": "c",
+            "tc": "2196F3",
+            "mt": 20,
+            "mb": 20
+          }
+        },
+        {
+          "type": "hsep",
+          "color": "E0E0E0",
+          "style": {
+            "h": 1,
+            "mt": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "card",
+          "title": "基础组件",
+          "desc": "文本、按钮、输入框等",
+          "radius": 8,
+          "click": "onc",
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "btn",
+          "text": "基础组件示例",
+          "ripple": "2196F3",
+          "events": {
+            "click": "go"
+          },
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "bg": "2196F3",
+            "radius": 8,
+            "tc": "FFFFFF"
+          }
+        },
+        {
+          "type": "card",
+          "title": "输入组件",
+          "desc": "输入框、选择器、拾取器",
+          "radius": 8,
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "btn",
+          "text": "输入组件示例",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "bg": "FF9800",
+            "radius": 8,
+            "tc": "FFFFFF"
+          }
+        },
+        {
+          "type": "card",
+          "title": "多媒体组件",
+          "desc": "视频、音频、图片",
+          "radius": 8,
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "btn",
+          "text": "多媒体示例",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "bg": "E91E63",
+            "radius": 8,
+            "tc": "FFFFFF"
+          }
+        },
+        {
+          "type": "card",
+          "title": "布局组件",
+          "desc": "容器、列表、树形等",
+          "radius": 8,
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "btn",
+          "text": "布局示例",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "bg": "4CAF50",
+            "radius": 8,
+            "tc": "FFFFFF"
+          }
+        },
+        {
+          "type": "spc",
+          "style": {
+            "h": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "basic",
+      "layout": [
+        {
+          "type": "txt",
+          "text": "基础组件演示",
+          "style": {
+            "fs": 24,
+            "fw": "b",
+            "ta": "c",
+            "tc": "2196F3",
+            "mt": 20,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "简单文本组件",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "支持多行文本，可配置字体大小、颜色、对齐方式等。这是一个演示文本组件功能的例子。",
+          "style": {
+            "fs": 14,
+            "tc": "666666",
+            "ml": 10,
+            "mr": 10,
+            "mb": 20,
+            "lh": 5,
+            "maxlines": 3
+          }
+        },
+        {
+          "type": "ipt",
+          "text": "输入框示例",
+          "ph": "请输入内容",
+          "type": "text",
+          "maxl": 100,
+          "change": "onch",
+          "style": {
+            "w": -1,
+            "h": 48,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "tc": "333333",
+            "htc": "CCCCCC",
+            "fs": 14
+          }
+        },
+        {
+          "type": "ipt",
+          "ph": "请输入密码",
+          "type": "pw",
+          "style": {
+            "w": -1,
+            "h": 48,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "tc": "333333",
+            "htc": "CCCCCC"
+          }
+        },
+        {
+          "type": "ipt",
+          "ph": "请输入邮箱",
+          "type": "em",
+          "style": {
+            "w": -1,
+            "h": 48,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "tc": "333333",
+            "htc": "CCCCCC"
+          }
+        },
+        {
+          "type": "ipt",
+          "ph": "请输入电话",
+          "type": "ph",
+          "style": {
+            "w": -1,
+            "h": 48,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10,
+            "tc": "333333",
+            "htc": "CCCCCC"
+          }
+        },
+        {
+          "type": "btn",
+          "text": "按钮示例",
+          "upper": false,
+          "ripple": "2196F3",
+          "events": {
+            "click": "ond"
+          },
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10,
+            "bg": "2196F3",
+            "radius": 8,
+            "tc": "FFFFFF",
+            "fs": 16,
+            "fw": "b"
+          }
+        },
+        {
+          "type": "txt",
+          "text": "开关与复选框",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mt": 20,
+            "mb": 10
+          }
+        },
+        {
+          "type": "swt",
+          "chk": false,
+          "chg": "onsw",
+          "style": {
+            "mt": 10,
+            "mb": 10,
+            "ml": 10
+          }
+        },
+        {
+          "type": "cbx",
+          "text": "记住我的选择",
+          "chk": false,
+          "chg": "oncb",
+          "style": {
+            "mt": 10,
+            "mb": 20,
+            "ml": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "单选与多选",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mt": 20,
+            "mb": 10
+          }
+        },
+        {
+          "type": "rad",
+          "opts": ["选项一", "选项二", "选项三"],
+          "chg": "onrb",
+          "style": {
+            "mt": 10,
+            "mb": 20,
+            "ml": 10
+          }
+        },
+        {
+          "type": "spc",
+          "style": {
+            "h": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "input",
+      "layout": [
+        {
+          "type": "txt",
+          "text": "输入组件演示",
+          "style": {
+            "fs": 24,
+            "fw": "b",
+            "ta": "c",
+            "tc": "FF9800",
+            "mt": 20,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "下拉选择框",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "spn",
+          "opts": ["Android", "iOS", "Windows", "Linux"],
+          "chg": "onsp",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "日期与时间选择",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "dt",
+          "text": "选择日期",
+          "pick": "ondt",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 10,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "tm",
+          "text": "选择时间",
+          "pick": "ontm",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "数字选择器",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "np",
+          "min": 1,
+          "max": 100,
+          "val": 50,
+          "chg": "onnp",
+          "style": {
+            "w": -1,
+            "h": 100,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "评分与进度",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "rat",
+          "val": 3,
+          "stars": 5,
+          "step": 1,
+          "chg": "onrb",
+          "style": {
+            "mt": 10,
+            "mb": 10,
+            "ml": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "进度条",
+          "style": {
+            "fs": 14,
+            "tc": "666666",
+            "mt": 15,
+            "mb": 5,
+            "ml": 10
+          }
+        },
+        {
+          "type": "prg",
+          "val": 65,
+          "style": {
+            "w": -1,
+            "h": 10,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "滑动条",
+          "style": {
+            "fs": 14,
+            "tc": "666666",
+            "mt": 15,
+            "mb": 5,
+            "ml": 10
+          }
+        },
+        {
+          "type": "spb",
+          "val": 50,
+          "chg": "onsb",
+          "style": {
+            "w": -1,
+            "h": 30,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "spc",
+          "style": {
+            "h": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "layout": [
+        {
+          "type": "txt",
+          "text": "多媒体演示",
+          "style": {
+            "fs": 24,
+            "fw": "b",
+            "ta": "c",
+            "tc": "E91E63",
+            "mt": 20,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "矢量图形",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "svg",
+          "paths": [
+            "S:2196F3|M10,50 Q50,10 90,50",
+            "F:4CAF50|M20,80 L80,80 L80,95 L20,95 Z",
+            "ANIM rotate 2000"
+          ],
+          "style": {
+            "w": -1,
+            "h": 150,
+            "mt": 10,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "图片示例",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "img",
+          "src": "https://via.placeholder.com/300x200.png?text=Image+Demo",
+          "style": {
+            "w": -1,
+            "h": 200,
+            "mt": 10,
+            "mb": 20,
+            "scale": "crop"
+          }
+        },
+        {
+          "type": "txt",
+          "text": "音频播放",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "aud",
+          "text": "示例音频",
+          "url": "https://example.com/audio.mp3",
+          "play": "onad",
+          "stop": "onad",
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "txt",
+          "text": "网页视图",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "wbv",
+          "url": "<html><body><h1>这是HTML内容</h1><p>支持富文本渲染</p></body></html>",
+          "js": false,
+          "style": {
+            "w": -1,
+            "h": 150,
+            "mt": 10,
+            "mb": 20,
+            "ml": 10,
+            "mr": 10
+          }
+        },
+        {
+          "type": "spc",
+          "style": {
+            "h": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "layout": [
+        {
+          "type": "txt",
+          "text": "布局组件演示",
+          "style": {
+            "fs": 24,
+            "fw": "b",
+            "ta": "c",
+            "tc": "4CAF50",
+            "mt": 20,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "列表示例",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "list",
+          "items": [
+            {"title": "第一项", "desc": "描述信息"},
+            {"title": "第二项", "desc": "描述信息"},
+            {"title": "第三项", "desc": "描述信息"}
+          ],
+          "itemclick": "ont",
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "手风琴示例",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "acd",
+          "title": "可展开项",
+          "toggle": "ont2",
+          "children": [
+            {
+              "type": "txt",
+              "text": "这是手风琴的折叠内容，点击标题可以展开或折叠。",
+              "style": {
+                "tc": "666666",
+                "ml": 20,
+                "mr": 20,
+                "mt": 10,
+                "mb": 10
+              }
+            }
+          ],
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 20,
+            "bg": "F5F5F5"
+          }
+        },
+        {
+          "type": "txt",
+          "text": "横向滚动",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "hscr",
+          "items": ["标签1", "标签2", "标签3", "标签4", "标签5"],
+          "itemclick": "ont3",
+          "style": {
+            "w": -1,
+            "h": 50,
+            "mt": 10,
+            "mb": 20
+          }
+        },
+        {
+          "type": "txt",
+          "text": "树形结构",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "tree",
+          "name": "根目录",
+          "dir": true,
+          "depth": 0,
+          "click": "ont2",
+          "children": [
+            {
+              "name": "文件1",
+              "dir": false
+            },
+            {
+              "name": "文件夹",
+              "dir": true,
+              "children": [
+                {"name": "子文件1", "dir": false},
+                {"name": "子文件2", "dir": false}
+              ]
+            }
+          ],
+          "style": {
+            "w": -1,
+            "mt": 10,
+            "mb": 20,
+            "bg": "FAFAFA"
+          }
+        },
+        {
+          "type": "txt",
+          "text": "渐变背景",
+          "style": {
+            "fs": 16,
+            "ml": 10,
+            "mb": 10
+          }
+        },
+        {
+          "type": "grad",
+          "c1": "2196F3",
+          "c2": "E91E63",
+          "dir": "tl-br",
+          "style": {
+            "w": -1,
+            "h": 100,
+            "mt": 10,
+            "mb": 20,
+            "radius": 8
+          }
+        },
+        {
+          "type": "spc",
+          "style": {
+            "h": 40
+          }
+        }
+      ]
+    }
+  ],()=>{},e=>{})
 	})
 </script></head><body></body></html>

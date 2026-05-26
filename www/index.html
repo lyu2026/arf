@@ -1,142 +1,279 @@
 <!DOCTYPE html><html><head><meta charset='UTF-8'>
+<meta name='viewport' content='user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,viewport-fit=cover'>
 <script src='cordova.js'></script><script>
 	document.addEventListener('deviceready',()=>{
 		UP.o([
+	{
+		id:'home',
+		load:'home',
+		layout:[
 			{
-				id:'home',
-				load:'home',
-				layout:[
+				type:'container',
+				d:'v',
+				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
+				children:[
+					{
+						type:'scrollnav',
+						items:['首页','组件页','沙盒页'], // 现有配置
+						targets:['home','components','sandbox'],
+						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
+					},
+					{
+						type:'text',
+						content:'Tyan Core 渲染看板',
+						style:{'fs':22,'tc':'FFFFFF','ts':'b','ta':'c','mb':5}
+					},
+					{
+						type:'text',
+						content:'模块 A：硬件级基础组件性能测试',
+						style:{'fs':13,'tc':'888888','ta':'c','mb':15}
+					},
 					{
 						type:'container',
 						d:'v',
-						style:{'pt:15,'pb:15,'pl:12,'pr:12,'bc:'111111'},
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
 						children:[
 							{
 								type:'text',
-								content:'工业级标准 SVG 极限状态机',
-								style:{'fs:18,'tc:'FFFFFF','ts:'b','ta:'c','mb:15},
-								events:{
-									click:'pop',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
+								content:'▶ 文本与动态硬件矢量',
+								style:{'fs':14,'tc':'00BCD4','ts':'b','mb':10}
+							},
+							{
+								type:'text',
+								content:'工业级标准状态机高频触控响应中。',
+								style:{'fs':15,'tc':'DDDDDD','mb':12}
 							},
 							{
 								type:'vectoricon',
 								paths:[
-									S:4CAF50 W:4 | M10,10L250,10L250,130L10,130L10,10',
-									ANIM pulse 2000'
+									'S:4CAF50 W:4 | M10,10L250,10L250,110L10,110L10,10',
+									'F:FF9800 | M50,50 L150,.55 Q200,-.25,250,50 L50,50',
+									'ANIM pulse 1500'
 								],
-								style:{'w:260,'h:140,'mb:15,'bc:'1A1A1A','br:6},
-								events:{
-									click:'pop',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
-							},
-							{
-								type:'vectoricon',
-								paths:[
-									S:FF9800 W:5 | m50.5,50.25l100.55-.25l.45,50.5l-101,0l0-50.25',
-									ANIM rotate 3000'
-								],
-								style:{'w:200,'h:150,'mb:15},
-								events:{
-									click:'pop',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
-							},
-							{
-								type:'vectoricon',
-								paths:[
-									F:00BCD4 | M20,20 100,.55 180,20 220,100.5 20,100.5',
-									ANIM fade 1500'
-								],
-								style:{'w:240,'h:140,'mb:15,'bc:'222222'},
-								events:{
-									click:'pop',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
-							},
-							{
-								type:'input',
-								placeholder:'全量高频触控拦截阻断区...',
-								style:{'h:45,'bc:'2D2D2D','br:6,'pl:10,'mb:15,'tc:'FFF'},
-								events:{
-									click:'home',
-									longclick:'home',
-									focus:'home',
-									blur:'home',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
-							},
-							{
-								type:'button',
-								content:'切流至外部监控沙盒 ⚙️',
-								style:{'h:48,'bc:'2196F3','tc:'FFF','br:24},
-								target:'settings',
-								events:{
-									click:'go',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
+								style:{'w':260,'h':120,'bc':'121212','br':6},
+								events:{'click':'pop','longclick':'pop'}
 							}
 						]
-					}
-				]
-			},
-			{
-				id:'settings',
-				load:'set',
-				layout:[
+					},
 					{
 						type:'container',
 						d:'v',
-						style:{'pt:15,'pl:12,'pr:12,'bc:'1A1A1A'},
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
 						children:[
 							{
-								type:'webview',
-								url:'https://html5test.coze.com',
-								style:{'w:340,'h:360,'br:8,'mb:15},
-								events:{
-									click:'home',
-									longclick:'home',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
+								type:'text',
+								content:'▶ 交互状态与数据步进',
+								style:{'fs':14,'tc':'FF9800','ts':'b','mb':10}
+							},
+							{
+								type:'progress',
+								value:65,
+								style:{'w':260,'h':8,'mb':12}
+							},
+							{
+								type:'container',
+								d:'h',
+								style:{'mb':10},
+								children:[
+									{type:'switch',checked:true,style:{'mr':15}},
+									{type:'checkbox',content:'允许内核混淆重构',checked:true,style:{'tc':'FFF','fs':14}}
+								]
+							},
+							{
+								type:'radio',
+								options:['标准线程','主线程泵','混淆隔离'],
+								style:{'mb':5}
+							}
+						]
+					},
+					{
+						type:'button',
+						content:'进入下一板：高级多态组件 ➡️',
+						style:{'h':48,'bc':'2196F3','tc':'FFF','br':24},
+						target:'components',
+						events:{'click':'go'}
+					}
+				]
+			}
+		]
+	},
+	{
+		id:'components',
+		load:'set',
+		layout:[
+			{
+				type:'container',
+				d:'v',
+				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
+				children:[
+					{
+						type:'scrollnav',
+						items:['基础组件','⚡ 高级多态','整合沙盒'],
+						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
+					},
+					{
+						type:'text',
+						content:'模块 B：高级多态树结构测试',
+						style:{'fs':14,'tc':'888888','ta':'c','mb':15}
+					},
+					{
+						type:'container',
+						d:'v',
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
+						children:[
+							{
+								type:'text',
+								content:'▶ 折叠风琴与物理文件树',
+								style:{'fs':14,'tc':'E91E63','ts':'b','mb':10}
+							},
+							{
+								type:'accordion',
+								title:'查看混淆映射字典',
+								children:[
+									{type:'text',content:'类名映射: O -> CordovaPlugin\n包结构: com.plugin.tyan',style:{'fs':13,'tc':'AAAAAA','pt':5,'pb':5}}
+								],
+								style:{'mb':12}
+							},
+							{
+								type:'filetree',
+								name:'src_matrix',
+								dir:true,
+								children:[
+									{type:'filetree',name:'O.java',dir:false},
+									{type:'filetree',name:'tyan.js',dir:false}
+								]
+							}
+						]
+					},
+					{
+						type:'container',
+						d:'v',
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
+						children:[
+							{
+								type:'text',
+								content:'▶ 图形缓存与粒子旋转',
+								style:{'fs':14,'tc':'9C27B0','ts':'b','mb':10}
+							},
+							{
+								type:'image',
+								src:'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
+								style:{'w':200,'h':50,'sm':'fit','mb':12,'bc':'121212','br':4}
+							},
+							{
+								type:'vectoricon',
+								paths:[
+									'S:9C27B0 W:5 | M20,20 100,.55 180,20 220,100.5 20,100.5',
+									'ANIM rotate 3000'
+								],
+								style:{'w':240,'h':100}
+							}
+						]
+					},
+					{
+						type:'floatbtn',
+						content:'⚡',
+						bc:'E91E63',
+						events:{'click':'pop'}
+					},
+					{
+						type:'container',
+						d:'h',
+						children:[
+							{
+								type:'button',
+								content:'⬅️ 返回',
+								style:{'w':100,'h':46,'bc':'333333','tc':'FFF','br':23,'mr':10},
+								target:'home',
+								events:{'click':'go'}
 							},
 							{
 								type:'button',
-								content:'⬅️ 安全切断回归主控中心',
-								style:{'h:45,'bc:'333333','tc:'FFF','br:6},
-								target:'home',
-								events:{
-									click:'go',
-									longclick:'pop',
-									touchstart:'home',
-									touchmove:'home',
-									touchend:'home'
-								}
+								content:'前进：外部集成沙盒 ➡️',
+								style:{'w':230,'h':46,'bc':'4CAF50','tc':'FFF','br':23},
+								target:'sandbox',
+								events:{'click':'go'}
 							}
 						]
 					}
 				]
 			}
-		],()=>{},e=>{})
+		]
+	},
+	{
+		id:'sandbox',
+		load:'home',
+		layout:[
+			{
+				type:'container',
+				d:'v',
+				style:{'pt':15,'pb':15,'pl':12,'pr':12,'bc':'121212'},
+				children:[
+					{
+						type:'scrollnav',
+						items:['基础组件','高级多态','⚡ 整合沙盒'],
+						style:{'h':40,'mb':15,'bc':'1E1E1E','br':6}
+					},
+					{
+						type:'text',
+						content:'模块 C：沙盒穿透与高频阻断',
+						style:{'fs':14,'tc':'888888','ta':'c','mb':15}
+					},
+					{
+						type:'container',
+						d:'v',
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
+						children:[
+							{
+								type:'text',
+								content:'▶ 输入流捕获与网页嵌流',
+								style:{'fs':14,'tc':'FF9800','ts':'b','mb':10}
+							},
+							{
+								type:'input',
+								placeholder:'高频触控轨迹安全校验输入区...',
+								style:{'h':44,'bc':'121212','br':6,'pl':10,'mb':12,'tc':'FFF'},
+								events:{'focus':'home','blur':'home'}
+							},
+							{
+								type:'webview',
+								url:'https://html5test.coze.com',
+								style:{'w':316,'h':260,'br':6}
+							}
+						]
+					},
+					{
+						type:'container',
+						d:'v',
+						style:{'pt':12,'pb':12,'pl':12,'pr':12,'bc':'1E1E1E','br':8,'mb':15},
+						children:[
+							{
+								type:'text',
+								content:'▶ 熔断态矢量标识',
+								style:{'fs':14,'tc':'00E676','ts':'b','mb':10}
+							},
+							{
+								type:'vectoricon',
+								paths:[
+									'F:00E676 | M10,10 L100,80 L200,10 Z',
+									'ANIM fade 1200'
+								],
+								style:{'w':200,'h':50}
+							}
+						]
+					},
+					{
+						type:'button',
+						content:'⏮️ 安全熔断：返回主控中心',
+						style:{'h':48,'bc':'FF3D00','tc':'FFF','br':24},
+						target:'home',
+						events:{'click':'go'}
+					}
+				]
+			}
+		]
+	}
+]
+,()=>{},e=>{})
 	})
 </script></head><body></body></html>

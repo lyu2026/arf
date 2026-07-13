@@ -26,7 +26,7 @@ window.IX={
 	},hls:null,page:0,mk:null,curr:null,wait:true,key:null,
 
 	// 域名
-	mh:'https://api.yfsp.tv/api/',wh:'https://api.wyav.tv/api/',
+	mh:'https://api.yfsp.tv/api/',wh:'https://api.wuye.tv/api/',
 
 	tab_click:(me,go=_=>true)=>{ // 筛选视频
 		CF()
@@ -104,12 +104,10 @@ window.IX={
 			if(IX.key!=K)return
 			log('列表数据',_)
 			gbox.da('a').sa({_:`————  ${_===null?'🚨 请求失败，请重试':'🫧 数据为空'}！  ————`})
-			if(_===null){
-				return go(false)
-			}
+			if(_===null)return go(false)
 			if(TS!=JSON.stringify({filters:IX.filters,search_key:IX.search_key,search_val:IX.search_val}))return go(true)
 			const m={movie:'电影',drama:'电视剧',variety:'综艺',anime:'动漫',documentary:'纪录片',european:'欧美',japan:'日本',domestic:'国产'}
-			const o=_.data.list.filter(_=>_.mediaType==m[IX.filters.category])
+			const o=_.data.list.filter(_=>S?true:_.mediaType==m[IX.filters.category])
 			o&&gbox.append(...o.map(_=>{
 				let {mediaKey,title,coverImgUrl,score,updateStatus,date}=_,tip=updateStatus||(new Date(_.date).toLocaleString())
 				let N=title.replace(/\s*[】]\s*/g,'').replace(/(\s*[【】:：·。～]\s*|\-+|—+)/g,'.').replace(/，/g,',').replace(/！/g,'!').replace(/\s\s/g,' ').replace(/\.{2,}/g,'.').trim().replace(/\s/g,'.').replace(/(\s*\.+$|\.?(剧场|真人)版)/g,'')
